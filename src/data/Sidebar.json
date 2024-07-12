@@ -1,0 +1,98 @@
+[
+  {
+    "submenu": false,
+    "title": "Dashboard",
+    "icon": "<BsFillHouseFill />",
+    "url": "/admin/home",
+    "subtitle": []
+  },
+  
+  {
+    "submenu": true,
+    "title": "Lembaga",
+    "icon": "<IoPersonSharp />",
+    "url": "",
+    "subtitle": [
+      {
+        "name": "Pengaturan",
+        "url": "/guru/adm-siswa"
+      },
+      {
+        "name": "Mata Pelajaran",
+        "url": "/guru/adm-siswa"
+      },
+      {
+        "name": "Kelas",
+        "url": "/guru/adm-siswa"
+      }
+    ]
+  },
+  {
+    "submenu": true,
+    "title": "Siswa",
+    "icon": "<IoPersonSharp />",
+    "url": "",
+    "subtitle": [
+      {
+        "name": "Data Siswa",
+        "url": "/guru/adm-siswa"
+      },
+      {
+        "name": "Riwayat Siswa",
+        "url": "/guru/adm-siswa"
+      },
+      {
+        "name": "Pindah Kelas",
+        "url": "/guru/adm-siswa"
+      },
+      {
+        "name": "Naik Kelas",
+        "url": "/guru/adm-siswa"
+      },
+      {
+        "name": "Data Alumni",
+        "url": "/guru/adm-siswa"
+      }
+    ]
+  },
+
+  {
+    "submenu": true,
+    "title": "User",
+    "icon": "<IoPersonSharp />",
+    "url": "",
+    "subtitle": [
+      {
+        "name": "Role Akses",
+        "url": "/guru/adm-siswa"
+      },
+      {
+        "name": "Daftar User",
+        "url": "/guru/adm-siswa"
+      }
+    ]
+  },
+  {
+    "submenu": true,
+    "title": "Guru & Karyawan",
+    "icon": "<IoPersonSharp />",
+    "url": "",
+    "subtitle": [
+      {
+        "name": "Daftar Guru & Karyawan",
+        "url": "/guru/adm-siswa"
+      },
+      {
+        "name": "Penugasan",
+        "url": "/guru/adm-siswa"
+      }
+    ]
+  },
+  {
+    "submenu": false,
+    "title": "Backup & Restore",
+    "icon": "<BsFillHouseFill />",
+    "url": "/admin/home",
+    "subtitle": []
+  }
+]
