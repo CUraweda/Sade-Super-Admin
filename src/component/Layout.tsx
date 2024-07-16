@@ -1,6 +1,7 @@
 import React, { FC } from "react";
 import Navbar from "./Navbar";
 import Sidebar from "./Sidebar";
+import bg from "../assets/bg2.png";
 
 interface Props {
   children?: React.ReactNode;
@@ -9,17 +10,17 @@ interface Props {
 const LayoutAdmin: FC<Props> = ({ children }) => {
   return (
     <>
-      <div className="flex flex-col min-h-screen" data-theme="light">
-        <div className="flex flex-grow ">
-          <div className="z-50 shadow-md">
+      <div className="flex h-screen" data-theme="light">
+        <div className=" flex flex-col">
+          <div className="z-10 shadow-md top-0 sticky h-screen">
             <Sidebar />
           </div>
-          <div className="w-full bg-color-1">
-            <div className="">
-              <Navbar />
-            </div>
-            <div className="">{children}</div>
+        </div>
+        <div className="flex-1 flex flex-col">
+          <div className="sticky top-0 z-10">
+            <Navbar />
           </div>
+          <div className="flex-1 overflow-y-auto bg-blue-300">{children}</div>
         </div>
       </div>
     </>

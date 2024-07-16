@@ -1,5 +1,5 @@
 import { BsFillHouseFill, BsTable } from "react-icons/bs";
-import { FaMoneyBillWave, FaRegStar } from "react-icons/fa";
+import { FaBuilding, FaDatabase, FaMoneyBillWave, FaRegStar, FaUsers, FaUserTie } from "react-icons/fa";
 import { IoCard, IoPersonOutline, IoPersonSharp } from "react-icons/io5";
 import { FaChartSimple, FaGear, FaListCheck, FaMoneyBillTransfer, FaPersonCircleCheck } from "react-icons/fa6";
 import { VscServerProcess } from "react-icons/vsc";
@@ -28,5 +28,9 @@ export const iconMapping: { [key: string]: JSX.Element } = {
   "<CiMoneyCheck1 />" : <CiMoneyCheck1 />,
   "<GoTasklist />" : <GoTasklist />,
   "<FaListCheck />" : <FaListCheck />,
+  "<FaBuilding />" : <FaBuilding />,
+  "<FaUsers />" : <FaUsers />,
+  "<FaUserTie />" : <FaUserTie />,
+  "<FaDatabase />" : <FaDatabase />,
   // tambahkan pemetaan untuk ikon lainnya di sini
 };

@@ -3,44 +3,41 @@
     "submenu": false,
     "title": "Dashboard",
     "icon": "<BsFillHouseFill />",
-    "url": "/admin/home",
+    "url": "/",
     "subtitle": []
   },
   
   {
     "submenu": true,
     "title": "Lembaga",
-    "icon": "<IoPersonSharp />",
+    "icon": "<FaBuilding />",
     "url": "",
     "subtitle": [
       {
         "name": "Pengaturan",
-        "url": "/guru/adm-siswa"
+        "url": "/setting"
       },
       {
         "name": "Mata Pelajaran",
-        "url": "/guru/adm-siswa"
+        "url": "/mapel"
       },
       {
         "name": "Kelas",
-        "url": "/guru/adm-siswa"
+        "url": "/kelas"
       }
     ]
   },
   {
     "submenu": true,
     "title": "Siswa",
-    "icon": "<IoPersonSharp />",
+    "icon": "<FaUsers />",
     "url": "",
     "subtitle": [
       {
         "name": "Data Siswa",
-        "url": "/guru/adm-siswa"
+        "url": "/data-siswa"
       },
-      {
-        "name": "Riwayat Siswa",
-        "url": "/guru/adm-siswa"
-      },
+      
       {
         "name": "Pindah Kelas",
         "url": "/guru/adm-siswa"
@@ -75,7 +72,7 @@
   {
     "submenu": true,
     "title": "Guru & Karyawan",
-    "icon": "<IoPersonSharp />",
+    "icon": "<FaUserTie />",
     "url": "",
     "subtitle": [
       {
@@ -91,7 +88,7 @@
   {
     "submenu": false,
     "title": "Backup & Restore",
-    "icon": "<BsFillHouseFill />",
+    "icon": "<FaDatabase />",
     "url": "/admin/home",
     "subtitle": []
   }
