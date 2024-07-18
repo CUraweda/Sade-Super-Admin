@@ -15,7 +15,7 @@ const Router = () => {
     <BrowserRouter>
       <Routes>
         <Route
-          path="/"
+          path="/dashboard"
           element={
             <Suspense fallback={<Loading />}>
               <Layout>
@@ -25,7 +25,7 @@ const Router = () => {
           }
         />
         <Route
-          path="/login"
+          path="/"
           element={
             <Suspense fallback={<Loading />}>
               <Login />
