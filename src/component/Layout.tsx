@@ -1,7 +1,6 @@
 import React, { FC } from "react";
 import Navbar from "./Navbar";
 import Sidebar from "./Sidebar";
-import bg from "../assets/bg2.png";
 
 interface Props {
   children?: React.ReactNode;
