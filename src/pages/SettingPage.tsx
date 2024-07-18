@@ -1,4 +1,4 @@
-import React from "react";
+
 import { FaPlus, FaRegTrashAlt } from "react-icons/fa";
 
 const SettingPage = () => {

@@ -37,3 +37,24 @@ export interface SiswaResponse {
     totalPage: number;
   };
 }
+
+export interface MapelResponse {
+  status: string;
+  code: number;
+  message: string;
+  data: {
+    result: MapelList[];
+    page: number;
+    limit: number;
+    totalRows: number;
+    totalPage: number;
+  };
+}
+
+export interface MapelList {
+  id?: string | number;
+  code: string;
+  level: string;
+  name: string;
+  threshold: string | number;
+}
