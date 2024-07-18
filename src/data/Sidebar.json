@@ -3,7 +3,7 @@
     "submenu": false,
     "title": "Dashboard",
     "icon": "<BsFillHouseFill />",
-    "url": "/",
+    "url": "/dashboard",
     "subtitle": []
   },
   
