@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { FaPlus, FaRegTrashAlt } from "react-icons/fa";
+import { FaPlus, FaRegTrashAlt, FaCheck, FaTimes } from "react-icons/fa";
 import { FaPencil } from "react-icons/fa6";
 import { User } from "../middleware/Api";
 import { UserList } from "../middleware/utils";
@@ -26,8 +26,9 @@ const DaftarUser = () => {
     full_name: Yup.string().required("Nama tidak boleh kosong"),
     email: Yup.string().required("Email tidak boleh kosong"),
     password: Yup.string().required("Password tidak boleh kosong"),
-    confirm_password: Yup.string().required(
-      "Konfirmasi Password tidak boleh kosong"
+    confirm_password: Yup.string().oneOf(
+      [Yup.ref("password")],
+      "Password tidak sama"
     ),
     role_id: Yup.string().required("Role tidak boleh kosong"),
   });
@@ -35,8 +36,9 @@ const DaftarUser = () => {
   const validationSchemaEdit = Yup.object({
     full_name: Yup.string().required("Nama tidak boleh kosong"),
     email: Yup.string().required("Email tidak boleh kosong"),
-    address: Yup.string().required("Alamat tidak boleh kosong"),
     role_id: Yup.string().required("Role tidak boleh kosong"),
+    status: Yup.number().oneOf([0, 1]),
+    email_verified: Yup.number().oneOf([0, 1]),
   });
 
   const formikCreateUser = useFormik({
@@ -57,8 +59,9 @@ const DaftarUser = () => {
     initialValues: {
       full_name: editingUser?.full_name || "",
       email: editingUser?.email || "",
-      address: editingUser?.address || "",
       role_id: editingUser?.role_id || 1,
+      status: editingUser?.status || 0,
+      email_verified: editingUser?.email_verified || 0,
     },
     enableReinitialize: true,
     validationSchema: validationSchemaEdit,
@@ -130,12 +133,13 @@ const DaftarUser = () => {
 
   const handleEditUser = async (values: any, id: number) => {
     try {
-      const { full_name, email, address, role_id } = values;
+      const { full_name, email, role_id, status, email_verified } = values;
       const data = {
         full_name,
         email,
-        address,
         role_id,
+        status,
+        email_verified,
       };
       await User.EditUser(token, data, id);
 
@@ -200,8 +204,9 @@ const DaftarUser = () => {
     formikEditUser.setValues({
       full_name: user.full_name,
       email: user.email,
-      address: user.address,
       role_id: user.role_id,
+      status: user.status,
+      email_verified: user.email_verified,
     });
     openModal("editUserModal");
   };
@@ -246,21 +251,57 @@ const DaftarUser = () => {
               <th>No</th>
               <th>Nama User</th>
               <th>Email</th>
-              <th>Alamat</th>
+              <th>Status</th>
+              <th>Status Email</th>
               <th>Action</th>
             </tr>
           </thead>
           <tbody>
             {user.map((item, index) => (
-              <tr key={item.id}>
+              <tr key={index}>
                 <td>{filter.page * filter.limit + index + 1}</td>
                 <td>{item.full_name}</td>
                 <td>{item.email}</td>
-                <td>{item.address}</td>
                 <td>
-                  <div className="join">
+                  <div
+                    className={`badge text-white ${
+                      item.status == 1 ? "badge-success" : "badge-error"
+                    }`}
+                  >
+                    {item.status == 1 ? (
+                      <>
+                        <FaCheck />
+                      </>
+                    ) : (
+                      <>
+                        <FaTimes />
+                      </>
+                    )}
+                  </div>
+                </td>
+                <td>
+                  <div
+                    className={`badge text-white flex whitespace-nowrap ${
+                      item.email_verified == 1 ? "badge-success" : "badge-error"
+                    }`}
+                  >
+                    {item.email_verified == 1 ? (
+                      <>
+                        <FaCheck className="mr-1" />
+                        Sudah Verifikasi
+                      </>
+                    ) : (
+                      <>
+                        <FaTimes className="mr-1" />
+                        Belum Verifikasi
+                      </>
+                    )}
+                  </div>
+                </td>
+                <td>
+                  <div className="flex gap-2">
                     <button
-                      className="btn btn-ghost btn-sm text-orange-500 text-xl"
+                      className="btn btn-ghost btn-sm text-blue-500 text-xl"
                       onClick={() => handleEditUserModal(item)}
                     >
                       <FaPencil />
@@ -277,6 +318,7 @@ const DaftarUser = () => {
             ))}
           </tbody>
         </table>
+
         <PaginationControl
           meta={pageMeta}
           onPrevClick={() => handleFilter("page", pageMeta.page - 1)}
@@ -285,262 +327,250 @@ const DaftarUser = () => {
           onLimitChange={(val) => handleFilter("limit", val)}
         />
       </div>
-
-      {/* Modal Tambah User */}
       <Modal id="addUserModal">
-        <div className="p-4">
-          <h3 className="text-lg font-bold">Tambah User</h3>
-          <form onSubmit={formikCreateUser.handleSubmit}>
+        <form onSubmit={formikCreateUser.handleSubmit}>
+          <div className="py-4">
+            <h3 className="text-lg font-bold">Tambah User</h3>
             <div className="form-control">
-              <label className="label">
+              <label htmlFor="full_name" className="label">
                 <span className="label-text">Nama Lengkap</span>
               </label>
               <input
                 type="text"
-                className={`input input-bordered w-full ${
-                  formikCreateUser.touched.full_name &&
-                  formikCreateUser.errors.full_name
-                    ? "input-error"
-                    : ""
-                }`}
-                required
+                id="full_name"
                 name="full_name"
-                value={formikCreateUser.values.full_name}
+                className="input input-bordered"
                 onChange={formikCreateUser.handleChange}
+                onBlur={formikCreateUser.handleBlur}
+                value={formikCreateUser.values.full_name}
               />
-              {formikCreateUser.touched.full_name &&
-              formikCreateUser.errors.full_name ? (
-                <div className="text-red-500 text-xs">
-                  {formikCreateUser.errors.full_name}
-                </div>
-              ) : null}
-
-              <label className="label">
+              {formikCreateUser.errors.full_name &&
+                formikCreateUser.touched.full_name && (
+                  <span className="text-red-500 text-sm">
+                    {formikCreateUser.errors.full_name}
+                  </span>
+                )}
+            </div>
+            <div className="form-control">
+              <label htmlFor="email" className="label">
                 <span className="label-text">Email</span>
               </label>
               <input
-                type="email"
-                className={`input input-bordered w-full ${
-                  formikCreateUser.touched.email &&
-                  formikCreateUser.errors.email
-                    ? "input-error"
-                    : ""
-                }`}
-                required
+                type="text"
+                id="email"
                 name="email"
-                value={formikCreateUser.values.email}
+                className="input input-bordered"
                 onChange={formikCreateUser.handleChange}
+                onBlur={formikCreateUser.handleBlur}
+                value={formikCreateUser.values.email}
               />
-              {formikCreateUser.touched.email &&
-              formikCreateUser.errors.email ? (
-                <div className="text-red-500 text-xs">
-                  {formikCreateUser.errors.email}
-                </div>
-              ) : null}
-
-              <label className="label">
+              {formikCreateUser.errors.email &&
+                formikCreateUser.touched.email && (
+                  <span className="text-red-500 text-sm">
+                    {formikCreateUser.errors.email}
+                  </span>
+                )}
+            </div>
+            <div className="form-control">
+              <label htmlFor="password" className="label">
                 <span className="label-text">Password</span>
               </label>
               <input
                 type="password"
-                className={`input input-bordered w-full ${
-                  formikCreateUser.touched.password &&
-                  formikCreateUser.errors.password
-                    ? "input-error"
-                    : ""
-                }`}
-                required
+                id="password"
                 name="password"
-                value={formikCreateUser.values.password}
+                className="input input-bordered"
                 onChange={formikCreateUser.handleChange}
+                onBlur={formikCreateUser.handleBlur}
+                value={formikCreateUser.values.password}
               />
-              {formikCreateUser.touched.password &&
-              formikCreateUser.errors.password ? (
-                <div className="text-red-500 text-xs">
-                  {formikCreateUser.errors.password}
-                </div>
-              ) : null}
-
-              <label className="label">
+              {formikCreateUser.errors.password &&
+                formikCreateUser.touched.password && (
+                  <span className="text-red-500 text-sm">
+                    {formikCreateUser.errors.password}
+                  </span>
+                )}
+            </div>
+            <div className="form-control">
+              <label htmlFor="confirm_password" className="label">
                 <span className="label-text">Konfirmasi Password</span>
               </label>
               <input
                 type="password"
-                className={`input input-bordered w-full ${
-                  formikCreateUser.touched.confirm_password &&
-                  formikCreateUser.errors.confirm_password
-                    ? "input-error"
-                    : ""
-                }`}
-                required
+                id="confirm_password"
                 name="confirm_password"
-                value={formikCreateUser.values.confirm_password}
+                className="input input-bordered"
                 onChange={formikCreateUser.handleChange}
+                onBlur={formikCreateUser.handleBlur}
+                value={formikCreateUser.values.confirm_password}
               />
-              {formikCreateUser.touched.confirm_password &&
-              formikCreateUser.errors.confirm_password ? (
-                <div className="text-red-500 text-xs">
-                  {formikCreateUser.errors.confirm_password}
-                </div>
-              ) : null}
-
-              <label className="label">
+              {formikCreateUser.errors.confirm_password &&
+                formikCreateUser.touched.confirm_password && (
+                  <span className="text-red-500 text-sm">
+                    {formikCreateUser.errors.confirm_password}
+                  </span>
+                )}
+            </div>
+            <div className="form-control">
+              <label htmlFor="role_id" className="label">
                 <span className="label-text">Role</span>
               </label>
               <select
-                className={`select w-full select-bordered ${
-                  formikCreateUser.touched.role_id &&
-                  formikCreateUser.errors.role_id
-                    ? "select-error"
-                    : ""
-                }`}
+                id="role_id"
                 name="role_id"
-                value={formikCreateUser.values.role_id}
+                className="input input-bordered"
                 onChange={formikCreateUser.handleChange}
                 onBlur={formikCreateUser.handleBlur}
+                value={formikCreateUser.values.role_id}
               >
-                <option disabled selected>
-                  Pilih Role
-                </option>
-                {role.map((item, index) => (
-                  <option key={index} value={item.id}>
+                {role.map((item) => (
+                  <option key={item.id} value={item.id}>
                     {item.name}
                   </option>
                 ))}
               </select>
-              {formikCreateUser.touched.role_id &&
-              formikCreateUser.errors.role_id ? (
-                <div className="text-red-500 text-xs">
-                  {formikCreateUser.errors.role_id}
-                </div>
-              ) : null}
+              {formikCreateUser.errors.role_id &&
+                formikCreateUser.touched.role_id && (
+                  <span className="text-red-500 text-sm">
+                    {formikCreateUser.errors.role_id}
+                  </span>
+                )}
             </div>
-            <div className="form-control mt-4">
-              <button
-                type="submit"
-                className="w-full btn btn-ghost bg-green-500 text-white"
-              >
-                Tambah
-              </button>
-            </div>
-          </form>
-        </div>
+          </div>
+          <div className="modal-action">
+            <button
+              type="button"
+              className="btn"
+              onClick={() => closeModal("addUserModal")}
+            >
+              Batal
+            </button>
+            <button type="submit" className="btn btn-primary">
+              Tambah
+            </button>
+          </div>
+        </form>
       </Modal>
-
-      {/* Modal Edit User */}
       <Modal id="editUserModal">
-        <div className="p-4">
-          <h3 className="text-lg font-bold">Edit User</h3>
-          <form onSubmit={formikEditUser.handleSubmit}>
+        <form onSubmit={formikEditUser.handleSubmit}>
+          <div className="py-4">
+            <h3 className="text-lg font-bold">Edit User</h3>
             <div className="form-control">
-              <label className="label">
+              <label htmlFor="full_name" className="label">
                 <span className="label-text">Nama Lengkap</span>
               </label>
               <input
                 type="text"
-                className={`input input-bordered w-full ${
-                  formikEditUser.touched.full_name &&
-                  formikEditUser.errors.full_name
-                    ? "input-error"
-                    : ""
-                }`}
-                required
+                id="full_name"
                 name="full_name"
-                value={formikEditUser.values.full_name}
+                className="input input-bordered"
                 onChange={formikEditUser.handleChange}
+                onBlur={formikEditUser.handleBlur}
+                value={formikEditUser.values.full_name}
               />
-              {formikEditUser.touched.full_name &&
-              formikEditUser.errors.full_name ? (
-                <div className="text-red-500 text-xs">
-                  {formikEditUser.errors.full_name}
-                </div>
-              ) : null}
-
-              <label className="label">
+              {formikEditUser.errors.full_name &&
+                formikEditUser.touched.full_name && (
+                  <span className="text-red-500 text-sm">
+                    {formikEditUser.errors.full_name}
+                  </span>
+                )}
+            </div>
+            <div className="form-control">
+              <label htmlFor="email" className="label">
                 <span className="label-text">Email</span>
               </label>
               <input
-                type="email"
-                className={`input input-bordered w-full ${
-                  formikEditUser.touched.email && formikEditUser.errors.email
-                    ? "input-error"
-                    : ""
-                }`}
-                required
-                name="email"
-                value={formikEditUser.values.email}
-                onChange={formikEditUser.handleChange}
-              />
-              {formikEditUser.touched.email && formikEditUser.errors.email ? (
-                <div className="text-red-500 text-xs">
-                  {formikEditUser.errors.email}
-                </div>
-              ) : null}
-
-              <label className="label">
-                <span className="label-text">Alamat</span>
-              </label>
-              <input
                 type="text"
-                className={`input input-bordered w-full ${
-                  formikEditUser.touched.address &&
-                  formikEditUser.errors.address
-                    ? "input-error"
-                    : ""
-                }`}
-                required
-                name="address"
-                value={formikEditUser.values.address}
+                id="email"
+                name="email"
+                className="input input-bordered"
                 onChange={formikEditUser.handleChange}
+                onBlur={formikEditUser.handleBlur}
+                value={formikEditUser.values.email}
               />
-              {formikEditUser.touched.address &&
-              formikEditUser.errors.address ? (
-                <div className="text-red-500 text-xs">
-                  {formikEditUser.errors.address}
-                </div>
-              ) : null}
-
-              <label className="label">
+              {formikEditUser.errors.email && formikEditUser.touched.email && (
+                <span className="text-red-500 text-sm">
+                  {formikEditUser.errors.email}
+                </span>
+              )}
+            </div>
+            <div className="form-control">
+              <label htmlFor="role_id" className="label">
                 <span className="label-text">Role</span>
               </label>
               <select
-                className={`select w-full select-bordered ${
-                  formikEditUser.touched.role_id &&
-                  formikEditUser.errors.role_id
-                    ? "select-error"
-                    : ""
-                }`}
+                id="role_id"
                 name="role_id"
-                value={formikEditUser.values.role_id}
+                className="input input-bordered"
                 onChange={formikEditUser.handleChange}
                 onBlur={formikEditUser.handleBlur}
+                value={formikEditUser.values.role_id}
               >
-                <option disabled selected>
-                  Pilih Role
-                </option>
-                {role.map((item, index) => (
-                  <option key={index} value={item.id}>
+                {role.map((item) => (
+                  <option key={item.id} value={item.id}>
                     {item.name}
                   </option>
                 ))}
               </select>
-              {formikEditUser.touched.role_id &&
-              formikEditUser.errors.role_id ? (
-                <div className="text-red-500 text-xs">
-                  {formikEditUser.errors.role_id}
-                </div>
-              ) : null}
+              {formikEditUser.errors.role_id &&
+                formikEditUser.touched.role_id && (
+                  <span className="text-red-500 text-sm">
+                    {formikEditUser.errors.role_id}
+                  </span>
+                )}
             </div>
-            <div className="form-control mt-4">
-              <button
-                type="submit"
-                className="w-full btn btn-ghost bg-green-500 text-white"
-              >
-                Simpan
-              </button>
+            <div className="form-control">
+              <label htmlFor="status" className="label cursor-pointer">
+                <span className="label-text">Status</span>
+                <input
+                  type="checkbox"
+                  id="status"
+                  name="status"
+                  className="toggle toggle-primary"
+                  onChange={(e) =>
+                    formikEditUser.setFieldValue(
+                      "status",
+                      e.target.checked ? 1 : 0
+                    )
+                  }
+                  onBlur={formikEditUser.handleBlur}
+                  checked={formikEditUser.values.status === 1}
+                />
+              </label>
             </div>
-          </form>
-        </div>
+            <div className="form-control">
+              <label htmlFor="email_verified" className="label cursor-pointer">
+                <span className="label-text">Verifikasi Email</span>
+                <input
+                  type="checkbox"
+                  id="email_verified"
+                  name="email_verified"
+                  className="toggle toggle-primary"
+                  onChange={(e) =>
+                    formikEditUser.setFieldValue(
+                      "email_verified",
+                      e.target.checked ? 1 : 0
+                    )
+                  }
+                  onBlur={formikEditUser.handleBlur}
+                  checked={formikEditUser.values.email_verified === 1}
+                />
+              </label>
+            </div>
+          </div>
+          <div className="modal-action">
+            <button
+              type="button"
+              className="btn"
+              onClick={() => closeModal("editUserModal")}
+            >
+              Batal
+            </button>
+            <button type="submit" className="btn btn-primary">
+              Simpan
+            </button>
+          </div>
+        </form>
       </Modal>
     </div>
   );

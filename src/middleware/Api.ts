@@ -5,6 +5,7 @@ import {
   MapelResponse,
   SiswaResponse,
   UserResponse,
+  GukarResponse,
 } from "./utils";
 const instance = axios.create({ baseURL: import.meta.env.VITE_REACT_API_URL });
 
@@ -62,6 +63,7 @@ const Mapel = {
     }),
   DeleteMapel: (
     token: string | null,
+
     id: string | number | undefined
   ): AxiosPromise<any> =>
     instance({
@@ -70,6 +72,84 @@ const Mapel = {
       headers: {
         Authorization: `Bearer ${token}`,
       },
+    }),
+};
+
+const GuruKaryawan = {
+  GetAllGuruKaryawan: (
+    token: string | null,
+    page: number,
+    limit: number,
+    searchquery: string,
+    status: string
+  ): AxiosPromise<any> =>
+    instance({
+      method: "GET",
+      url: `/api/employee?isAssign=${status}&search_query=${searchquery}`,
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      params: {
+        limit: limit,
+        page: page,
+      },
+    }),
+
+  CreateGuruKaryawan: (token: string | null, data: any): AxiosPromise<any> =>
+    instance({
+      method: "POST",
+      url: `/api/employee/create`,
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      data,
+    }),
+  UpdateGuruKaryawan: (
+    token: string | null,
+    data: any,
+    id: string | number
+  ): AxiosPromise<any> =>
+    instance({
+      method: "PUT",
+      url: `/api/employee/update/${id}`,
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      data,
+    }),
+  DeleteGuruKaryawan: (
+    token: string | null,
+    id: string | number
+  ): AxiosPromise<any> =>
+    instance({
+      method: "DELETE",
+      url: `/api/employee/delete/${id}`,
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }),
+
+  SearchUser: (token: string | null, name: string): AxiosPromise<any> =>
+    instance({
+      method: "GET",
+      url: `/api/user?search_query=${name}`,
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }),
+
+  TautanAkun: (
+    token: string | null,
+    id: string | number,
+    data: any
+  ): AxiosPromise<any> =>
+    instance({
+      method: "PUT",
+      url: `/api/employee/attach/${id}`,
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      data: { user_id: data },
     }),
 };
 
@@ -129,4 +209,4 @@ const User = {
       },
     }),
 };
-export { Auth, Siswa, Mapel, User };
+export { Auth, Siswa, Mapel, GuruKaryawan, User };
