@@ -9,6 +9,9 @@ const SettingPage = lazy(() => import("../pages/SettingPage"));
 const MapelPage = lazy(() => import("../pages/MapelPage"));
 const KelasPage = lazy(() => import("../pages/KelasPage"));
 const DataSiswa = lazy(() => import("../pages/DataSiswa"));
+const DaftarGukar = lazy(() => import("../pages/DaftarGukar"));
+const WaliSiswa = lazy(() => import("../pages/WaliSiswa"));
+const MataPelajaran = lazy(() => import("../pages/MataPelajaran"));
 const DaftarUser = lazy(() => import("../pages/DaftarUser"));
 
 const Router = () => {
@@ -79,6 +82,36 @@ const Router = () => {
             <Suspense fallback={<Loading />}>
               <Layout>
                 <DataSiswa />
+              </Layout>
+            </Suspense>
+          }
+        />
+        <Route
+          path="/guru-karyawan"
+          element={
+            <Suspense fallback={<Loading />}>
+              <Layout>
+                <DaftarGukar />
+              </Layout>
+            </Suspense>
+          }
+        />
+        <Route
+          path="/guru-walisiswa"
+          element={
+            <Suspense fallback={<Loading />}>
+              <Layout>
+                <WaliSiswa />
+              </Layout>
+            </Suspense>
+          }
+        />
+        <Route
+          path="/guru-matapelajaran"
+          element={
+            <Suspense fallback={<Loading />}>
+              <Layout>
+                <MataPelajaran />
               </Layout>
             </Suspense>
           }
