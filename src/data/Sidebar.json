@@ -6,7 +6,7 @@
     "url": "/dashboard",
     "subtitle": []
   },
-  
+
   {
     "submenu": true,
     "title": "Lembaga",
@@ -37,7 +37,7 @@
         "name": "Data Siswa",
         "url": "/data-siswa"
       },
-      
+
       {
         "name": "Pindah Kelas",
         "url": "/guru/adm-siswa"
@@ -77,11 +77,15 @@
     "subtitle": [
       {
         "name": "Daftar Guru & Karyawan",
-        "url": "/guru/adm-siswa"
+        "url": "/guru-karyawan"
       },
       {
-        "name": "Penugasan",
-        "url": "/guru/adm-siswa"
+        "name": "Wali Siswa",
+        "url": "/guru-walisiswa"
+      },
+      {
+        "name": "Mata Pelajaran",
+        "url": "/guru-matapelajaran"
       }
     ]
   },
