@@ -6,7 +6,7 @@
     "url": "/dashboard",
     "subtitle": []
   },
-  
+
   {
     "submenu": true,
     "title": "Lembaga",
@@ -37,7 +37,7 @@
         "name": "Data Siswa",
         "url": "/data-siswa"
       },
-      
+
       {
         "name": "Pindah Kelas",
         "url": "/guru/adm-siswa"
@@ -65,7 +65,7 @@
       },
       {
         "name": "Daftar User",
-        "url": "/guru/adm-siswa"
+        "url": "/daftar-user"
       }
     ]
   },
