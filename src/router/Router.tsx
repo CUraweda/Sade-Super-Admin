@@ -9,6 +9,7 @@ const SettingPage = lazy(() => import("../pages/SettingPage"));
 const MapelPage = lazy(() => import("../pages/MapelPage"));
 const KelasPage = lazy(() => import("../pages/KelasPage"));
 const DataSiswa = lazy(() => import("../pages/DataSiswa"));
+const DaftarUser = lazy(() => import("../pages/DaftarUser"));
 
 const Router = () => {
   return (
@@ -47,7 +48,7 @@ const Router = () => {
           element={
             <Suspense fallback={<Loading />}>
               <Layout>
-                <MapelPage/>
+                <MapelPage />
               </Layout>
             </Suspense>
           }
@@ -57,7 +58,17 @@ const Router = () => {
           element={
             <Suspense fallback={<Loading />}>
               <Layout>
-                <KelasPage/>
+                <KelasPage />
+              </Layout>
+            </Suspense>
+          }
+        />
+        <Route
+          path="/daftar-user"
+          element={
+            <Suspense fallback={<Loading />}>
+              <Layout>
+                <DaftarUser />
               </Layout>
             </Suspense>
           }
@@ -67,7 +78,7 @@ const Router = () => {
           element={
             <Suspense fallback={<Loading />}>
               <Layout>
-                <DataSiswa/>
+                <DataSiswa />
               </Layout>
             </Suspense>
           }
