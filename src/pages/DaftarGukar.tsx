@@ -86,7 +86,6 @@ const DaftarGukar = () => {
   const TautanAkun = async (value: any) => {
     try {
       await GuruKaryawan.TautanAkun(token, inputValue, value);
-      // const { result } = response.data.data;
       DataGuruKaryawan();
       setShowAlert(false);
     } catch (error) {
@@ -101,7 +100,6 @@ const DaftarGukar = () => {
   const DeleteGuruKaryawan = async (id: number) => {
     try {
       await GuruKaryawan.DeleteGuruKaryawan(token, id);
-      // const { result } = response.data.data;
       DataGuruKaryawan();
     } catch (error) {
       Swal.fire({
@@ -214,7 +212,7 @@ const DaftarGukar = () => {
           token,
           values.querysearchuser
         );
-        const { result, ...meta } = response.data.data;
+        const { result } = response.data.data;
         setDataSearch(result);
         setShowData(true);
       } catch (error) {
@@ -460,9 +458,7 @@ const DaftarGukar = () => {
                                 formik.values.querysearchuser.toLowerCase()
                               ) && formik.values.querysearchuser !== "" ? (
                               <tr key={index}>
-                                <th>
-                                  {filter.page * filter.limit + index + 1}
-                                </th>
+                                <th>{index + 1}</th>
                                 <td>{item.email}</td>
                                 <td>{item.full_name}</td>
                                 <td>
@@ -805,7 +801,7 @@ const DaftarGukar = () => {
             <tbody>
               {DataGukar?.map((item: Employee, index: number) => (
                 <tr key={item.id}>
-                  <th>{filter.page * filter.limit + index + 1}</th>
+                  <th>{index + 1}</th>
                   <td>{item?.employee_no}</td>
                   <td>{item?.full_name}</td>
                   <td>{item?.gender}</td>
