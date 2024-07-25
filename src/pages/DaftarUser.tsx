@@ -253,13 +253,13 @@ const DaftarUser = () => {
               <th>Email</th>
               <th>Status</th>
               <th>Status Email</th>
-              <th>Action</th>
+              <th className="flex items-center justify-center">Action</th>
             </tr>
           </thead>
           <tbody>
             {user.map((item, index) => (
               <tr key={index}>
-                <td>{filter.page * filter.limit + index + 1}</td>
+                <th>{filter.page * filter.limit + index + 1}</th>
                 <td>{item.full_name}</td>
                 <td>{item.email}</td>
                 <td>
@@ -299,7 +299,7 @@ const DaftarUser = () => {
                   </div>
                 </td>
                 <td>
-                  <div className="flex gap-2">
+                  <div className="flex items-center justify-center gap-2">
                     <button
                       className="btn btn-ghost btn-sm text-blue-500 text-xl"
                       onClick={() => handleEditUserModal(item)}

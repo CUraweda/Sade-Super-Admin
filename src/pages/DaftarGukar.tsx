@@ -467,7 +467,9 @@ const DaftarGukar = () => {
                                 formik.values.querysearchuser.toLowerCase()
                               ) && formik.values.querysearchuser !== "" ? (
                               <tr key={index}>
-                                <th>{index + 1}</th>
+                                <th>
+                                  {filter.page * filter.limit + index + 1}
+                                </th>
                                 <td>{item.email}</td>
                                 <td>{item.full_name}</td>
                                 <td>
@@ -810,7 +812,7 @@ const DaftarGukar = () => {
             <tbody>
               {DataGukar?.map((item: Employee, index: number) => (
                 <tr key={item.id}>
-                  <th>{index + 1}</th>
+                  <th>{filter.page * filter.limit + index + 1}</th>
                   <td>{item?.employee_no}</td>
                   <td>{item?.full_name}</td>
                   <td>{item?.gender}</td>
