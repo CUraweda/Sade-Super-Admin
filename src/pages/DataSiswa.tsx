@@ -1,10 +1,17 @@
-import  { useEffect, useState } from "react";
-import { FaDownload, FaPlus, FaRegTrashAlt, FaSync, FaUpload } from "react-icons/fa";
+import { useEffect, useState } from "react";
+import {
+  FaDownload,
+  FaPlus,
+  FaRegTrashAlt,
+  FaSync,
+  FaUpload,
+} from "react-icons/fa";
 import { FaPencil } from "react-icons/fa6";
 import { Siswa } from "../middleware/Api";
 import { LoginStore } from "../store/Store";
 import { IpageMeta, PaginationControl } from "../component/PaginationControl";
 import { SiswaList } from "../middleware/utils";
+import Modal, { openModal, closeModal } from "../component/ModalProps";
 import Swal from "sweetalert2";
 
 const DataSiswa = () => {
@@ -17,6 +24,8 @@ const DataSiswa = () => {
     classId: "",
   });
   const [siswa, setSiswa] = useState<SiswaList[]>([]);
+  const [selectedSiswa, setSelectedSiswa] = useState<SiswaList | null>(null);
+  const [modalMode, setModalMode] = useState<"add" | "edit">("add");
 
   useEffect(() => {
     DataSiswa();
@@ -64,6 +73,23 @@ const DataSiswa = () => {
     return formattedDate;
   };
 
+  const handleAddClick = () => {
+    setModalMode("add");
+    setSelectedSiswa(null);
+    openModal("siswaModal");
+  };
+
+  const handleEditClick = (siswa: SiswaList) => {
+    setModalMode("edit");
+    setSelectedSiswa(siswa);
+    openModal("siswaModal");
+  };
+
+  const handleSubmit = () => {
+    closeModal("siswaModal");
+    DataSiswa();
+  };
+
   return (
     <>
       <div className="w-full flex flex-col items-center p-5">
@@ -92,16 +118,29 @@ const DataSiswa = () => {
               <option>2</option>
             </select>
             <div className="join">
-              <button className="btn btn-ghost bg-green-500 btn-sm text-white join-item tooltip" data-tip={'tarik data PMB'}>
+              <button
+                className="btn btn-ghost bg-green-500 btn-sm text-white join-item tooltip"
+                data-tip={"tarik data PMB"}
+              >
                 <FaSync />
               </button>
-              <button className="btn btn-ghost bg-blue-500 btn-sm text-white join-item tooltip" data-tip={'tambah siswa'}>
+              <button
+                className="btn btn-ghost bg-blue-500 btn-sm text-white join-item tooltip"
+                data-tip={"tambah siswa"}
+                onClick={handleAddClick}
+              >
                 <FaPlus />
               </button>
-              <button className="btn btn-ghost bg-cyan-500 btn-sm text-white join-item tooltip" data-tip={'upload siswa'}>
+              <button
+                className="btn btn-ghost bg-cyan-500 btn-sm text-white join-item tooltip"
+                data-tip={"upload siswa"}
+              >
                 <FaUpload />
               </button>
-              <button className="btn btn-ghost bg-orange-500 btn-sm text-white join-item tooltip tooltip-left" data-tip={'download data'}>
+              <button
+                className="btn btn-ghost bg-orange-500 btn-sm text-white join-item tooltip tooltip-left"
+                data-tip={"download data"}
+              >
                 <FaDownload />
               </button>
             </div>
@@ -120,15 +159,20 @@ const DataSiswa = () => {
             </thead>
             <tbody>
               {siswa?.map((item: SiswaList, index: number) => (
-                <tr>
+                <tr key={item.id}>
                   <th>{index + 1}</th>
                   <td>{item.full_name}</td>
                   <td>{item.nis}</td>
                   <td>{item.nisn}</td>
-                  <td>{item.pob}, {formatDate(item.dob)}</td>
+                  <td>
+                    {item.pob}, {formatDate(item.dob)}
+                  </td>
                   <td>
                     <div className="join">
-                      <button className="btn btn-ghost btn-sm text-orange-500 text-xl">
+                      <button
+                        className="btn btn-ghost btn-sm text-orange-500 text-xl"
+                        onClick={() => handleEditClick(item)}
+                      >
                         <FaPencil />
                       </button>
                       <button className="btn btn-ghost btn-sm text-red-500 text-xl">
@@ -149,6 +193,38 @@ const DataSiswa = () => {
           />
         </div>
       </div>
+
+      <Modal id="siswaModal" onClose={() => setSelectedSiswa(null)}>
+        <div className="p-4">
+          <h3 className="text-lg font-bold">
+            {modalMode === "add" ? "Tambah Siswa" : "Edit Siswa"}
+          </h3>
+          <form
+            onSubmit={(e) => {
+              e.preventDefault();
+              handleSubmit();
+            }}
+          >
+            <div className="form-control">
+              <label className="label">
+                <span className="label-text">Nama Lengkap</span>
+              </label>
+              <input
+                type="text"
+                className="input input-bordered"
+                defaultValue={selectedSiswa?.full_name || ""}
+                required
+              />
+            </div>
+            {/* Tambahkan input lainnya sesuai kebutuhan */}
+            <div className="form-control mt-4">
+              <button type="submit" className="btn btn-primary">
+                {modalMode === "add" ? "Tambah" : "Simpan"}
+              </button>
+            </div>
+          </form>
+        </div>
+      </Modal>
     </>
   );
 };

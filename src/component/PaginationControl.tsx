@@ -63,14 +63,14 @@ export const PaginationControl = ({
       )}
       <div className="join">
         <button
-          className="join-item btn"
+          className="join-item btn btn-sm"
           onClick={onPrevClick}
           disabled={meta.page == 0}
         >
           «
         </button>
         <div className="dropdown dropdown-top m-0 join-item dropdown-end">
-          <button tabIndex={0} className="btn rounded-none">
+          <button tabIndex={0} className="btn rounded-none btn-sm">
             Halaman {meta.page + 1}{" "}
           </button>
           {meta.totalPage &&
@@ -94,7 +94,7 @@ export const PaginationControl = ({
           )}
         </div>
         <button
-          className="join-item btn"
+          className="join-item btn btn-sm"
           onClick={onNextClick}
           disabled={meta.page + 1 == meta.totalPage}
         >
