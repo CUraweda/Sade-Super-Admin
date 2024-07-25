@@ -1,4 +1,4 @@
-import axios, { Axios, AxiosPromise } from "axios";
+import { AxiosPromise } from "axios";
 import {
   LoginResponse,
   MapelList,
