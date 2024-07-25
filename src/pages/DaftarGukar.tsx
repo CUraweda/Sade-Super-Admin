@@ -783,7 +783,7 @@ const DaftarGukar = () => {
             {/* head */}
             <thead className="bg-blue-300">
               <tr className="text-center">
-                <th>NO</th>
+                <th>No</th>
                 <th>Nomor Karyawan/ NIK</th>
                 <th>Nama Lengkap</th>
                 <th>L/P</th>

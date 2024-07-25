@@ -80,6 +80,10 @@
         "url": "/guru-karyawan"
       },
       {
+        "name": "Daftar Kepala Sekolah",
+        "url": "/kepala-sekolah"
+      },
+      {
         "name": "Wali Siswa",
         "url": "/guru-walisiswa"
       },

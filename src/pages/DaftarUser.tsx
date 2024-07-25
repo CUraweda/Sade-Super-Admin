@@ -245,7 +245,7 @@ const DaftarUser = () => {
             Tambah
           </button>
         </div>
-        <table className="table table-zebra table-sm">
+        <table className="table table-sm ">
           <thead className="bg-blue-300">
             <tr>
               <th>No</th>
@@ -281,7 +281,7 @@ const DaftarUser = () => {
                 </td>
                 <td>
                   <div
-                    className={`badge text-white flex whitespace-nowrap ${
+                    className={`badge text-white flex whitespace-nowrap  ${
                       item.email_verified == 1 ? "badge-success" : "badge-error"
                     }`}
                   >

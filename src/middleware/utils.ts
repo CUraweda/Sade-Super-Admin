@@ -172,3 +172,87 @@ export interface UserList {
   createdAt: string;
   updatedAt: string;
 }
+
+export interface KepsekResponse {
+  status: string;
+  code: number;
+  message: string;
+  data: {
+    result: KepsekList[];
+    page: number;
+    limit: number;
+    totalRows: number;
+    totalPage: number;
+  };
+}
+
+export interface KepsekList {
+  id: number;
+  employee_id: number;
+  start_academic_year: string;
+  end_academic_year: string;
+  is_active: boolean;
+  createdAt: string;
+  updatedAt: string;
+  employee: {
+    id: number;
+    user_id: number;
+    employee_no: number;
+    full_name: string;
+    gender: string;
+    pob: string;
+    dob: string;
+    religion: string;
+    marital_status: string;
+    last_education: string;
+    certificate_year: string;
+    is_education: string;
+    major: string;
+    employee_status: string;
+    work_start_date: string;
+    occupation: string;
+    is_teacher: string;
+    duty: string;
+    job_desc: string;
+    grade: string;
+    email: string;
+    createdAt: string;
+    updatedAt: string;
+  };
+}
+
+export interface DropdownEmployeeResponse {
+  status: string;
+  code: number;
+  message: string;
+  data: {
+    result: DropdownEmployeeList[];
+  };
+}
+
+export interface DropdownEmployeeList {
+  id: number;
+  user_id: number;
+  employee_no: number;
+  full_name: string;
+  gender: string;
+  pob: string;
+  dob: string;
+  religion: string;
+  marital_status: string;
+  last_education: string;
+  certificate_year: string;
+  is_education: string;
+  major: string;
+  employee_status: string;
+  work_start_date: string;
+  occupation: string;
+  is_teacher: string;
+  duty: string;
+  job_desc: string;
+  grade: string;
+  email: string;
+  createdAt: string;
+  updatedAt: string;
+  user: string;
+}
