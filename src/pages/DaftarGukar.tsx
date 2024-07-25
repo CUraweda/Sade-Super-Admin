@@ -1,12 +1,6 @@
 import { useEffect, useState } from "react";
-import {
-  FaDownload,
-  FaPlus,
-  FaRegTrashAlt,
-  FaSync,
-  FaUpload,
-} from "react-icons/fa";
-import { IoAddOutline, IoSearch } from "react-icons/io5";
+import { FaPlus, FaRegTrashAlt } from "react-icons/fa";
+import { IoSearch } from "react-icons/io5";
 import { FaPencil, FaLink, FaLinkSlash } from "react-icons/fa6";
 import { GuruKaryawan } from "../middleware/Api";
 import { LoginStore } from "../store/Store";
@@ -20,12 +14,11 @@ import {
 import * as Yup from "yup";
 import Swal from "sweetalert2";
 import { useFormik } from "formik";
-import { FaRegCircleUser } from "react-icons/fa6";
 const DaftarGukar = () => {
   const { token } = LoginStore();
   const [pageMeta, setPageMeta] = useState<IpageMeta>({ page: 0, limit: 10 });
   const [querysearch, setQuerySearch] = useState<any>("");
-  const [querysearchuser, setQuerySearchuser] = useState<any>("");
+  // const [querysearchuser, setQuerySearchuser] = useState<any>("");
   const [selectedOption, setStatus] = useState<any>("");
   const [datasearch, setDataSearch] = useState<UserSearchData[]>([]);
   const [inputValue, setInputValue] = useState<any>("");
@@ -78,8 +71,8 @@ const DaftarGukar = () => {
 
   const searchUser = async () => {
     try {
-      const response = await GuruKaryawan.SearchUser(token, querysearchuser);
-      const { result, ...meta } = response.data.data;
+      const response = await GuruKaryawan.SearchUser(token, "");
+      const { result } = response.data.data;
       setDataSearch(result);
     } catch (error) {
       Swal.fire({
@@ -92,8 +85,8 @@ const DaftarGukar = () => {
 
   const TautanAkun = async (value: any) => {
     try {
-      const response = await GuruKaryawan.TautanAkun(token, inputValue, value);
-      const { result, ...meta } = response.data.data;
+      await GuruKaryawan.TautanAkun(token, inputValue, value);
+      // const { result } = response.data.data;
       DataGuruKaryawan();
       setShowAlert(false);
     } catch (error) {
@@ -107,8 +100,8 @@ const DaftarGukar = () => {
 
   const DeleteGuruKaryawan = async (id: number) => {
     try {
-      const response = await GuruKaryawan.DeleteGuruKaryawan(token, id);
-      const { result, ...meta } = response.data.data;
+      await GuruKaryawan.DeleteGuruKaryawan(token, id);
+      // const { result } = response.data.data;
       DataGuruKaryawan();
     } catch (error) {
       Swal.fire({
@@ -190,7 +183,7 @@ const DaftarGukar = () => {
   }, [filter, querysearch, selectedOption]);
   useEffect(() => {
     searchUser();
-  }, [querysearchuser]);
+  }, []);
   // const formatDate = (date: string) => {
   //   let Newdate = new Date(date);
   //   let formattedDate = Newdate.toLocaleDateString("id-ID", {
