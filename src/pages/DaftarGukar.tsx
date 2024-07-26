@@ -18,7 +18,7 @@ const DaftarGukar = () => {
   const { token } = LoginStore();
   const [pageMeta, setPageMeta] = useState<IpageMeta>({ page: 0, limit: 10 });
   const [querysearch, setQuerySearch] = useState<any>("");
-  // const [querysearchuser, setQuerySearchuser] = useState<any>("");
+  const [querysearchuser, setQuerySearchuser] = useState<any>("");
   const [selectedOption, setStatus] = useState<any>("");
   const [datasearch, setDataSearch] = useState<UserSearchData[]>([]);
   const [inputValue, setInputValue] = useState<any>("");
@@ -57,7 +57,6 @@ const DaftarGukar = () => {
         selectedOption
       );
       const { result, ...meta } = response.data.data;
-      console.log(result);
       setDataGukar(result);
       setPageMeta(meta);
     } catch (error) {
@@ -71,14 +70,14 @@ const DaftarGukar = () => {
 
   const searchUser = async () => {
     try {
-      const response = await GuruKaryawan.SearchUser(token, "");
+      const response = await GuruKaryawan.SearchUser(token, querysearchuser);
       const { result } = response.data.data;
       setDataSearch(result);
     } catch (error) {
       Swal.fire({
         icon: "error",
         title: "Oops...",
-        text: "Gagal Mengambil data Guru & Karyawan, silakan refresh halaman!",
+        text: "Gagal Mengambil data, silakan coba kembali!",
       });
     }
   };
@@ -92,7 +91,7 @@ const DaftarGukar = () => {
       Swal.fire({
         icon: "error",
         title: "Oops...",
-        text: "Gagal Mengambil data Guru & Karyawan, silakan refresh halaman!",
+        text: "Gagal Menautkan akun, silakan coba kembali!",
       });
     }
   };
@@ -105,7 +104,7 @@ const DaftarGukar = () => {
       Swal.fire({
         icon: "error",
         title: "Oops...",
-        text: "Gagal Mengambil data Guru & Karyawan, silakan refresh halaman!",
+        text: "Gagal menghapus data, silakan coba kembali!",
       });
     }
   };
@@ -130,7 +129,6 @@ const DaftarGukar = () => {
     if (result.isConfirmed) {
       DeleteGuruKaryawan(id);
     } else {
-      console.log("Edit canceled");
     }
   };
 
@@ -147,7 +145,6 @@ const DaftarGukar = () => {
   const handleEdit = async (value: any) => {
     const itemToEdit = DataGukar.find((item) => item.id === value?.id);
     setIdGukar(value.id);
-    console.log(value.id);
     if (itemToEdit) {
       setMode("update");
       setEditData({
@@ -178,6 +175,7 @@ const DaftarGukar = () => {
   useEffect(() => {
     DataGuruKaryawan();
     searchUser();
+    setQuerySearchuser("");
   }, [filter, querysearch, selectedOption]);
   useEffect(() => {
     searchUser();
@@ -406,9 +404,15 @@ const DaftarGukar = () => {
           >
             <div className="bg-gray-900 bg-opacity-50 absolute inset-0"></div>
             <div
-              className="bg-white p-6 rounded shadow-lg z-10 lg:min-w-[600px] max-w-screen overflow-y-auto max-h-[90vh]"
+              className="bg-white p-6 rounded shadow-lg z-10 lg:min-w-[600px] max-w-screen overflow-y-auto max-h-[90vh] relative"
               onClick={handleDialogClick}
             >
+              <button
+                className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2"
+                onClick={handleCloseAlert}
+              >
+                ✕
+              </button>
               {alertTodo === "findingdata" ? (
                 <div>
                   <div className="flex justify-between w-full">
@@ -437,6 +441,7 @@ const DaftarGukar = () => {
                       </button>
                     </div>
                   </form>
+
                   <div>
                     {showData && (
                       <table className="table table-zebra table-sm my-5">
@@ -745,7 +750,8 @@ const DaftarGukar = () => {
             </div>
           </div>
         ) : null}
-        <div className="overflow-x-auto w-full mt-5 bg-white p-4 rounded-md shadow-md ">
+
+        <div className="overflow-hidden w-full mt-5 bg-white p-4 rounded-md shadow-md ">
           <div className="w-full flex justify-end my-4 gap-2 items-center">
             <label className="input input-sm input-bordered flex items-center gap-2">
               <input
@@ -764,7 +770,7 @@ const DaftarGukar = () => {
               onChange={handleStatus}
             >
               <option value="" disabled selected>
-                Pilih Option
+                Pilih Opsi
               </option>
               <option value="Y">Sudah Assign</option>
               <option value="N">Belum Assign</option>
@@ -779,81 +785,93 @@ const DaftarGukar = () => {
               </button>
             </div>
           </div>
-          <table className="table table-zebra table-sm">
-            {/* head */}
-            <thead className="bg-blue-300">
-              <tr className="text-center">
-                <th>No</th>
-                <th>Nomor Karyawan/ NIK</th>
-                <th>Nama Lengkap</th>
-                <th>L/P</th>
-                <th>Tempat Lahir</th>
-                <th>Agama</th>
-                <th>Kawin/ Belum Kawin</th>
-                <th>Pendidikan Terakhir</th>
-                <th>Waktu Mulai Bekerja</th>
-                <th>Tetap/ Kontrak</th>
-                <th>Jabatan/ Tugas</th>
-                <th>Status Akun</th>
-                <th>Action</th>
-              </tr>
-            </thead>
-            <tbody>
-              {DataGukar?.map((item: Employee, index: number) => (
-                <tr key={item.id}>
-                  <th>{index + 1}</th>
-                  <td>{item?.employee_no}</td>
-                  <td>{item?.full_name}</td>
-                  <td>{item?.gender}</td>
-                  <td>{item?.pob}</td>
-                  <td>{item?.religion}</td>
-                  <td>{item?.marital_status}</td>
-                  <td>{item?.last_education}</td>
-                  <td>{item?.work_start_date}</td>
-                  <td>{item?.employee_status}</td>
-                  <td>{item?.job_desc}</td>
-                  <td className="text-center">
-                    {item?.user_id == null ? (
-                      <button
-                        className="btn btn-ghost btn-sm text-orange-500 text-xl"
-                        onClick={() => handleShowAlert(item?.id, "findingdata")}
-                      >
-                        <FaLinkSlash />
-                      </button>
-                    ) : (
-                      <p>
+          <div className="overflow-x-auto">
+            <table className="table table-zebra table-sm w-[100%] ">
+              {/* head */}
+              <thead className="bg-blue-300">
+                <tr className="text-center">
+                  <th>NO</th>
+                  <th>Nomor Pegawai</th>
+                  <th>Nama Lengkap</th>
+                  <th>Jenis Kelamin</th>
+                  <th>Tempat Lahir</th>
+                  <th>Tanggal Lahir</th>
+                  <th>Agama</th>
+                  <th>Pendidikan Terakhir</th>
+                  <th>Jurusan</th>
+                  <th>Status Pekerjaan</th>
+                  <th>Tanggal Mulai Bekerja</th>
+                  <th>Pekerjaan</th>
+                  <th>Nama Lengkap User</th>
+                  <th>Email User</th>
+                  <th>Akun</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                {DataGukar?.map((item: Employee, index: number) => (
+                  <tr key={item.id}>
+                    <th>{filter.page * filter.limit + index + 1}</th>
+                    <td>{item.employee_no}</td>
+                    <td>{item.full_name}</td>
+                    <td>{item.gender}</td>
+                    <td>{item.pob}</td>
+                    <td>{new Date(item.dob).toLocaleDateString()}</td>
+                    <td>{item.religion}</td>
+                    <td>{item.last_education}</td>
+                    <td>{item.major}</td>
+                    <td>{item.employee_status}</td>
+                    <td>
+                      {new Date(item.work_start_date).toLocaleDateString()}
+                    </td>
+                    <td>{item.occupation}</td>
+                    <td>{item.full_name}</td>
+                    <td>{item.email}</td>
+                    <td className="text-center">
+                      {item?.user_id == null ? (
                         <button
                           className="btn btn-ghost btn-sm text-orange-500 text-xl"
                           onClick={() =>
                             handleShowAlert(item?.id, "findingdata")
                           }
                         >
-                          <FaLink />
-                          {/* {item?.user_id} */}
+                          <FaLinkSlash />
                         </button>
-                      </p>
-                    )}
-                  </td>
-                  <td className="text-center">
-                    <div className="join">
-                      <button
-                        className="btn btn-ghost btn-sm text-orange-500 text-xl"
-                        onClick={() => handleEdit(item)}
-                      >
-                        <FaPencil />
-                      </button>
-                      <button
-                        className="btn btn-ghost btn-sm text-red-500 text-xl"
-                        onClick={() => handleDelete(item)}
-                      >
-                        <FaRegTrashAlt />
-                      </button>
-                    </div>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+                      ) : (
+                        <p>
+                          <button
+                            className="btn btn-ghost btn-sm text-orange-500 text-xl"
+                            onClick={() =>
+                              handleShowAlert(item?.id, "findingdata")
+                            }
+                          >
+                            <FaLink />
+                            {/* {item?.user_id} */}
+                          </button>
+                        </p>
+                      )}
+                    </td>
+                    <td className="text-center">
+                      <div className="join">
+                        <button
+                          className="btn btn-ghost btn-sm text-orange-500 text-xl"
+                          onClick={() => handleEdit(item)}
+                        >
+                          <FaPencil />
+                        </button>
+                        <button
+                          className="btn btn-ghost btn-sm text-red-500 text-xl"
+                          onClick={() => handleDelete(item)}
+                        >
+                          <FaRegTrashAlt />
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
           <PaginationControl
             meta={pageMeta}
             onPrevClick={() => handleFilter("page", pageMeta.page - 1)}

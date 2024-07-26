@@ -143,6 +143,137 @@ export interface CreateFormValues {
   [key: string]: string; // Index signature
 }
 
+export interface Class {
+  id: number;
+  level: string;
+  class_name: string;
+  book_target: number;
+  waste_target: number;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface WaKel {
+  id: number;
+  class_id: number;
+  employee_id: number;
+  academic_year: string;
+  is_active: boolean;
+  createdAt: string;
+  updatedAt: string;
+  employee: Employee;
+  class: Class;
+}
+
+export interface WaKelResponse {
+  code: number;
+  data: {
+    result: WaKel[];
+    limit: number;
+    page: number;
+    totalPage: number;
+    totalRows: number;
+  };
+  message: string;
+  status: boolean;
+}
+
+export interface WaKelDetail {
+  id: number;
+  employee: {
+    full_name: string;
+  };
+}
+
+export interface EditFormValuesWalikelas {
+  employee_id: string;
+  class_id: string;
+  academic_year: string;
+  is_active: string;
+}
+
+export interface ClassData {
+  id: number;
+  level: string;
+  class_name: string;
+  book_target: number;
+  waste_target: number;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface Subject {
+  id: number;
+  level: string;
+  code: string;
+  name: string;
+  threshold: number;
+}
+
+export interface FormSubjectResult {
+  id: number;
+  subject_id: number;
+  employee_id: number;
+  academic_year: string;
+  is_active: boolean;
+  createdAt: string;
+  updatedAt: string;
+  employee: Employee;
+  subject: Subject;
+}
+
+export interface FormSubjectData {
+  result: FormSubjectResult[];
+  page: number;
+  limit: number;
+  totalRows: number;
+  totalPage: number;
+}
+
+export interface EditFormValuesPelajaran {
+  employee_id: string;
+  subject_id: string;
+  academic_year: string;
+  is_active: string;
+}
+export interface ExtracurricularActivity {
+  id: number;
+  name: string;
+}
+
+export interface Data {
+  result: ExtracurricularActivity[];
+}
+
+export interface EditFormValuesExtra {
+  name: string;
+}
+
+export interface SubjectExtra {
+  id: number;
+  name: string;
+}
+
+// Interface untuk entitas dalam array "result"
+export interface FormExtra {
+  id: number;
+  subject_extra_id: number;
+  employee_id: number;
+  academic_year: string;
+  is_active: boolean;
+  createdAt: string;
+  updatedAt: string;
+  employee: Employee;
+  subjectextra: SubjectExtra;
+}
+
+export interface EditSubjectExtra {
+  employee_id: string;
+  subject_extra_id: string;
+  academic_year: string;
+  is_active: string;
+}
+
 export interface UserResponse {
   status: string;
   code: number;

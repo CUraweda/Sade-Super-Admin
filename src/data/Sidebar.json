@@ -84,15 +84,20 @@
         "url": "/kepala-sekolah"
       },
       {
-        "name": "Wali Siswa",
-        "url": "/guru-walisiswa"
+        "name": "Penugasan Wali Kelas",
+        "url": "/guru/wali-kelas"
       },
       {
-        "name": "Mata Pelajaran",
-        "url": "/guru-matapelajaran"
+        "name": "Penugasan Mata Pelajaran",
+        "url": "/guru/mata-pelajaran"
+      },
+      {
+        "name": "Penugasan Mata Pelajaran Extra",
+        "url": "/guru/mata-pelajaran-extra"
       }
     ]
   },
+
   {
     "submenu": false,
     "title": "Backup & Restore",
