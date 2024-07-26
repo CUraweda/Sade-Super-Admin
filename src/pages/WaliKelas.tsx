@@ -2,44 +2,43 @@ import { useEffect, useState } from "react";
 import { FaPlus, FaRegTrashAlt } from "react-icons/fa";
 import { IoSearch } from "react-icons/io5";
 import { FaPencil } from "react-icons/fa6";
-import { GuruKaryawan, Pelajaran } from "../middleware/Api";
+import { GuruKaryawan, Wali } from "../middleware/Api";
 import { LoginStore } from "../store/Store";
 import { IpageMeta, PaginationControl } from "../component/PaginationControl";
 import {
   WaKelDetail,
+  WaKel,
   Employee,
-  EditFormValuesPelajaran,
-  Subject,
-  FormSubjectResult,
+  EditFormValuesWalikelas,
+  ClassData,
 } from "../middleware/utils";
 import * as Yup from "yup";
 import Swal from "sweetalert2";
 import { useFormik } from "formik";
-
-const MataPelajaran = () => {
+const WaliKelas = () => {
   const { token } = LoginStore();
   const [pageMeta, setPageMeta] = useState<IpageMeta>({ page: 0, limit: 10 });
   const [querysearch, setQuerySearch] = useState<any>("");
   const [selectedOption, setStatus] = useState<any>(null);
   const [showAlert, setShowAlert] = useState(false);
   const [alertTodo, setAlertTodo] = useState("");
-  const [EditData, setEditData] = useState<EditFormValuesPelajaran | null>(
+  const [EditData, setEditData] = useState<EditFormValuesWalikelas | null>(
     null
   );
   const [academic_year, setAcademicYear] = useState<any>("");
-  const [idMapel, setidMapel] = useState<any>(null);
+  const [idWaKel, setIdWaKel] = useState<any>(null);
   const [employees, setEmployees] = useState<Employee[]>([]);
-  const [Subject, setSubject] = useState<Subject[]>([]);
+  const [Kelas, setKelas] = useState<ClassData[]>([]);
   const [filter, setFilter] = useState({
     page: 0,
     limit: 10,
     search: "",
     classId: "",
   });
-  const [DataMapel, setDataMapel] = useState<FormSubjectResult[]>([]);
+  const [DataWaKel, setDataWaKel] = useState<WaKel[]>([]);
 
   useEffect(() => {
-    DataGuruMapel();
+    DataWaliKelas();
     setAcademicYear("");
   }, []);
 
@@ -52,18 +51,18 @@ const MataPelajaran = () => {
     setFilter(obj);
   };
 
-  const DataGuruMapel = async () => {
+  const DataWaliKelas = async () => {
     try {
-      const response = await Pelajaran.GetAllGuruMataPelajaran(
+      const response = await Wali.GetAllWaliKelas(
         token,
-        selectedOption,
         querysearch,
+        selectedOption,
         academic_year,
         filter.limit,
         filter.page
       );
       const { result, ...meta } = response.data.data;
-      setDataMapel(result);
+      setDataWaKel(result);
       setPageMeta(meta);
     } catch (error) {
       Swal.fire({
@@ -74,16 +73,15 @@ const MataPelajaran = () => {
     }
   };
 
-  const DeleteGuruMataPelajaran = async (id: number) => {
+  const DeleteWaKel = async (id: number) => {
     try {
-      await Pelajaran.DeleteGuruMataPelajaran(token, id);
-      DataGuruMapel();
-      FormPelajaran.resetForm();
+      await Wali.DeleteWaliKelas(token, id);
+      DataWaliKelas();
     } catch (error) {
       Swal.fire({
         icon: "error",
         title: "Oops...",
-        text: "Gagal menghapus silahkan coba kembali!",
+        text: `Gagal menghapus silahkan coba kembali!`,
       });
     }
   };
@@ -109,7 +107,7 @@ const MataPelajaran = () => {
       cancelButtonText: "No, cancel",
     });
     if (result.isConfirmed) {
-      DeleteGuruMataPelajaran(id);
+      DeleteWaKel(id);
     } else {
       console.log("Edit canceled");
     }
@@ -136,32 +134,32 @@ const MataPelajaran = () => {
       const { result } = response.data.data;
       setEmployees(result);
     };
-    const fetchAllSubject = async () => {
-      const response = await Pelajaran.GetAllSubject(token);
+    const fetchAllKelas = async () => {
+      const response = await Wali.GetAllKelas(token);
       const { result } = response.data.data;
-      setSubject(result);
+      setKelas(result);
     };
     fetchEmployees();
-    fetchAllSubject();
+    fetchAllKelas();
   }, []);
 
   // Schema validasi dengan Yup
-  const FormPelajaranSchema = Yup.object().shape({
-    employee_id: Yup.number().required("Employee is required"),
-    subject_id: Yup.number().required("Subject is required"),
+  const formTeacherSchema = Yup.object().shape({
+    employee_id: Yup.number().required("Employee ID is required"),
+    class_id: Yup.number().required("Class ID is required"),
     academic_year: Yup.string().required("Academic Year is required"),
     is_active: Yup.string()
       .oneOf(["true", "false"], "Invalid selection")
       .required("Active status is required"),
   });
-  const FormPelajaran = useFormik<EditFormValuesPelajaran>({
+  const FormTeacher = useFormik<EditFormValuesWalikelas>({
     initialValues: {
       employee_id: EditData?.employee_id || "",
-      subject_id: EditData?.subject_id || "",
+      class_id: EditData?.class_id || "",
       academic_year: EditData?.academic_year || "",
       is_active: EditData?.is_active || "true",
     },
-    validationSchema: FormPelajaranSchema,
+    validationSchema: formTeacherSchema,
     onSubmit: async (values) => {
       const payload = {
         ...values,
@@ -169,15 +167,13 @@ const MataPelajaran = () => {
       };
       try {
         if (alertTodo === "edit") {
-          await Pelajaran.UpdateGuruMataPelajaran(token, idMapel, payload);
-          DataGuruMapel();
+          await Wali.UpdateWaliKelas(token, idWaKel, payload);
+          DataWaliKelas();
           setShowAlert(false);
-          FormPelajaran.resetForm();
         } else {
-          await Pelajaran.CreateGuruMataPelajaran(token, payload);
-          DataGuruMapel();
+          await Wali.CreateWaliKelas(token, payload);
+          DataWaliKelas();
           setShowAlert(false);
-          FormPelajaran.resetForm();
         }
       } catch (error) {
         Swal.fire({
@@ -191,12 +187,12 @@ const MataPelajaran = () => {
 
   const handleEdit = (value: any) => {
     setShowAlert(true);
-    setidMapel(value.id);
-    const itemToEdit = DataMapel.find((item) => item.id === value.id);
+    setIdWaKel(value.id);
+    const itemToEdit = DataWaKel.find((item) => item.id === value.id);
     if (itemToEdit) {
       setEditData({
         employee_id: itemToEdit.employee_id.toString(),
-        subject_id: itemToEdit.subject_id.toString(),
+        class_id: itemToEdit.class_id.toString(),
         academic_year: itemToEdit.academic_year,
         is_active: itemToEdit.is_active ? "true" : "false",
       });
@@ -205,11 +201,11 @@ const MataPelajaran = () => {
   };
   useEffect(() => {
     if (alertTodo === "edit" && EditData) {
-      FormPelajaran.setValues(EditData);
+      FormTeacher.setValues(EditData);
     }
   }, [EditData, alertTodo]);
   useEffect(() => {
-    DataGuruMapel();
+    DataWaliKelas();
   }, [filter, querysearch, selectedOption]);
 
   const handleShowAlert = (type: string) => {
@@ -219,7 +215,7 @@ const MataPelajaran = () => {
 
   const handleCloseAlert = () => {
     setShowAlert(false);
-    FormPelajaran.resetForm();
+    FormTeacher.resetForm();
   };
 
   const handleDialogClick = (e: React.MouseEvent<HTMLDivElement>) => {
@@ -228,7 +224,7 @@ const MataPelajaran = () => {
   return (
     <>
       <div className="w-full flex flex-col items-center p-5">
-        <span className="text-xl font-bold">Guru Mata Pelajaran</span>
+        <span className="text-xl font-bold">Wali Kelas</span>
         {showAlert === true ? (
           <div
             className="fixed inset-0 flex items-center justify-center z-50"
@@ -246,15 +242,15 @@ const MataPelajaran = () => {
                 ✕
               </button>
               <div>
-                <form onSubmit={FormPelajaran.handleSubmit}>
+                <form onSubmit={FormTeacher.handleSubmit}>
                   <div className="my-2">
                     <label htmlFor="employee_id">Karyawan</label>
                     <select
                       id="employee_id"
                       name="employee_id"
                       className="input input-sm input-bordered items-center gap-2 grow mt-1 block w-full border  rounded-md shadow-sm sm:text-sm"
-                      value={FormPelajaran.values.employee_id}
-                      onChange={FormPelajaran.handleChange}
+                      value={FormTeacher.values.employee_id}
+                      onChange={FormTeacher.handleChange}
                     >
                       <option value="" disabled>
                         Pilih Karyawan
@@ -266,32 +262,32 @@ const MataPelajaran = () => {
                       ))}
                     </select>
                     <div className="text-red-500 text-sm">
-                      {FormPelajaran.errors.employee_id ? (
-                        <div>{FormPelajaran.errors.employee_id}</div>
+                      {FormTeacher.errors.employee_id ? (
+                        <div>{FormTeacher.errors.employee_id}</div>
                       ) : null}
                     </div>
                   </div>
                   <div className="my-2">
-                    <label htmlFor="subject_id">Subject</label>
+                    <label htmlFor="class_id">Kelas</label>
                     <select
-                      id="subject_id"
-                      name="subject_id"
+                      id="class_id"
+                      name="class_id"
                       className="input input-sm input-bordered items-center gap-2 grow mt-1 block w-full border  rounded-md shadow-sm sm:text-sm"
-                      value={FormPelajaran.values.subject_id}
-                      onChange={FormPelajaran.handleChange}
+                      value={FormTeacher.values.class_id}
+                      onChange={FormTeacher.handleChange}
                     >
                       <option value="" disabled>
-                        Pilih Subject
+                        Pilih Kelas
                       </option>
-                      {Subject.map((Subject) => (
-                        <option key={Subject.id} value={Subject.id}>
-                          {Subject.name}
+                      {Kelas.map((Kelas) => (
+                        <option key={Kelas.id} value={Kelas.id}>
+                          {Kelas.class_name}
                         </option>
                       ))}
                     </select>
                     <div className="text-red-500 text-sm">
-                      {FormPelajaran.errors.subject_id ? (
-                        <div>{FormPelajaran.errors.subject_id}</div>
+                      {FormTeacher.errors.class_id ? (
+                        <div>{FormTeacher.errors.class_id}</div>
                       ) : null}
                     </div>
                   </div>
@@ -301,9 +297,9 @@ const MataPelajaran = () => {
                       id="academic_year"
                       name="academic_year"
                       className="input input-sm input-bordered items-center gap-2 grow mt-1 block w-full border  rounded-md shadow-sm sm:text-sm"
-                      onChange={FormPelajaran.handleChange}
-                      onBlur={FormPelajaran.handleBlur}
-                      value={FormPelajaran.values.academic_year}
+                      onChange={FormTeacher.handleChange}
+                      onBlur={FormTeacher.handleBlur}
+                      value={FormTeacher.values.academic_year}
                     >
                       <option disabled value="">
                         Pilih tahun ajaran
@@ -315,9 +311,9 @@ const MataPelajaran = () => {
                       ))}
                     </select>
                     <div className="text-red-500 text-sm">
-                      {FormPelajaran.touched.academic_year &&
-                      FormPelajaran.errors.academic_year ? (
-                        <div>{FormPelajaran.errors.academic_year}</div>
+                      {FormTeacher.touched.academic_year &&
+                      FormTeacher.errors.academic_year ? (
+                        <div>{FormTeacher.errors.academic_year}</div>
                       ) : null}
                     </div>
                   </div>
@@ -327,17 +323,17 @@ const MataPelajaran = () => {
                       id="is_active"
                       name="is_active"
                       className="input input-sm input-bordered items-center gap-2 grow mt-1 block w-full border  rounded-md shadow-sm sm:text-sm"
-                      onChange={FormPelajaran.handleChange}
-                      onBlur={FormPelajaran.handleBlur}
-                      value={FormPelajaran.values.is_active}
+                      onChange={FormTeacher.handleChange}
+                      onBlur={FormTeacher.handleBlur}
+                      value={FormTeacher.values.is_active}
                     >
                       <option value={"true"}>Aktif</option>
                       <option value={"false"}>Tidak Aktif</option>
                     </select>
                     <div className="text-red-500 text-sm">
-                      {FormPelajaran.touched.is_active &&
-                      FormPelajaran.errors.is_active ? (
-                        <div>{FormPelajaran.errors.is_active}</div>
+                      {FormTeacher.touched.is_active &&
+                      FormTeacher.errors.is_active ? (
+                        <div>{FormTeacher.errors.is_active}</div>
                       ) : null}
                     </div>
                   </div>
@@ -391,28 +387,34 @@ const MataPelajaran = () => {
               {/* head */}
               <thead className="bg-blue-300">
                 <tr className="text-center">
-                  <th>NO</th>
-                  <th>Kode Mata Pelajaran</th>
-                  <th>Nama Mata Pelajaran</th>
-                  <th>Nama Pengajar</th>
-                  <th>Posisi</th>
+                  <th>No</th>
+                  <th>Nama Lengkap</th>
                   <th>Tahun Ajaran</th>
-                  <th>Status</th>
+                  <th>Jenis Kelamin</th>
+                  <th>Tempat Lahir</th>
+                  <th>Agama</th>
+                  <th>Pendidikan Terakhir</th>
+                  <th>Status Pekerjaan</th>
+                  <th>Jabatan</th>
+                  <th>Kelas</th>
                   <th>Action</th>
                 </tr>
               </thead>
               <tbody>
-                {DataMapel?.map((item: FormSubjectResult, index: number) => (
+                {DataWaKel?.map((item: WaKel, index: number) => (
                   <tr key={index}>
                     <th>{filter.page * filter.limit + index + 1}</th>
-                    <td>{item.subject.code}</td>
-                    <td>{item.subject.name}</td>
                     <td>{item.employee.full_name}</td>
-                    <td>{item.employee.occupation}</td>
                     <td>{item.academic_year}</td>
-                    <td>{item.is_active ? "Aktif" : "Tidak Aktif"}</td>
-                    <td className="text-center">
-                      <div className="join ">
+                    <td>{item.employee.gender}</td>
+                    <td>{item.employee.pob}</td>
+                    <td>{item.employee.religion}</td>
+                    <td>{item.employee.last_education}</td>
+                    <td>{item.employee.employee_status}</td>
+                    <td>{item.employee.occupation}</td>
+                    <td>{item.class.class_name}</td>
+                    <td>
+                      <div className="join">
                         <button
                           className="btn btn-ghost btn-sm text-orange-500 text-xl"
                           onClick={() => handleEdit(item)}
@@ -445,5 +447,4 @@ const MataPelajaran = () => {
     </>
   );
 };
-
-export default MataPelajaran;
+export default WaliKelas;

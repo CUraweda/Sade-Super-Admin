@@ -2,6 +2,7 @@ import { lazy, Suspense } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Loading from "../component/Loading";
 import Layout from "../component/Layout";
+import MataPelajaranExtra from "../pages/MataPelajaranExtra";
 
 const Dashboard = lazy(() => import("../pages/Dashboard"));
 const Login = lazy(() => import("../pages/Login"));
@@ -10,7 +11,7 @@ const MapelPage = lazy(() => import("../pages/MapelPage"));
 const KelasPage = lazy(() => import("../pages/KelasPage"));
 const DataSiswa = lazy(() => import("../pages/DataSiswa"));
 const DaftarGukar = lazy(() => import("../pages/DaftarGukar"));
-const WaliSiswa = lazy(() => import("../pages/WaliSiswa"));
+const WaliSiswa = lazy(() => import("../pages/WaliKelas"));
 const MataPelajaran = lazy(() => import("../pages/MataPelajaran"));
 const Router = () => {
   return (
@@ -85,7 +86,7 @@ const Router = () => {
           }
         />
         <Route
-          path="/guru-walisiswa"
+          path="/guru/wali-kelas"
           element={
             <Suspense fallback={<Loading />}>
               <Layout>
@@ -95,11 +96,22 @@ const Router = () => {
           }
         />
         <Route
-          path="/guru-matapelajaran"
+          path="/guru/mata-pelajaran"
           element={
             <Suspense fallback={<Loading />}>
               <Layout>
                 <MataPelajaran />
+              </Layout>
+            </Suspense>
+          }
+        />
+
+        <Route
+          path="/guru/mata-pelajaran-extra"
+          element={
+            <Suspense fallback={<Loading />}>
+              <Layout>
+                <MataPelajaranExtra />
               </Layout>
             </Suspense>
           }
