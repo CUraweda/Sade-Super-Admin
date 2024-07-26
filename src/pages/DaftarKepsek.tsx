@@ -213,18 +213,19 @@ const DaftarKepsek = () => {
   return (
     <div className="w-full flex flex-col items-center p-5 ">
       <span className="text-xl font-bold">Daftar Kepala Sekolah</span>
-      <div className="overflow-x-auto w-full mt-5 bg-white p-4 rounded-md shadow-md">
+      <div className="overflow-hidden w-full mt-5 bg-white p-4 rounded-md shadow-md">
         <div className="w-full flex justify-end my-4 gap-2 items-center">
+          <div></div>
           <button
-            className="btn btn-ghost bg-blue-500 btn-sm text-white"
+            className="btn btn-ghost bg-blue-500 btn-sm text-white "
             onClick={handleAddKepsek}
           >
             <FaPlus />
             Tambah
           </button>
         </div>
-        <div>
-          <table className="table table-zebra ">
+        <div className="overflow-x-auto">
+          <table className="table table-zebra">
             <thead className="bg-blue-300">
               <tr>
                 <th>No</th>
