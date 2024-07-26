@@ -69,6 +69,7 @@ export interface SiswaList {
   nationality: string;
   religion: string;
   address: string;
+  is_active: string;
   category: string;
 }
 

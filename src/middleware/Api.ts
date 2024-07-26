@@ -1,4 +1,4 @@
-import axios, { Axios, AxiosPromise } from "axios";
+import axios, { AxiosPromise } from "axios";
 import {
   LoginResponse,
   MapelList,
@@ -34,6 +34,39 @@ const Siswa = {
     instance({
       method: "GET",
       url: `/api/student?search_query=&page=${page}&limit=${limit}`,
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }),
+
+  CreateSiswa: (token: string | null, data: any): AxiosPromise<any> =>
+    instance({
+      method: "POST",
+      url: `/api/student/create`,
+      data,
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }),
+
+  UpdateSiswa: (
+    token: string | null,
+    data: any,
+    id: number
+  ): AxiosPromise<any> =>
+    instance({
+      method: "PUT",
+      url: `/api/student/update/${id}`,
+      data,
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }),
+
+  DeleteSiswa: (token: string | null, id: number): AxiosPromise<any> =>
+    instance({
+      method: "DELETE",
+      url: `/api/student/delete/${id}`,
       headers: {
         Authorization: `Bearer ${token}`,
       },
