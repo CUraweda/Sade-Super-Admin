@@ -5,8 +5,8 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import { LoginStore } from "../store/Store";
 import Swal from "sweetalert2";
-import logo from "../assets/sade.png"
-import bg from "../assets/bg2.png"
+import logo from "../assets/sade.png";
+import bg from "../assets/bg2.png";
 
 const schema = Yup.object({
   email: Yup.string().required("email required"),
@@ -44,11 +44,11 @@ const Login = () => {
       const emailLower = email.toLowerCase();
       const response = await Auth.Login(emailLower, password);
       const role = response.data.data.role_id;
-      setRole(role.toString())
+      setRole(role.toString());
 
-      if (role) {
+      if (role == 1) {
         setToken(response.data.tokens.access.token);
-        navigate("/");
+        navigate("/dashboard");
       } else {
         Swal.fire({
           icon: "error",
@@ -56,8 +56,6 @@ const Login = () => {
           text: "akun anda tidak memiliki akses!",
         });
       }
-
-     
     } catch (error) {
       Swal.fire({
         icon: "error",
@@ -71,13 +69,17 @@ const Login = () => {
 
   return (
     <>
-      <div className="w-full flex flex-col justify-center items-center min-h-screen"
-        style={{ backgroundImage: `url('${bg}')`, backgroundSize: "cover" }}>
+      <div
+        className="w-full flex flex-col justify-center items-center min-h-screen"
+        style={{ backgroundImage: `url('${bg}')`, backgroundSize: "cover" }}
+      >
         <div className="w-full sm:w-1/4 bg-white shadow-md rounded-md flex justify-center items-center p-3 flex-col">
           <div className="w-32 mt-5">
             <img src={logo} alt="" />
           </div>
-          <span className="my-10 text-3xl text-black font-bold">Login Administrator</span>
+          <span className="my-10 text-3xl text-black font-bold">
+            Login Administrator
+          </span>
           <div className="w-full flex flex-col gap-3 ">
             <div className="w-full flex justify-center flex-col items-center">
               <label htmlFor="" className="w-5/6 font-bold text-black">

@@ -179,7 +179,7 @@ const DaftarGukar = () => {
   }, [filter, querysearch, selectedOption]);
   useEffect(() => {
     searchUser();
-  }, [querysearchuser]);
+  }, []);
   // const formatDate = (date: string) => {
   //   let Newdate = new Date(date);
   //   let formattedDate = Newdate.toLocaleDateString("id-ID", {

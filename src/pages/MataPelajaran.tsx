@@ -78,6 +78,12 @@ const MataPelajaran = () => {
     try {
       await Pelajaran.DeleteGuruMataPelajaran(token, id);
       DataGuruMapel();
+      Swal.fire({
+        icon: "success",
+        title: "Sukses",
+        text: "Sukses Menghapus data Guru Mata Pelajaran",
+      });
+
       FormPelajaran.resetForm();
     } catch (error) {
       Swal.fire({
@@ -172,11 +178,23 @@ const MataPelajaran = () => {
           await Pelajaran.UpdateGuruMataPelajaran(token, idMapel, payload);
           DataGuruMapel();
           setShowAlert(false);
+          Swal.fire({
+            icon: "success",
+            title: "Sukses",
+            text: "Sukses Merubah data Guru Mata Pelajaran",
+          });
+
           FormPelajaran.resetForm();
         } else {
           await Pelajaran.CreateGuruMataPelajaran(token, payload);
           DataGuruMapel();
           setShowAlert(false);
+          Swal.fire({
+            icon: "success",
+            title: "Sukses",
+            text: "Sukses Membuat data Guru Mata Pelajaran",
+          });
+
           FormPelajaran.resetForm();
         }
       } catch (error) {

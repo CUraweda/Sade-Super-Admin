@@ -77,6 +77,12 @@ const WaliKelas = () => {
     try {
       await Wali.DeleteWaliKelas(token, id);
       DataWaliKelas();
+      Swal.fire({
+        icon: "success",
+        title: "Sukses",
+        text: "Sukses Menghapus data Guru Wali Kelas",
+      });
+
     } catch (error) {
       Swal.fire({
         icon: "error",
@@ -169,10 +175,24 @@ const WaliKelas = () => {
         if (alertTodo === "edit") {
           await Wali.UpdateWaliKelas(token, idWaKel, payload);
           DataWaliKelas();
+          Swal.fire({
+            icon: "success",
+            title: "Sukses",
+            text: "Sukses Merubah data Guru Wali Kelas",
+          });
+    
+    
           setShowAlert(false);
         } else {
           await Wali.CreateWaliKelas(token, payload);
           DataWaliKelas();
+          Swal.fire({
+            icon: "success",
+            title: "Sukses",
+            text: "Sukses Membuat data Guru Wali Kelas",
+          });
+    
+    
           setShowAlert(false);
         }
       } catch (error) {

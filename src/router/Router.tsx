@@ -13,6 +13,9 @@ const DataSiswa = lazy(() => import("../pages/DataSiswa"));
 const DaftarGukar = lazy(() => import("../pages/DaftarGukar"));
 const WaliSiswa = lazy(() => import("../pages/WaliKelas"));
 const MataPelajaran = lazy(() => import("../pages/MataPelajaran"));
+const DaftarUser = lazy(() => import("../pages/DaftarUser"));
+const DaftarKepsek = lazy(() => import("../pages/DaftarKepsek.tsx"));
+
 const Router = () => {
   return (
     <BrowserRouter>
@@ -66,6 +69,16 @@ const Router = () => {
           }
         />
         <Route
+          path="/daftar-user"
+          element={
+            <Suspense fallback={<Loading />}>
+              <Layout>
+                <DaftarUser />
+              </Layout>
+            </Suspense>
+          }
+        />
+        <Route
           path="/data-siswa"
           element={
             <Suspense fallback={<Loading />}>
@@ -81,6 +94,16 @@ const Router = () => {
             <Suspense fallback={<Loading />}>
               <Layout>
                 <DaftarGukar />
+              </Layout>
+            </Suspense>
+          }
+        />
+        <Route
+          path="/kepala-sekolah"
+          element={
+            <Suspense fallback={<Loading />}>
+              <Layout>
+                <DaftarKepsek />
               </Layout>
             </Suspense>
           }

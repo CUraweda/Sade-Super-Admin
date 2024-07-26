@@ -65,7 +65,7 @@
       },
       {
         "name": "Daftar User",
-        "url": "/guru/adm-siswa"
+        "url": "/daftar-user"
       }
     ]
   },
@@ -78,6 +78,10 @@
       {
         "name": "Daftar Guru & Karyawan",
         "url": "/guru-karyawan"
+      },
+      {
+        "name": "Daftar Kepala Sekolah",
+        "url": "/kepala-sekolah"
       },
       {
         "name": "Penugasan Wali Kelas",

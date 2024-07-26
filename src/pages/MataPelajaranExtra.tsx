@@ -103,6 +103,12 @@ const MataPelajaranExtra = () => {
     try {
       await Extra.DeleteMapelExtra(token, id);
       DataMapelExtra();
+      Swal.fire({
+        icon: "success",
+        title: "Sukses",
+        text: "Sukses Menghapus data Guru Mata Pelajaran Extra",
+      });
+
       FormExtra.resetForm();
     } catch (error) {
       Swal.fire({
@@ -162,6 +168,12 @@ const MataPelajaranExtra = () => {
           DataGuruExtra();
           DataMapelExtra();
           setShowAlert(false);
+          Swal.fire({
+            icon: "success",
+            title: "Sukses",
+            text: "Sukses Merubah data Guru Wali Kelas",
+          });
+
           handleCloseModal();
           FormExtra.resetForm();
         } else {
@@ -169,6 +181,12 @@ const MataPelajaranExtra = () => {
           DataMapelExtra();
           DataGuruExtra();
           setShowAlert(false);
+          Swal.fire({
+            icon: "success",
+            title: "Sukses",
+            text: "Sukses Membuat data Guru Wali Kelas",
+          });
+
           handleCloseModal();
           FormExtra.resetForm();
         }

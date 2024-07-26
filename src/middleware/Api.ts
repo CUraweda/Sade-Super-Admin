@@ -4,6 +4,9 @@ import {
   MapelList,
   MapelResponse,
   SiswaResponse,
+  UserResponse,
+  KepsekResponse,
+  DropdownEmployeeResponse,
 } from "./utils";
 const instance = axios.create({ baseURL: import.meta.env.VITE_REACT_API_URL });
 
@@ -61,6 +64,7 @@ const Mapel = {
     }),
   DeleteMapel: (
     token: string | null,
+
     id: string | number | undefined
   ): AxiosPromise<any> =>
     instance({
@@ -149,6 +153,126 @@ const GuruKaryawan = {
       data: { user_id: data },
     }),
 };
+
+const User = {
+  GetAllDataUser: (
+    token: string | null,
+    page: number,
+    search: string,
+    limit: number
+  ): AxiosPromise<UserResponse> =>
+    instance({
+      method: "GET",
+      url: `/api/user?search_query=${search}&page=${page}&limit=${limit}`,
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }),
+
+  CreateUser: (token: string | null, data: any): AxiosPromise<any> =>
+    instance({
+      method: "POST",
+      url: `/api/auth/register`,
+      data,
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }),
+
+  EditUser: (token: string | null, data: any, id: number): AxiosPromise<any> =>
+    instance({
+      method: "PUT",
+      url: `/api/user/update/${id}`,
+      data,
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }),
+
+  DeleteUser: (
+    token: string | null,
+    id: string | number | null
+  ): AxiosPromise<any> =>
+    instance({
+      method: "DELETE",
+      url: `/api/user/delete/${id}`,
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }),
+
+  GetDataRole: (token: string | null): AxiosPromise<any> =>
+    instance({
+      method: "GET",
+      url: `/api/role`,
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }),
+};
+
+const KepalaSekolah = {
+  GetDataKepsek: (
+    token: string | null,
+    page: number,
+    limit: number
+  ): AxiosPromise<KepsekResponse> =>
+    instance({
+      method: "GET",
+      url: `/api/headmaster?page=${page}&limit=${limit}`,
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }),
+
+  CreateKepsek: (token: string | null, data: any): AxiosPromise<any> =>
+    instance({
+      method: "POST",
+      url: `/api/headmaster/create`,
+      data,
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }),
+
+  EditKepsek: (
+    token: string | null,
+    data: any,
+    id: number
+  ): AxiosPromise<any> =>
+    instance({
+      method: "PUT",
+      url: `/api/headmaster/update/${id}`,
+      data,
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }),
+
+  DeleteKepsek: (
+    token: string | null,
+    id: string | number | null
+  ): AxiosPromise<any> =>
+    instance({
+      method: "DELETE",
+      url: `/api/headmaster/delete/${id}`,
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }),
+
+  GetDataDropdownEmployee: (
+    token: string | null
+  ): AxiosPromise<DropdownEmployeeResponse> =>
+    instance({
+      method: "GET",
+      url: `/api/employee?limit=100000`,
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }),
+};
+
 const Wali = {
   GetAllWaliKelas: (
     token: string | null,
@@ -399,4 +523,6 @@ export {
   Pelajaran,
   Extra,
   GuruMapelExtra,
+  User,
+  KepalaSekolah,
 };
