@@ -38,6 +38,39 @@ const Siswa = {
         Authorization: `Bearer ${token}`,
       },
     }),
+
+  CreateSiswa: (token: string | null, data: any): AxiosPromise<any> =>
+    instance({
+      method: "POST",
+      url: `/api/student/create`,
+      data,
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }),
+
+  UpdateSiswa: (
+    token: string | null,
+    data: any,
+    id: number
+  ): AxiosPromise<any> =>
+    instance({
+      method: "PUT",
+      url: `/api/student/update/${id}`,
+      data,
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }),
+
+  DeleteSiswa: (token: string | null, id: number): AxiosPromise<any> =>
+    instance({
+      method: "DELETE",
+      url: `/api/student/delete/${id}`,
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }),
 };
 
 const Mapel = {
