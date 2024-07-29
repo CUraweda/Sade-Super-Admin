@@ -104,7 +104,7 @@ export interface MapelList {
   code: string;
   level: string;
   name: string;
-  threshold: string | number;
+  threshold: number;
 }
 
 export interface GukarResponse {

@@ -96,6 +96,15 @@ const Mapel = {
       },
       data,
     }),
+  EditMapel: (token: string | null, data: any, id: number): AxiosPromise<any> =>
+    instance({
+      method: "PUT",
+      data,
+      url: `/api/subject/update/${id}`,
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }),
   DeleteMapel: (
     token: string | null,
 
