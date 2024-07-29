@@ -29,11 +29,12 @@ const Siswa = {
   GetAllDataSiswa: (
     token: string | null,
     page: number,
-    limit: number
+    limit: number,
+    search: string
   ): AxiosPromise<SiswaResponse> =>
     instance({
       method: "GET",
-      url: `/api/student?search_query=&page=${page}&limit=${limit}`,
+      url: `/api/student?search_query=${search}&page=${page}&limit=${limit}`,
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -366,7 +367,7 @@ const Wali = {
   GetAllKelas: (token: string | null): AxiosPromise<any> =>
     instance({
       method: "GET",
-      url: `/api/classes`,
+      url: `/api/classes?is_active=Y`,
       headers: {
         Authorization: `Bearer ${token}`,
       },

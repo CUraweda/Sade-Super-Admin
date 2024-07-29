@@ -22,15 +22,11 @@ const DataSiswa = () => {
   const [filter, setFilter] = useState({
     page: 0,
     limit: 10,
-    search: "",
   });
+  const [search, setSearch] = useState("");
   const [siswa, setSiswa] = useState<SiswaList[]>([]);
   const [selectedSiswa, setSelectedSiswa] = useState<SiswaList | null>(null);
   const [modalMode, setModalMode] = useState<"add" | "edit">("add");
-
-  useEffect(() => {
-    DataSiswa();
-  }, []);
 
   const handleFilter = (key: string, value: any) => {
     const obj = {
@@ -46,7 +42,8 @@ const DataSiswa = () => {
       const response = await Siswa.GetAllDataSiswa(
         token,
         filter.page,
-        filter.limit
+        filter.limit,
+        search
       );
       const { result, ...meta } = response.data.data;
       setSiswa(result);
@@ -62,7 +59,7 @@ const DataSiswa = () => {
 
   useEffect(() => {
     DataSiswa();
-  }, [filter]);
+  }, [filter, search]);
 
   const formatDate = (date: string) => {
     let Newdate = new Date(date);
@@ -97,9 +94,6 @@ const DataSiswa = () => {
     nationality: Yup.string().required("Kewarganegaraan wajib diisi"),
     religion: Yup.string().required("Agama wajib diisi"),
     address: Yup.string().required("Alamat wajib diisi"),
-    is_active: Yup.string()
-      .oneOf(["ya", "tidak"], "Pilih ya atau tidak")
-      .required("Status aktif wajib diisi"),
   });
 
   const formik = useFormik({
@@ -172,7 +166,7 @@ const DataSiswa = () => {
                 type="text"
                 className="grow"
                 placeholder="Search"
-                onChange={(e) => handleFilter("search", e.target.value)}
+                onChange={(e) => setSearch(e.target.value)}
               />
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -188,11 +182,14 @@ const DataSiswa = () => {
               </svg>
             </label>
 
-            <select className="select select-bordered w-md select-sm">
+            {/* <select className="select select-bordered w-md select-sm">
               <option>Kelas</option>
-              <option>1</option>
-              <option>2</option>
-            </select>
+              {kelas.map((item, index) => (
+                <option value={item.id} key={index}>
+                  {item.class_name}
+                </option>
+              ))}
+            </select> */}
             <div className="join">
               <button
                 className="btn btn-ghost bg-green-500 btn-sm text-white join-item tooltip"
