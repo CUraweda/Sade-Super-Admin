@@ -56,6 +56,10 @@
       {
         "name": "Data Orang Tua",
         "url": "/data-ortu"
+      },
+      {
+        "name": "Hubungan Orang Tua",
+        "url": "/hub-ortu"
       }
     ]
   },

@@ -204,6 +204,20 @@ const Router: React.FC = () => {
           }
         />
         <Route
+          path="/hub-ortu"
+          element={
+            <ProtectedRoute
+              element={
+                <Suspense fallback={<Loading />}>
+                  <Layout>
+                    <PenautanSiswa />
+                  </Layout>
+                </Suspense>
+              }
+            />
+          }
+        />
+        <Route
           path="/kepala-sekolah"
           element={
             <ProtectedRoute
