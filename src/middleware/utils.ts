@@ -322,6 +322,7 @@ export interface KepsekResponse {
 export interface KepsekList {
   id: number;
   employee_id: number;
+  category: string;
   start_academic_year: string;
   end_academic_year: string;
   is_active: boolean;
