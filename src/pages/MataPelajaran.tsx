@@ -303,7 +303,7 @@ const MataPelajaran = () => {
                       </option>
                       {Subject.map((Subject) => (
                         <option key={Subject.id} value={Subject.id}>
-                          {Subject.name}
+                          {Subject.level} - {Subject.name}
                         </option>
                       ))}
                     </select>
