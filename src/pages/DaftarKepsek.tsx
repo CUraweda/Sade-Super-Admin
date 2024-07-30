@@ -39,6 +39,7 @@ const DaftarKepsek = () => {
       start_academic_year: "",
       end_academic_year: "",
       is_active: true,
+      category: "",
     },
     validationSchema: validationSchemaAdd,
     onSubmit: (values) => {
@@ -52,6 +53,7 @@ const DaftarKepsek = () => {
       start_academic_year: editingKepsek?.start_academic_year || "",
       end_academic_year: editingKepsek?.end_academic_year || "",
       is_active: editingKepsek?.is_active,
+      category: editingKepsek?.category || ""
     },
     enableReinitialize: true,
     validationSchema: validationSchemaEdit,
@@ -102,13 +104,14 @@ const DaftarKepsek = () => {
 
   const handleCreateKepsek = async (values: any) => {
     try {
-      const { employee_id, start_academic_year, end_academic_year, is_active } =
+      const { employee_id, start_academic_year, end_academic_year, is_active, category } =
         values;
       const data = {
         employee_id,
         start_academic_year,
         end_academic_year,
         is_active,
+        category
       };
       await KepalaSekolah.CreateKepsek(token, data);
       closeModal("addKepsekModal");
@@ -130,13 +133,14 @@ const DaftarKepsek = () => {
 
   const handleEditKepsek = async (values: any, id: number) => {
     try {
-      const { employee_id, start_academic_year, end_academic_year, is_active } =
+      const { employee_id, start_academic_year, end_academic_year, is_active, category } =
         values;
       const data = {
         employee_id,
         start_academic_year,
         end_academic_year,
         is_active,
+        category
       };
       await KepalaSekolah.EditKepsek(token, data, id);
       DataKepsek();
@@ -193,6 +197,7 @@ const DaftarKepsek = () => {
       start_academic_year: kepsek.start_academic_year,
       end_academic_year: kepsek.end_academic_year,
       is_active: kepsek.is_active,
+      category: kepsek.category
     });
     openModal("editKepsekModal");
   };
@@ -205,10 +210,15 @@ const DaftarKepsek = () => {
     return years;
   };
 
+  const getCategorys = () => {
+    return ["Cluster Bawah", "Cluster Atas", "Cluster Tinggal"]
+  }
+
   const currentYear = new Date().getFullYear();
   const startYear = currentYear;
   const endYear = currentYear + 50;
   const years = getYears(startYear, endYear);
+  const categorys = getCategorys()
 
   return (
     <div className="w-full flex flex-col items-center p-5 ">
@@ -230,6 +240,7 @@ const DaftarKepsek = () => {
               <tr>
                 <th>No</th>
                 <th>Nama Lengkap</th>
+                <th>Kategori</th>
                 <th>L/P</th>
                 <th>Tanggal Lahir</th>
                 <th>Tempat Lahir</th>
@@ -247,6 +258,7 @@ const DaftarKepsek = () => {
                 <tr key={index}>
                   <th>{filter.page * filter.limit + index + 1}</th>
                   <td>{item.employee?.full_name}</td>
+                  <td>{item.category}</td>
                   <td>{item.employee.gender}</td>
                   <td>{item.employee.dob.split("T")[0]}</td>
                   <td>{item.employee.pob}</td>
@@ -256,9 +268,8 @@ const DaftarKepsek = () => {
                   <td>{item.employee.work_start_date}</td>
                   <td>
                     <div
-                      className={`badge text-white ${
-                        item.is_active == true ? "badge-success" : "badge-error"
-                      }`}
+                      className={`badge text-white ${item.is_active == true ? "badge-success" : "badge-error"
+                        }`}
                     >
                       {item.is_active == true ? <FaCheck /> : <FaTimes />}
                     </div>
@@ -381,6 +392,33 @@ const DaftarKepsek = () => {
                   </span>
                 )}
 
+              <label className="label">
+                <span className="label-text">Kategori</span>
+              </label>
+              <select
+                className="select select-bordered w-full"
+                id="category"
+                name="category"
+                onChange={formikCreateKepsek.handleChange}
+                onBlur={formikCreateKepsek.handleBlur}
+                value={formikCreateKepsek.values.category}
+              >
+                <option disabled selected value="">
+                  Pilih Kategori
+                </option>
+                {categorys.map((category) => (
+                  <option key={category} value={category}>
+                    {category}
+                  </option>
+                ))}
+              </select>
+              {formikCreateKepsek.errors.category &&
+                formikCreateKepsek.touched.category && (
+                  <span className="text-red-500 text-sm">
+                    {formikCreateKepsek.errors.category}
+                  </span>
+                )}
+
               <div className="form-control">
                 <label className="label cursor-pointer">
                   <span className="label-text font-bold mt-3">
@@ -497,6 +535,33 @@ const DaftarKepsek = () => {
                 formikEditKepsek.touched.end_academic_year && (
                   <span className="text-red-500 text-sm">
                     {formikEditKepsek.errors.end_academic_year}
+                  </span>
+                )}
+
+              <label className="label">
+                <span className="label-text">Kategori</span>
+              </label>
+              <select
+                className="select select-bordered w-full"
+                id="category"
+                name="category"
+                onChange={formikEditKepsek.handleChange}
+                onBlur={formikEditKepsek.handleBlur}
+                value={formikEditKepsek.values.category}
+              >
+                <option disabled selected value="">
+                  Pilih Kategori
+                </option>
+                {categorys.map((category) => (
+                  <option key={category} value={category}>
+                    {category}
+                  </option>
+                ))}
+              </select>
+              {formikEditKepsek.errors.category &&
+                formikEditKepsek.touched.category && (
+                  <span className="text-red-500 text-sm">
+                    {formikEditKepsek.errors.category}
                   </span>
                 )}
 
