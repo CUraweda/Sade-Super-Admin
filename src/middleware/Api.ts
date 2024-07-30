@@ -451,6 +451,9 @@ const Pelajaran = {
       headers: {
         Authorization: `Bearer ${token}`,
       },
+      params: {
+        limit: 10000,
+      },
     }),
 };
 const Extra = {
