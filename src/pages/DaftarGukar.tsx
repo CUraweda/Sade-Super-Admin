@@ -223,28 +223,28 @@ const DaftarGukar = () => {
     },
   });
   const genderOptions = [
-    { value: "L", label: "Laki-laki" },
-    { value: "P", label: "Perempuan" },
+    { value: "Laki-Laki", label: "Laki-laki" },
+    { value: "Perempuan", label: "Perempuan" },
   ];
 
   const maritalStatusOptions = [
-    { value: "KAWIN", label: "Nikah" },
-    { value: "BELUM KAWIN", label: "Belum Nikah" },
+    { value: "Nikah", label: "Nikah" },
+    { value: "Belum Nikah", label: "Belum Nikah" },
   ];
 
   const isEducationOptions = [
-    { value: "NK", label: "NK" },
-    { value: "K", label: "K" },
+    { value: "Non Karyawan", label: "Non Karyawan" },
+    { value: "Karyawan", label: "Karyawan" },
   ];
 
   const employeeStatusOptions = [
-    { value: "TETAP", label: "Tetap" },
-    { value: "KONTRAK", label: "Kontrak" },
+    { value: "Tetap", label: "Tetap" },
+    { value: "Kontrak", label: "Kontrak" },
   ];
 
   const isTeacherOptions = [
-    { value: "G", label: "G" },
-    { value: "NG", label: "NG" },
+    { value: "Guru", label: "Guru" },
+    { value: "Non Guru", label: "Non Guru" },
   ];
   const createFormSchema = Yup.object().shape({
     employee_no: Yup.string().required("Nomor Karyawan/NIK diperlukan"),
@@ -270,7 +270,7 @@ const DaftarGukar = () => {
       .positive("Tahun Ijazah harus positif")
       .integer("Tahun Ijazah harus bilangan bulat"),
     is_education: Yup.string()
-      .oneOf(["NK", "K"], "Is Education harus NK atau K")
+      .oneOf(["Non Karyawan", "Karyawan"], "Is Education harus NK atau K")
       .required("Status Pendidikan diperlukan"),
     major: Yup.string().required("Jurusan diperlukan"),
     employee_status: Yup.string()

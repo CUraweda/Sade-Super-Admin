@@ -1,11 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import { BsListNested } from "react-icons/bs";
 import { iconMapping } from "./IconMapping";
 import logo from "../assets/sade.png";
-import { Link } from "react-router-dom";
 import data from "../data/Sidebar.json";
-
-// import karywan from "../data/karyawan.json"
+import { LoginStore } from "../store/Store"; // Assuming you have a store for login state
 
 interface Menu {
   title: string;
@@ -21,18 +20,28 @@ type subtitle = {
 };
 
 const Sidebar = () => {
-  const Side = sessionStorage.getItem('side') || '/';
-  
+  const { token } = LoginStore(); // Mengambil token dari Zustand store
+  const Side = sessionStorage.getItem("side") || "/";
+
   const [activeMenuItem, setActiveMenuItem] = useState<string>(Side);
+  const [menuItems, setMenuItems] = useState<Menu[]>([]);
+
+  useEffect(() => {
+    if (token) {
+      setMenuItems(data);
+    } else {
+      window.location.href = "/login";
+    }
+  }, [token]);
 
   const handleMenuItemClick = (name: string) => {
     setActiveMenuItem(name);
-    sessionStorage.setItem('side', name);
+    sessionStorage.setItem("side", name);
   };
 
   return (
     <div>
-      <div className="drawer lg:drawer-open">
+      <div className="drawer lg:drawer-open ">
         <input id="my-drawer-2" type="checkbox" className="drawer-toggle" />
         <div className="drawer-side">
           <label
@@ -40,7 +49,7 @@ const Sidebar = () => {
             aria-label="close sidebar"
             className="drawer-overlay"
           />
-          <ul className="menu p-4 w-80 bg-base-100 min-h-screen">
+          <ul className="menu p-4 w-80 bg-base-100 min-h-screen z-50">
             <div className="w-full flex justify-between mb-10 items-center  pb-6">
               <div className="flex justify-center items-center gap-1">
                 <img src={logo} alt="logo" className="w-20" />
@@ -56,7 +65,7 @@ const Sidebar = () => {
               </label>
             </div>
             <ul className="menu font-bold rounded-lg max-w-xs w-full text-gray-500">
-              {data.map((item: Menu, index: number) => (
+              {menuItems.map((item: Menu, index: number) => (
                 <React.Fragment key={`menu-` + index}>
                   {item.submenu ? (
                     <li className="my-2">

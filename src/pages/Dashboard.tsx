@@ -1,8 +1,10 @@
+import { LoginStore } from "../store/Store";
 
 const Dashboard = () => {
-  return (
-    <div>Dashboard</div>
-  )
-}
+  const { token } = LoginStore();
+  console.log(token);
 
-export default Dashboard
+  return <div>Dashboard</div>;
+};
+
+export default Dashboard;

@@ -12,6 +12,7 @@ import {
   IoPersonOutline,
   IoPersonSharp,
   IoAddOutline,
+  IoChatbubbles 
 } from "react-icons/io5";
 import {
   FaChartSimple,
@@ -20,6 +21,7 @@ import {
   FaMoneyBillTransfer,
   FaPersonCircleCheck,
 } from "react-icons/fa6";
+
 import { VscServerProcess } from "react-icons/vsc";
 import { MdOutlineMessage, MdOutlineTableChart } from "react-icons/md";
 import { GrGroup } from "react-icons/gr";
@@ -51,5 +53,6 @@ export const iconMapping: { [key: string]: JSX.Element } = {
   "<FaUserTie />": <FaUserTie />,
   "<FaDatabase />": <FaDatabase />,
   "<IoAddOutline />": <IoAddOutline />,
+  "<IoChatbubbles />": <IoChatbubbles />
   // tambahkan pemetaan untuk ikon lainnya di sini
 };
