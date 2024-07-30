@@ -47,7 +47,18 @@
       }
     ]
   },
-
+   {
+    "submenu": true,
+    "title": "Orang Tua",
+    "icon": "<FaUsers />",
+    "url": "",
+    "subtitle": [
+      {
+        "name": "Data Orang Tua",
+        "url": "/data-ortu"
+      }
+    ]
+  },
   {
     "submenu": true,
     "title": "User",

@@ -20,6 +20,7 @@ const DaftarUser = lazy(() => import("../pages/DaftarUser"));
 const DaftarKepsek = lazy(() => import("../pages/DaftarKepsek.tsx"));
 const MataPelajaranExtra = lazy(() => import("../pages/MataPelajaranExtra"));
 const CustomerCarePage = lazy(() => import("../pages/CustomerCare.tsx"));
+const DataOrangTuaPage = lazy(() => import("../pages/DataOrtu.tsx"));
 
 const Router: React.FC = () => {
   return (
@@ -182,6 +183,20 @@ const Router: React.FC = () => {
                 <Suspense fallback={<Loading />}>
                   <Layout>
                     <HistorySiswa />
+                  </Layout>
+                </Suspense>
+              }
+            />
+          }
+        />
+        <Route
+          path="/data-ortu"
+          element={
+            <ProtectedRoute
+              element={
+                <Suspense fallback={<Loading />}>
+                  <Layout>
+                    <DataOrangTuaPage />
                   </Layout>
                 </Suspense>
               }
