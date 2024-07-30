@@ -37,18 +37,13 @@
         "name": "Data Siswa",
         "url": "/data-siswa"
       },
-
       {
-        "name": "Pindah Kelas",
-        "url": "/guru/adm-siswa"
+        "name": "History Siswa",
+        "url": "/history-siswa"
       },
       {
-        "name": "Naik Kelas",
-        "url": "/guru/adm-siswa"
-      },
-      {
-        "name": "Data Alumni",
-        "url": "/guru/adm-siswa"
+        "name": "Akun Siswa",
+        "url": "/siswa/akun-siswa"
       }
     ]
   },
@@ -60,12 +55,8 @@
     "url": "",
     "subtitle": [
       {
-        "name": "Role Akses",
-        "url": "/guru/adm-siswa"
-      },
-      {
         "name": "Daftar User",
-        "url": "/daftar-user"
+        "url": "/guru/daftar-user"
       }
     ]
   },
@@ -98,6 +89,13 @@
     ]
   },
 
+  {
+    "submenu": false,
+    "title": "Customer Care",
+    "icon": "<IoChatbubbles />",
+    "url": "/cs-admin",
+    "subtitle": []
+  },
   {
     "submenu": false,
     "title": "Backup & Restore",

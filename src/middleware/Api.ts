@@ -363,12 +363,15 @@ const Wali = {
       data,
     }),
 
-  GetAllKelas: (token: string | null): AxiosPromise<any> =>
+  GetAllKelas: (token: string | null, limit: any): AxiosPromise<any> =>
     instance({
       method: "GET",
       url: `/api/classes`,
       headers: {
         Authorization: `Bearer ${token}`,
+      },
+      params: {
+        limit: limit,
       },
     }),
 };
@@ -547,7 +550,356 @@ const GuruMapelExtra = {
       },
     }),
 };
+
+const CustomerCare = {
+  getUserChats: (token: string | null, id: string | null): AxiosPromise<any> =>
+    instance({
+      method: "GET",
+      url: `/api/user-chat/show-by-user/${id}`,
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }),
+  createUserChats: (token: string | null, data: any): AxiosPromise<any> =>
+    instance({
+      method: "POST",
+      url: `/api/customer-care/create`,
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      data,
+    }),
+  getDataChat: (token: string | null, limit: number): AxiosPromise<any> =>
+    instance({
+      method: "GET",
+      url: `/api/user/`,
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      params: {
+        limit: limit,
+      },
+    }),
+  getMessages: (
+    token: string | null,
+    id: string | null,
+    idUser: number | string
+  ): AxiosPromise<any> =>
+    instance({
+      method: "GET",
+      url: `/api/user-chat/show-conversation?userid=${id}&withid=${idUser}`,
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }),
+  sendMessage: (
+    token: string | null,
+    currentReceiverId: number | string,
+    inputMessage: any,
+    id: string | null
+  ): AxiosPromise<any> =>
+    instance({
+      method: "POST",
+      url: `/api/message/create`,
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      data: {
+        user_id: id,
+        with_id: currentReceiverId,
+        message: inputMessage,
+      },
+    }),
+};
+
+const Settings = {
+  getSettings: (
+    token: string | null,
+    querysearch: string,
+    limit: number,
+    page: number
+  ): AxiosPromise<any> =>
+    instance({
+      method: "GET",
+      url: `/api/academic-year`,
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      params: {
+        search_query: querysearch,
+        limit: limit,
+        page: page,
+      },
+    }),
+  updateSettings: (
+    token: string | null,
+    id: number | null,
+    data: any
+  ): AxiosPromise<any> =>
+    instance({
+      method: "PUT",
+      url: `/api/academic-year/update/${id}`,
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      data,
+    }),
+  createSettings: (token: string | null, data: any): AxiosPromise<any> =>
+    instance({
+      method: "POST",
+      url: `/api/academic-year/create`,
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      data,
+    }),
+  deleteSettings: (
+    token: string | null,
+    id: number | string
+  ): AxiosPromise<any> =>
+    instance({
+      method: "DELETE",
+      url: `/api/academic-year/delete/${id}`,
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }),
+};
+
+const Kelas = {
+  getAllClasses: (
+    token: string | null,
+    querysearch: string,
+    limit: number,
+    page: number
+  ): AxiosPromise<any> =>
+    instance({
+      method: "GET",
+      url: `/api/classes`,
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      params: {
+        search_query: querysearch,
+        limit: limit,
+        page: page,
+        is_active: false,
+      },
+    }),
+  createClasses: (token: string | null, data: any): AxiosPromise<any> =>
+    instance({
+      method: "POST",
+      url: `/api/classes/create`,
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      data,
+    }),
+  editClasses: (
+    token: string | null,
+    id: number | string,
+    data: any
+  ): AxiosPromise<any> =>
+    instance({
+      method: "PUT",
+      url: `/api/classes/update/${id}`,
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      data,
+    }),
+  deleteClasses: (
+    token: string | null,
+    id: number | string
+  ): AxiosPromise<any> =>
+    instance({
+      method: "DELETE",
+      url: `/api/classes/delete/${id}`,
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }),
+};
+const HistoryStudent = {
+  getHistory: (
+    token: string | null,
+    querysearch: string,
+    limit: number,
+    page: number
+  ): AxiosPromise<any> =>
+    instance({
+      method: "GET",
+      url: `/api/student-class`,
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      params: {
+        search_query: querysearch,
+        limit: limit,
+        page: page,
+      },
+    }),
+  createHistory: (token: string | null, data: any): AxiosPromise<any> =>
+    instance({
+      method: "POST",
+      url: `/api/student-class/create`,
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      data,
+    }),
+  editHistory: (
+    token: string | null,
+    id: number | string,
+    data: any
+  ): AxiosPromise<any> =>
+    instance({
+      method: "PUT",
+      url: `/api/student-class/update/${id}`,
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      data,
+    }),
+  deleteHistory: (
+    token: string | null,
+    id: number | string
+  ): AxiosPromise<any> =>
+    instance({
+      method: "DELETE",
+      url: `/api/student-class/delete/${id}`,
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }),
+};
+const Student = {
+  getAllStudent: (
+    token: string | null,
+    querysearch: string,
+    limit: number,
+    page: number
+  ): AxiosPromise<any> =>
+    instance({
+      method: "GET",
+      url: `/api/student`,
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      params: {
+        search_query: querysearch,
+        limit: limit,
+        page: page,
+      },
+    }),
+  createStudent: (token: string | null, data: any): AxiosPromise<any> =>
+    instance({
+      method: "POST",
+      url: `/api/student/create`,
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      data,
+    }),
+  editStudent: (
+    token: string | null,
+    id: number | string,
+    data: any
+  ): AxiosPromise<any> =>
+    instance({
+      method: "PUT",
+      url: `/api/student/update/${id}`,
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      data,
+    }),
+  deleteStudent: (
+    token: string | null,
+    id: number | string
+  ): AxiosPromise<any> =>
+    instance({
+      method: "DELETE",
+      url: `/api/student/delete/${id}`,
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }),
+};
+const AksesSiswa = {
+  getAksesSiswa: (
+    token: string | null,
+    querysearch: string,
+    limit: number,
+    page: number
+  ): AxiosPromise<any> =>
+    instance({
+      method: "GET",
+      url: `/api/user-access`,
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      params: {
+        search_query: querysearch,
+        limit: limit,
+        page: page,
+      },
+    }),
+  createAksesSiswa: (token: string | null, data: any): AxiosPromise<any> =>
+    instance({
+      method: "POST",
+      url: `/api/user-access/create`,
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      data,
+    }),
+  editAksesSiswa: (
+    token: string | null,
+    id: number | string,
+    data: any
+  ): AxiosPromise<any> =>
+    instance({
+      method: "PUT",
+      url: `/api/user-access/update/${id}`,
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      data,
+    }),
+  deleteAksesSiswa: (
+    token: string | null,
+    id: number | string
+  ): AxiosPromise<any> =>
+    instance({
+      method: "DELETE",
+      url: `/api/user-access/delete/${id}`,
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }),
+  getAllUser: (
+    token: string | null,
+    querysearch: string,
+    limit: number,
+    page: number
+  ): AxiosPromise<any> =>
+    instance({
+      method: "GET",
+      url: `/api/user`,
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      params: {
+        search_query: querysearch,
+        limit: limit,
+        page: page,
+      },
+    }),
+};
 export {
+  HistoryStudent,
+  CustomerCare,
   Auth,
   Siswa,
   Mapel,
@@ -557,5 +909,9 @@ export {
   Extra,
   GuruMapelExtra,
   User,
+  Kelas,
   KepalaSekolah,
+  Settings,
+  Student,
+  AksesSiswa,
 };

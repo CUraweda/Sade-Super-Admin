@@ -171,7 +171,7 @@ const MataPelajaranExtra = () => {
           Swal.fire({
             icon: "success",
             title: "Sukses",
-            text: "Sukses Merubah data Guru Wali Kelas",
+            text: "Sukses Merubah Mapel Extra",
           });
 
           handleCloseModal();
@@ -184,7 +184,7 @@ const MataPelajaranExtra = () => {
           Swal.fire({
             icon: "success",
             title: "Sukses",
-            text: "Sukses Membuat data Guru Wali Kelas",
+            text: "Sukses Membuat Mapel Extra",
           });
 
           handleCloseModal();
@@ -232,6 +232,11 @@ const MataPelajaranExtra = () => {
           DataMapelExtra();
           setShowAlert(false);
           handleCloseModal();
+          Swal.fire({
+            icon: "success",
+            title: "Sukses",
+            text: "Sukses Merubah data Guru Mata Pelajaran Extra",
+          });
           FormExtra.resetForm();
         } else {
           await GuruMapelExtra.CreateGuruExtra(token, payload);
@@ -239,6 +244,11 @@ const MataPelajaranExtra = () => {
           DataGuruExtra();
           setShowAlert(false);
           handleCloseModal();
+          Swal.fire({
+            icon: "success",
+            title: "Sukses",
+            text: "Sukses Menambahkan data Guru Mata Pelajaran Extra",
+          });
           FormExtra.resetForm();
         }
       } catch (error) {
@@ -317,6 +327,7 @@ const MataPelajaranExtra = () => {
     FormExtra.resetForm();
     FormGuruExtra.resetForm();
   };
+
   return (
     <>
       <Modal id="modal-extra" onClose={handleCloseModal}>

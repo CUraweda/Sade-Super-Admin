@@ -2,6 +2,7 @@ export interface LoginResponse {
   data: {
     token: string;
     role_id: number;
+    id: any;
   };
   tokens: {
     access: {
@@ -387,4 +388,151 @@ export interface DropdownEmployeeList {
   createdAt: string;
   updatedAt: string;
   user: string;
+}
+
+export interface User {
+  id: number;
+  uuid: string;
+  role_id: number;
+  full_name: string;
+  email: string;
+}
+
+export interface UserSummary {
+  id: number;
+  full_name: string;
+}
+
+export interface Chat {
+  id: number;
+  user_id: number;
+  with_id: number;
+  unique_id: string;
+  idUser: UserSummary;
+  withUser: UserSummary;
+}
+
+export interface ResultSettings {
+  id: number;
+  start: string;
+  end: string;
+  name: string;
+  status: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface DataResponseSettings {
+  result: ResultSettings[];
+}
+
+export interface EditSettings {
+  start: string;
+  end: string;
+  name: string;
+  status: string;
+}
+
+export interface EditSettings {
+  start: string;
+  end: string;
+  name: string;
+  status: string;
+}
+
+export interface EditClass {
+  level: string;
+  class_name: string;
+  book_target: string;
+  waste_target: string;
+  is_active: string;
+}
+
+export interface FormClass {
+  id: number;
+  level: string;
+  class_name: string;
+  book_target: number;
+  waste_target: number;
+  is_active: boolean;
+}
+
+export interface Student {
+  id: number;
+  nis: string;
+  nisn: string | null;
+  full_name: string;
+  nickname: string;
+  gender: string;
+  pob: string;
+  dob: string;
+  nationality: string;
+  religion: string;
+  address: string;
+  level: string;
+  class: string;
+  is_active: string;
+  is_transfer: string;
+  category: string | null;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface Class {
+  id: number;
+  level: string;
+  class_name: string;
+  book_target: number;
+  waste_target: number;
+  is_active: boolean;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface ResultItemStudent {
+  id: number;
+  academic_year: string;
+  student_id: number;
+  class_id: number;
+  is_active: string;
+  createdAt: string;
+  updatedAt: string;
+  student: Student;
+  class: Class;
+}
+
+export interface EditFormValuesStudent {
+  student_id: string;
+  class_id: string;
+  academic_year: string;
+  is_active: string;
+}
+
+export interface Role {
+  id: number;
+  name: string;
+}
+
+export interface User {
+  id: number;
+  uuid: string;
+  role_id: number;
+  full_name: string;
+  email: string;
+  role: Role;
+}
+
+export interface ResultItemAksesSiswa {
+  id: number;
+  user_id: number;
+  student_id: number;
+  createdAt: string;
+  updatedAt: string;
+  student: Student;
+  user: User;
+}
+
+export interface EditFormValuesAksesSiswa {
+  user_id: string;
+  student_id: string;
 }

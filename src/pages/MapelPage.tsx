@@ -79,11 +79,12 @@ const MapelPage = () => {
   const handleCreate = async () => {
     try {
       const { code, level, name, threshold } = formik.values;
+      const thresholdconv = parseFloat(threshold);
       const data = {
         code,
         level,
         name,
-        threshold,
+        threshold: thresholdconv,
       };
       await Mapel.CreateMapel(token, data);
 
@@ -115,21 +116,20 @@ const MapelPage = () => {
       confirmButtonText: "Yes, delete it!",
     }).then((result) => {
       if (result.isConfirmed) {
-        handleDelete(id)
+        handleDelete(id);
       }
     });
   };
 
   const handleDelete = async (id: string | number | undefined) => {
     try {
-      await Mapel.DeleteMapel(token, id)
+      await Mapel.DeleteMapel(token, id);
       Swal.fire({
         title: "Deleted!",
         text: "mata pelajaran berhasil dihapus",
         icon: "success",
-
       });
-      DataMapel()
+      DataMapel();
     } catch (error) {
       Swal.fire({
         icon: "error",
@@ -137,7 +137,7 @@ const MapelPage = () => {
         text: "Gagal Menghapus data, silakan refresh halaman!",
       });
     }
-  }
+  };
 
   return (
     <>
@@ -188,7 +188,10 @@ const MapelPage = () => {
                       <button className="btn btn-ghost btn-sm text-orange-500 text-xl">
                         <FaPencil />
                       </button>
-                      <button className="btn btn-ghost btn-sm text-red-500 text-xl" onClick={() => trigerDelete(item.id)}>
+                      <button
+                        className="btn btn-ghost btn-sm text-red-500 text-xl"
+                        onClick={() => trigerDelete(item.id)}
+                      >
                         <FaRegTrashAlt />
                       </button>
                     </div>

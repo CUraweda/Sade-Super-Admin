@@ -82,7 +82,6 @@ const WaliKelas = () => {
         title: "Sukses",
         text: "Sukses Menghapus data Guru Wali Kelas",
       });
-
     } catch (error) {
       Swal.fire({
         icon: "error",
@@ -141,7 +140,7 @@ const WaliKelas = () => {
       setEmployees(result);
     };
     const fetchAllKelas = async () => {
-      const response = await Wali.GetAllKelas(token);
+      const response = await Wali.GetAllKelas(token, 100000);
       const { result } = response.data.data;
       setKelas(result);
     };
@@ -180,8 +179,7 @@ const WaliKelas = () => {
             title: "Sukses",
             text: "Sukses Merubah data Guru Wali Kelas",
           });
-    
-    
+
           setShowAlert(false);
         } else {
           await Wali.CreateWaliKelas(token, payload);
@@ -191,8 +189,7 @@ const WaliKelas = () => {
             title: "Sukses",
             text: "Sukses Membuat data Guru Wali Kelas",
           });
-    
-    
+
           setShowAlert(false);
         }
       } catch (error) {
