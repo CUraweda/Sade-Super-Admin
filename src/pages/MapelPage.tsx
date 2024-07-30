@@ -1,20 +1,24 @@
 import { useEffect, useState } from "react";
-import { FaPlus, FaRegTrashAlt } from "react-icons/fa";
+import { FaPlus, FaRegTrashAlt, FaPencilAlt } from "react-icons/fa";
 import Modal, { closeModal, openModal } from "../component/ModalProps";
 import { Mapel } from "../middleware/Api";
 import { LoginStore } from "../store/Store";
 import Swal from "sweetalert2";
 import { IpageMeta, PaginationControl } from "../component/PaginationControl";
 import { MapelList } from "../middleware/utils";
-import { FaPencil } from "react-icons/fa6";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 
+// Schema validasi
 const schema = Yup.object({
-  code: Yup.string().required("code required"),
-  name: Yup.string().required("name required"),
-  level: Yup.string().required("level required"),
-  threshold: Yup.string().required("KKM required"),
+  code: Yup.string().required("Code required"),
+  name: Yup.string().required("Name required"),
+  level: Yup.string().required("Level required"),
+  threshold: Yup.number()
+    .typeError("KKM harus berupa angka")
+    .required("KKM required")
+    .positive("KKM harus lebih besar dari 0")
+    .nullable(),
 });
 
 const MapelPage = () => {
@@ -28,17 +32,23 @@ const MapelPage = () => {
   });
   const [mapel, setMapel] = useState<MapelList[]>([]);
   const [level, setLevel] = useState<string>("");
+  const [editId, setEditId] = useState<number | null>(null);
 
+  // Formik untuk form add dan edit
   const formik = useFormik({
     initialValues: {
       code: "",
       name: "",
       level: "",
-      threshold: "",
+      threshold: 0,
     },
     validationSchema: schema,
-    onSubmit: (values) => {
-      console.log(values);
+    onSubmit: () => {
+      if (editId) {
+        handleEdit();
+      } else {
+        handleCreate();
+      }
     },
   });
 
@@ -72,19 +82,18 @@ const MapelPage = () => {
       ...filter,
       [key]: value,
     };
-    if (key != "page") obj["page"] = 0;
+    if (key !== "page") obj["page"] = 0;
     setFilter(obj);
   };
 
   const handleCreate = async () => {
     try {
-      const { code, level, name, threshold } = formik.values;
-      const thresholdconv = parseFloat(threshold);
+      const { code, name, level, threshold } = formik.values;
       const data = {
         code,
-        level,
         name,
-        threshold: thresholdconv,
+        level,
+        threshold,
       };
       await Mapel.CreateMapel(token, data);
 
@@ -101,6 +110,35 @@ const MapelPage = () => {
         icon: "error",
         title: "Oops...",
         text: "Gagal menambahkan data mapel, silakan refresh halaman!",
+      });
+    }
+  };
+
+  const handleEdit = async () => {
+    if (editId === null) return;
+    try {
+      const { code, name, level, threshold } = formik.values;
+      const data = {
+        code,
+        name,
+        level,
+        threshold,
+      };
+      await Mapel.EditMapel(token, data, editId);
+
+      closeModal("edit-mapel");
+      Swal.fire({
+        icon: "success",
+        title: "Sukses",
+        text: "Sukses Mengubah data Mapel",
+      });
+      DataMapel();
+    } catch (error) {
+      closeModal("edit-mapel");
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: "Gagal mengubah data mapel, silakan refresh halaman!",
       });
     }
   };
@@ -126,7 +164,7 @@ const MapelPage = () => {
       await Mapel.DeleteMapel(token, id);
       Swal.fire({
         title: "Deleted!",
-        text: "mata pelajaran berhasil dihapus",
+        text: "Mata pelajaran berhasil dihapus",
         icon: "success",
       });
       DataMapel();
@@ -137,6 +175,17 @@ const MapelPage = () => {
         text: "Gagal Menghapus data, silakan refresh halaman!",
       });
     }
+  };
+
+  const handleEditClick = (item: MapelList, id: any) => {
+    setEditId(id);
+    formik.setValues({
+      code: item.code,
+      name: item.name,
+      level: item.level,
+      threshold: item.threshold,
+    });
+    openModal("edit-mapel");
   };
 
   return (
@@ -182,11 +231,13 @@ const MapelPage = () => {
                   <td>{item.level}</td>
                   <td>{item.name}</td>
                   <td>{item.threshold}</td>
-
                   <td>
                     <div className="join">
-                      <button className="btn btn-ghost btn-sm text-orange-500 text-xl">
-                        <FaPencil />
+                      <button
+                        className="btn btn-ghost btn-sm text-orange-500 text-xl"
+                        onClick={() => handleEditClick(item, item.id)}
+                      >
+                        <FaPencilAlt />
                       </button>
                       <button
                         className="btn btn-ghost btn-sm text-red-500 text-xl"
@@ -210,6 +261,7 @@ const MapelPage = () => {
         </div>
       </div>
 
+      {/* Modal Add Mapel */}
       <Modal id="add-mapel">
         <div className="w-full">
           <div className="mb-6">
@@ -234,9 +286,7 @@ const MapelPage = () => {
                 name="code"
                 value={formik.values.code}
                 onBlur={formik.handleBlur}
-                onChange={(e) => {
-                  formik.handleChange(e);
-                }}
+                onChange={formik.handleChange}
               />
               {formik.touched.code && formik.errors.code ? (
                 <div className="text-red-500 text-xs">{formik.errors.code}</div>
@@ -258,9 +308,7 @@ const MapelPage = () => {
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
               >
-                <option selected value={""}>
-                  Level
-                </option>
+                <option value={""}>Level</option>
                 <option value={"TK"}>TK</option>
                 <option value={"SD"}>SD</option>
                 <option value={"SM"}>SM</option>
@@ -286,9 +334,7 @@ const MapelPage = () => {
                 name="name"
                 value={formik.values.name}
                 onBlur={formik.handleBlur}
-                onChange={(e) => {
-                  formik.handleChange(e);
-                }}
+                onChange={formik.handleChange}
               />
               {formik.touched.name && formik.errors.name ? (
                 <div className="text-red-500 text-xs">{formik.errors.name}</div>
@@ -303,6 +349,7 @@ const MapelPage = () => {
               <input
                 type="number"
                 placeholder="0"
+                step="any"
                 className={`input input-bordered w-full ${
                   formik.touched.threshold && formik.errors.threshold
                     ? "input-error"
@@ -311,9 +358,7 @@ const MapelPage = () => {
                 name="threshold"
                 value={formik.values.threshold}
                 onBlur={formik.handleBlur}
-                onChange={(e) => {
-                  formik.handleChange(e);
-                }}
+                onChange={formik.handleChange}
               />
               {formik.touched.threshold && formik.errors.threshold ? (
                 <div className="text-red-500 text-xs">
@@ -323,8 +368,125 @@ const MapelPage = () => {
             </div>
             <div className="w-full mt-5">
               <button
+                type="submit"
                 className="w-full btn btn-ghost bg-green-500 text-white"
-                onClick={handleCreate}
+              >
+                Simpan
+              </button>
+            </div>
+          </form>
+        </div>
+      </Modal>
+
+      {/* Modal Edit Mapel */}
+      <Modal id="edit-mapel">
+        <div className="w-full">
+          <div className="mb-6">
+            <span className="text-xl font-bold">Edit Mapel</span>
+          </div>
+
+          <form
+            onSubmit={formik.handleSubmit}
+            className="flex justify-start w-full flex-col gap-3"
+          >
+            <div className="flex flex-col w-full">
+              <label htmlFor="" className="font-bold">
+                Kode
+              </label>
+
+              <input
+                type="text"
+                placeholder="Kode"
+                className={`input input-bordered w-full ${
+                  formik.touched.code && formik.errors.code ? "input-error" : ""
+                } `}
+                name="code"
+                value={formik.values.code}
+                onBlur={formik.handleBlur}
+                onChange={formik.handleChange}
+              />
+              {formik.touched.code && formik.errors.code ? (
+                <div className="text-red-500 text-xs">{formik.errors.code}</div>
+              ) : null}
+            </div>
+            <div className="flex flex-col w-full">
+              <label htmlFor="" className="font-bold">
+                Level
+              </label>
+
+              <select
+                className={`select join-item w-full select-bordered ${
+                  formik.touched.level && formik.errors.level
+                    ? "select-error"
+                    : ""
+                }`}
+                name="level"
+                value={formik.values.level}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+              >
+                <option value={""}>Level</option>
+                <option value={"TK"}>TK</option>
+                <option value={"SD"}>SD</option>
+                <option value={"SM"}>SM</option>
+              </select>
+              {formik.touched.level && formik.errors.level ? (
+                <div className="text-red-500 text-xs">
+                  {formik.errors.level}
+                </div>
+              ) : null}
+            </div>
+
+            <div className="flex flex-col w-full">
+              <label htmlFor="" className="font-bold">
+                Nama Mapel
+              </label>
+
+              <input
+                type="text"
+                placeholder="Nama Mapel"
+                className={`input input-bordered w-full ${
+                  formik.touched.name && formik.errors.name ? "input-error" : ""
+                } `}
+                name="name"
+                value={formik.values.name}
+                onBlur={formik.handleBlur}
+                onChange={formik.handleChange}
+              />
+              {formik.touched.name && formik.errors.name ? (
+                <div className="text-red-500 text-xs">{formik.errors.name}</div>
+              ) : null}
+            </div>
+
+            <div className="flex flex-col w-full">
+              <label htmlFor="" className="font-bold">
+                KKM
+              </label>
+
+              <input
+                type="number"
+                placeholder="0"
+                step="any"
+                className={`input input-bordered w-full ${
+                  formik.touched.threshold && formik.errors.threshold
+                    ? "input-error"
+                    : ""
+                } `}
+                name="threshold"
+                value={formik.values.threshold}
+                onBlur={formik.handleBlur}
+                onChange={formik.handleChange}
+              />
+              {formik.touched.threshold && formik.errors.threshold ? (
+                <div className="text-red-500 text-xs">
+                  {formik.errors.threshold}
+                </div>
+              ) : null}
+            </div>
+            <div className="w-full mt-5">
+              <button
+                type="submit"
+                className="w-full btn btn-ghost bg-green-500 text-white"
               >
                 Simpan
               </button>

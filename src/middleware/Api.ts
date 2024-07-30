@@ -29,11 +29,12 @@ const Siswa = {
   GetAllDataSiswa: (
     token: string | null,
     page: number,
-    limit: number
+    limit: number,
+    search: string
   ): AxiosPromise<SiswaResponse> =>
     instance({
       method: "GET",
-      url: `/api/student?search_query=&page=${page}&limit=${limit}`,
+      url: `/api/student?search_query=${search}&page=${page}&limit=${limit}`,
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -94,6 +95,15 @@ const Mapel = {
         Authorization: `Bearer ${token}`,
       },
       data,
+    }),
+  EditMapel: (token: string | null, data: any, id: number): AxiosPromise<any> =>
+    instance({
+      method: "PUT",
+      data,
+      url: `/api/subject/update/${id}`,
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
     }),
   DeleteMapel: (
     token: string | null,
@@ -366,7 +376,7 @@ const Wali = {
   GetAllKelas: (token: string | null, limit: any): AxiosPromise<any> =>
     instance({
       method: "GET",
-      url: `/api/classes`,
+      url: `/api/classes?is_active=Y`,
       headers: {
         Authorization: `Bearer ${token}`,
       },
