@@ -223,13 +223,13 @@ const DaftarGukar = () => {
     },
   });
   const genderOptions = [
-    { value: "Laki-Laki", label: "Laki-laki" },
+    { value: "Laki-Laki", label: "Laki-Laki" },
     { value: "Perempuan", label: "Perempuan" },
   ];
 
   const maritalStatusOptions = [
-    { value: "Nikah", label: "Nikah" },
-    { value: "Belum Nikah", label: "Belum Nikah" },
+    { value: "Sudah Menikah", label: "Sudah Menikah" },
+    { value: "Belum Menikah", label: "Belum Menikah" },
   ];
 
   const isEducationOptions = [
@@ -250,7 +250,10 @@ const DaftarGukar = () => {
     employee_no: Yup.string().required("Nomor Karyawan/NIK diperlukan"),
     full_name: Yup.string().required("Nama Lengkap diperlukan"),
     gender: Yup.string()
-      .oneOf(["L", "P"], "Gender harus L atau P")
+      .oneOf(
+        ["Laki-Laki", "Perempuan"],
+        "Gender harus Laki-Laki atau Perempuan"
+      )
       .required("Gender diperlukan"),
     pob: Yup.string().required("Tempat Lahir diperlukan"),
     dob: Yup.date()
@@ -260,8 +263,8 @@ const DaftarGukar = () => {
     religion: Yup.string().required("Agama diperlukan"),
     marital_status: Yup.string()
       .oneOf(
-        ["KAWIN", "BELUM KAWIN"],
-        "Status Pernikahan harus KAWIN atau BELUM KAWIN"
+        ["Sudah Menikah", "Belum Menikah"],
+        "Status Pernikahan harus Menikah atau Belum Menikah"
       )
       .required("Status Pernikahan diperlukan"),
     last_education: Yup.string().required("Pendidikan Terakhir diperlukan"),
@@ -274,7 +277,7 @@ const DaftarGukar = () => {
       .required("Status Pendidikan diperlukan"),
     major: Yup.string().required("Jurusan diperlukan"),
     employee_status: Yup.string()
-      .oneOf(["TETAP", "KONTRAK"], "Status Karyawan harus TETAP atau KONTRAK")
+      .oneOf(["Tetap", "Kontrak"], "Status Karyawan harus Tetap atau Kontrak")
       .required("Status Karyawan diperlukan"),
     work_start_date: Yup.date()
       .required("Tanggal Mulai Bekerja diperlukan")
@@ -282,7 +285,7 @@ const DaftarGukar = () => {
       .typeError("Tanggal Mulai Bekerja harus berupa tanggal"),
     occupation: Yup.string().required("Jabatan/Tugas diperlukan"),
     is_teacher: Yup.string()
-      .oneOf(["G", "NG"], "Status Guru harus G atau NG")
+      .oneOf(["Guru", "Non Guru"], "Status Guru harus G atau NG")
       .required("Status Guru diperlukan"),
     duty: Yup.string().required("Tugas diperlukan"),
     job_desc: Yup.string().required("Deskripsi Pekerjaan diperlukan"),
