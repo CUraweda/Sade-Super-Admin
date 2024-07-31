@@ -14,7 +14,7 @@
     "url": "",
     "subtitle": [
       {
-        "name": "Pengaturan",
+        "name": "Tahun Ajaran",
         "url": "/setting"
       },
       {
@@ -47,7 +47,7 @@
       }
     ]
   },
-   {
+  {
     "submenu": true,
     "title": "Orang Tua",
     "icon": "<FaUsers />",
