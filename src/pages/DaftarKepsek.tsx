@@ -53,7 +53,7 @@ const DaftarKepsek = () => {
       start_academic_year: editingKepsek?.start_academic_year || "",
       end_academic_year: editingKepsek?.end_academic_year || "",
       is_active: editingKepsek?.is_active,
-      category: editingKepsek?.category || ""
+      category: editingKepsek?.category || "",
     },
     enableReinitialize: true,
     validationSchema: validationSchemaEdit,
@@ -104,14 +104,19 @@ const DaftarKepsek = () => {
 
   const handleCreateKepsek = async (values: any) => {
     try {
-      const { employee_id, start_academic_year, end_academic_year, is_active, category } =
-        values;
+      const {
+        employee_id,
+        start_academic_year,
+        end_academic_year,
+        is_active,
+        category,
+      } = values;
       const data = {
         employee_id,
         start_academic_year,
         end_academic_year,
         is_active,
-        category
+        category,
       };
       await KepalaSekolah.CreateKepsek(token, data);
       closeModal("addKepsekModal");
@@ -133,14 +138,19 @@ const DaftarKepsek = () => {
 
   const handleEditKepsek = async (values: any, id: number) => {
     try {
-      const { employee_id, start_academic_year, end_academic_year, is_active, category } =
-        values;
+      const {
+        employee_id,
+        start_academic_year,
+        end_academic_year,
+        is_active,
+        category,
+      } = values;
       const data = {
         employee_id,
         start_academic_year,
         end_academic_year,
         is_active,
-        category
+        category,
       };
       await KepalaSekolah.EditKepsek(token, data, id);
       DataKepsek();
@@ -197,7 +207,7 @@ const DaftarKepsek = () => {
       start_academic_year: kepsek.start_academic_year,
       end_academic_year: kepsek.end_academic_year,
       is_active: kepsek.is_active,
-      category: kepsek.category
+      category: kepsek.category,
     });
     openModal("editKepsekModal");
   };
@@ -211,14 +221,14 @@ const DaftarKepsek = () => {
   };
 
   const getCategorys = () => {
-    return ["Cluster Bawah", "Cluster Atas", "Cluster Tinggal"]
-  }
+    return ["Cluster Bawah", "Cluster Atas", "Cluster Tinggal"];
+  };
 
   const currentYear = new Date().getFullYear();
   const startYear = currentYear;
   const endYear = currentYear + 50;
   const years = getYears(startYear, endYear);
-  const categorys = getCategorys()
+  const categorys = getCategorys();
 
   return (
     <div className="w-full flex flex-col items-center p-5 ">
@@ -242,10 +252,6 @@ const DaftarKepsek = () => {
                 <th>Nama Lengkap</th>
                 <th>Kategori</th>
                 <th>L/P</th>
-                <th>Tanggal Lahir</th>
-                <th>Tempat Lahir</th>
-                <th>Agama</th>
-                <th>Kawin/Belum Kawin</th>
                 <th>Pendidikan Terakhir</th>
                 <th>Waktu Mulai Bekerja</th>
                 <th>Status</th>
@@ -260,16 +266,13 @@ const DaftarKepsek = () => {
                   <td>{item.employee?.full_name}</td>
                   <td>{item.category}</td>
                   <td>{item.employee.gender}</td>
-                  <td>{item.employee.dob.split("T")[0]}</td>
-                  <td>{item.employee.pob}</td>
-                  <td>{item.employee.religion}</td>
-                  <td>{item.employee.marital_status}</td>
                   <td>{item.employee.last_education}</td>
                   <td>{item.employee.work_start_date}</td>
                   <td>
                     <div
-                      className={`badge text-white ${item.is_active == true ? "badge-success" : "badge-error"
-                        }`}
+                      className={`badge text-white ${
+                        item.is_active == true ? "badge-success" : "badge-error"
+                      }`}
                     >
                       {item.is_active == true ? <FaCheck /> : <FaTimes />}
                     </div>
