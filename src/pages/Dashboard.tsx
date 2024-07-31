@@ -74,8 +74,8 @@ const Dashboard = () => {
               </svg>
             </div>
           </div>
-          <div className="bg-green-600 text-white rounded-lg shadow-lg hover:shadow-2xl transition ease-in-out duration-300 p-6 flex items-center justify-between">
-            <div className="flex flex-col">
+          <div className="bg-green-600 text-white rounded-lg shadow-lg hover:shadow-2xl transition ease-in-out duration-300 p-6 flex items-center justify-between gap-2">
+            <div className="flex flex-col ">
               <h3 className="text-lg font-semibold mb-1">
                 Total Guru dan Karyawan
               </h3>
@@ -165,7 +165,9 @@ const Dashboard = () => {
                 d="M5 12h14m-7 7v-7m0-4V7m0 4l-3-3m6 3l3-3"
               />
             </svg>
-            <h3 className="text-xl font-semibold mb-2">Tambah Gukar</h3>
+            <h3 className="text-xl font-semibold mb-2">
+              Tambah Guru dan Karyawan
+            </h3>
             <button className="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
               Tambah
             </button>
