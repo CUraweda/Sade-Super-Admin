@@ -249,6 +249,7 @@ const SettingPage = () => {
               value={FormSettings.values.status}
               onChange={FormSettings.handleChange}
             >
+              <option value={""}>Select</option>
               <option value={"Aktif"}>Active</option>
               <option value={"Tidak Aktif"}>Inactive</option>
             </select>

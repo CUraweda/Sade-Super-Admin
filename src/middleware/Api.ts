@@ -25,6 +25,57 @@ const Auth = {
     }),
 };
 
+const OrangTua = {
+  GetAllDataOrtu:(
+    token: string | null,
+    page: number,
+    limit: number,
+    search: string
+  ): AxiosPromise<any> => instance({
+    method: 'GET',
+    url: `/api/parent?search_query=${search}&page=${page}&limit=${limit}`,
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+  }),
+
+  CreateOrtu: (
+    token: string | null,
+    data: any
+  ): AxiosPromise<any> => instance ({
+    method: 'POST',
+    url: `/api/parent/create`,
+    data,
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+  }),
+
+  UpdateOrtu: (
+    token: string | null,
+    data: any,
+    id: number
+  ): AxiosPromise<any> => instance ({
+    method: 'PUT',
+    url: `/api/parent/update/${id}`,
+    data,
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+  }),
+
+  DeleteOrtu: (
+    token: string | null,
+    id: number
+  ): AxiosPromise<any> => instance ({
+    method: 'DELETE',
+    url: `/api/parent/delete/${id}`,
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+  }),
+};
+
 const Siswa = {
   GetAllDataSiswa: (
     token: string | null,
@@ -914,6 +965,7 @@ export {
   HistoryStudent,
   CustomerCare,
   Auth,
+  OrangTua,
   Siswa,
   Mapel,
   GuruKaryawan,
