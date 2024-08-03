@@ -233,8 +233,8 @@ const DaftarGukar = () => {
   ];
 
   const isEducationOptions = [
-    { value: "Non Kuliah", label: "Non Kuliah" },
-    { value: "Kuliah", label: "Kuliah" },
+    { value: "Tidak", label: "Tidak" },
+    { value: "Ya", label: "Ya" },
   ];
 
   const employeeStatusOptions = [
@@ -273,7 +273,7 @@ const DaftarGukar = () => {
       .positive("Tahun Ijazah harus positif")
       .integer("Tahun Ijazah harus bilangan bulat"),
     is_education: Yup.string()
-      .oneOf(["Non Karyawan", "Karyawan"], "Is Education harus NK atau K")
+      .oneOf(["Tidak", "Ya"], "Is Education harus Tidak atau Ya")
       .required("Status Pendidikan diperlukan"),
     major: Yup.string().required("Jurusan diperlukan"),
     employee_status: Yup.string()
