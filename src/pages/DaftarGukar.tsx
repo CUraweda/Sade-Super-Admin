@@ -233,8 +233,8 @@ const DaftarGukar = () => {
   ];
 
   const isEducationOptions = [
-    { value: "Non Karyawan", label: "Non Karyawan" },
-    { value: "Karyawan", label: "Karyawan" },
+    { value: "Non Kuliah", label: "Non Kuliah" },
+    { value: "Kuliah", label: "Kuliah" },
   ];
 
   const employeeStatusOptions = [
