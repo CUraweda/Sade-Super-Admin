@@ -32,7 +32,6 @@ const HistorySiswa = () => {
   const [DataStudent, setDataStudent] = useState<ResultItemStudent[]>([]);
   const [EditData, setEditData] = useState<EditFormValuesStudent | null>(null);
   const [StudentList, setStudentList] = useState<any>([]);
-
   const handleFilter = (key: string, value: any) => {
     const obj = {
       ...filter,
@@ -123,7 +122,9 @@ const HistorySiswa = () => {
   const FormStudentSchema = Yup.object().shape({
     student_id: Yup.number().required("Student ID is required"),
     class_id: Yup.number().required("Class ID is required"),
-    academic_year: Yup.string().required("Academic Year is required"),
+    // academic_year: Yup.string().required("Academic Year is required"),
+    start_year: Yup.string().required("Awal Tahun is required"),
+    end_year: Yup.string().required("Akhir Tahun is required"),
     is_active: Yup.string()
       .oneOf(["Ya", "Tidak"], "Invalid selection")
       .required("Active status is required"),
@@ -133,13 +134,15 @@ const HistorySiswa = () => {
     initialValues: {
       student_id: EditData?.student_id || "",
       class_id: EditData?.class_id || "",
-      academic_year: EditData?.academic_year || "",
+      start_year: EditData?.start_year || "",
+      end_year: EditData?.end_year || "",
       is_active: EditData?.is_active || "Ya",
     },
     validationSchema: FormStudentSchema,
     onSubmit: async (values) => {
       const payload = {
         ...values,
+      academic_year: EditData?.start_year + "/" + EditData?.end_year,
       };
       try {
         if (alertTodo === "edit") {
@@ -180,7 +183,8 @@ const HistorySiswa = () => {
         setEditData({
           student_id: itemToEdit?.student_id.toString(),
           class_id: itemToEdit?.class_id.toString() || "",
-          academic_year: itemToEdit?.academic_year.toString() || "",
+          start_year: itemToEdit?.academic_year.toString().split("/")[0] || "",
+          end_year: itemToEdit?.academic_year.toString().split("/")[1] || "",
           is_active: itemToEdit?.is_active.toString() || "Ya",
         });
       }
@@ -211,14 +215,14 @@ const HistorySiswa = () => {
     closeModal("modal-Settings");
     FormStudent.resetForm();
   };
-  const generateAcademicYears = () => {
-    const currentYear = new Date().getFullYear();
-    const startYear = currentYear - 2;
-    return Array.from(
-      { length: 5 },
-      (_, index) => `${startYear + index}/${startYear + index + 1}`
-    );
-  };
+  // const generateAcademicYears = () => {
+  //   const currentYear = new Date().getFullYear();
+  //   const startYear = currentYear - 2;
+  //   return Array.from(
+  //     { length: 5 },
+  //     (_, index) => `${startYear + index}/${startYear + index + 1}`
+  //   );
+  // };
   // const handleStatus = (event: any) => {
   //   setStatus(event.target.value);
   // };
@@ -276,8 +280,9 @@ const HistorySiswa = () => {
             </div>
           </div>
           <div className="my-2">
-            <label htmlFor="academic_year">Tahun Ajaran</label>
-            <select
+            <label htmlFor="start_year">
+            Tahun Ajaran</label>
+            {/* <select
               id="academic_year"
               name="academic_year"
               className="input input-sm input-bordered items-center gap-2 grow mt-1 block w-full border  rounded-md shadow-sm sm:text-sm"
@@ -293,13 +298,43 @@ const HistorySiswa = () => {
                   {year}
                 </option>
               ))}
-            </select>
-            <div className="text-red-500 text-sm">
-              {FormStudent.touched.academic_year &&
-              FormStudent.errors.academic_year ? (
-                <div>{FormStudent.errors.academic_year}</div>
+            </select> */}
+            <div className="flex w-full gap-2 my-2">
+              <div className="block w-[50%]">
+              <input
+               id="start_year"
+                name="start_year"
+                  className="input  input-sm input-bordered items-center gap-2 grow mt-1 block w-full border rounded-md shadow-sm sm:text-sm"
+                type="text"
+                value={FormStudent.values.start_year}
+                onChange={FormStudent.handleChange}
+                onBlur={FormStudent.handleBlur}
+                />
+           <div className="text-red-500 text-sm">
+              {FormStudent.touched.start_year && FormStudent.errors.start_year ? (
+                <div>{FormStudent.errors.start_year}</div>
+              ) : null}
+              </div>
+              </div>
+              <div className="block w-[50%]">
+              <label htmlFor="end_year">
+              Tahun Ajaran</label>
+                <input
+               id="end_year"
+                name="end_year"
+                type="text"
+                  className="input input-sm input-bordered items-center gap-2 grow mt-1 block w-full border rounded-md shadow-sm sm:text-sm "
+                value={FormStudent.values.end_year}
+                onChange={FormStudent.handleChange}
+                onBlur={FormStudent.handleBlur}
+                />
+           <div className="text-red-500 text-sm">
+              {FormStudent.touched.end_year && FormStudent.errors.end_year ? (
+                <div>{FormStudent.errors.end_year}</div>
               ) : null}
             </div>
+            </div>
+          </div>
           </div>
           <div className="my-2">
             <label htmlFor="is_active">Status</label>
@@ -310,7 +345,7 @@ const HistorySiswa = () => {
               onChange={FormStudent.handleChange}
               onBlur={FormStudent.handleBlur}
               value={FormStudent.values.is_active}
-            >
+              >
               <option value={"Ya"}>Aktif</option>
               <option value={"Tidak"}>Tidak Aktif</option>
             </select>

@@ -474,7 +474,7 @@ const DaftarGukar = () => {
                                     className="bg-blue-500 text-white px-4 py-2 text-xs btn-sm rounded"
                                     onClick={() => handleTautanAkun(item.id)}
                                   >
-                                    Select
+                                    Pilih
                                   </button>
                                 </td>
                               </tr>
