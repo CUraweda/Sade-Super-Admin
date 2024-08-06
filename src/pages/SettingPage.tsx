@@ -241,7 +241,7 @@ const SettingPage = () => {
             </div>
           </div>
           <div className="my-2">
-            <label htmlFor="status">Active Status</label>
+            <label htmlFor="status">Status</label>
             <select
               id="status"
               name="status"
@@ -249,9 +249,9 @@ const SettingPage = () => {
               value={FormSettings.values.status}
               onChange={FormSettings.handleChange}
             >
-              <option value={""}>Select</option>
-              <option value={"Aktif"}>Active</option>
-              <option value={"Tidak Aktif"}>Inactive</option>
+              <option value={""}>Pilih</option>
+              <option value={"Aktif"}>Aktif</option>
+              <option value={"Tidak Aktif"}>Tidak Aktif</option>
             </select>
             <div className="text-red-500 text-sm">
               {FormSettings.errors.status ? (

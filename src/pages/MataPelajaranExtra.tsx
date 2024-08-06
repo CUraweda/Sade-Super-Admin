@@ -427,7 +427,7 @@ const MataPelajaranExtra = () => {
             </div>
 
             <div className="my-2">
-              <label htmlFor="is_active">Active Status</label>
+              <label htmlFor="is_active">Status</label>
               <select
                 id="is_active"
                 name="is_active"
@@ -435,8 +435,8 @@ const MataPelajaranExtra = () => {
                 value={FormGuruExtra.values.is_active}
                 onChange={FormGuruExtra.handleChange}
               >
-                <option value="true">Active</option>
-                <option value="false">Inactive</option>
+                <option value="true">Aktif</option>
+                <option value="false">Tidak Aktif</option>
               </select>
               <div className="text-red-500 text-sm">
                 {FormGuruExtra.errors.is_active ? (

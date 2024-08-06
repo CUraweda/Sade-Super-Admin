@@ -505,7 +505,8 @@ export interface ResultItemStudent {
 export interface EditFormValuesStudent {
   student_id: string;
   class_id: string;
-  academic_year: string;
+  start_year: string;
+  end_year: string;
   is_active: string;
 }
 
