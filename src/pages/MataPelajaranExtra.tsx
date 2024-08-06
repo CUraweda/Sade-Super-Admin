@@ -126,7 +126,7 @@ const MataPelajaranExtra = () => {
   const handleDelete = async (state: string, value: any) => {
     const { id } = value;
     const result = await Swal.fire({
-      title: "Are you sure?",
+      title: "Apakah kamu yakin?",
       text: `Do you want to continue deleting ${
         state !== "MapelExtra" ? value.employee.full_name : value.name
       }?`,

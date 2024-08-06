@@ -84,7 +84,7 @@ const SettingPage = () => {
   const handleDelete = async (value: any) => {
     const { id } = value;
     const result = await Swal.fire({
-      title: "Are you sure?",
+      title: "Apakah kamu yakin?",
       text: `Do you want to continue deleting ${value.name}?`,
       icon: "question",
       showCancelButton: true,
@@ -217,25 +217,17 @@ const SettingPage = () => {
         <form onSubmit={FormSettings.handleSubmit}>
           <div className="my-2">
             <label htmlFor="name">Tahun Ajaran</label>
-            <select
+            <input
               id="name"
               name="name"
-              className="input input-sm input-bordered items-center gap-2 grow mt-1 block w-full border  rounded-md shadow-sm sm:text-sm"
-              onChange={FormSettings.handleChange}
-              onBlur={FormSettings.handleBlur}
+              type="text"
+              className="input input-sm input-bordered items-center gap-2 grow mt-1 block w-full border rounded-md shadow-sm sm:text-sm"
               value={FormSettings.values.name}
-            >
-              <option disabled value="">
-                Pilih tahun ajaran
-              </option>
-              {generateAcademicYears().map((year) => (
-                <option key={year} value={year}>
-                  {year}
-                </option>
-              ))}
-            </select>
+              onChange={FormSettings.handleChange}
+              placeholder="e.g., 2024/2025"
+            />
             <div className="text-red-500 text-sm">
-              {FormSettings.touched.name && FormSettings.errors.name ? (
+              {FormSettings.errors.name ? (
                 <div>{FormSettings.errors.name}</div>
               ) : null}
             </div>
