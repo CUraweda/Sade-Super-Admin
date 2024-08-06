@@ -129,7 +129,6 @@ const HistorySiswa = () => {
       .oneOf(["Ya", "Tidak"], "Invalid selection")
       .required("Active status is required"),
   });
-
   const FormStudent = useFormik<EditFormValuesStudent>({
     initialValues: {
       student_id: EditData?.student_id || "",
@@ -142,7 +141,8 @@ const HistorySiswa = () => {
     onSubmit: async (values) => {
       const payload = {
         ...values,
-      academic_year: EditData?.start_year + "/" + EditData?.end_year,
+        academic_year:
+          (values.start_year || "") + "/" + (values.end_year || ""),
       };
       try {
         if (alertTodo === "edit") {
@@ -165,10 +165,11 @@ const HistorySiswa = () => {
           handleCloseModal();
         }
       } catch (error) {
+        console.error(error);
         Swal.fire({
           icon: "error",
-          title: "Oops...",
-          text: "Gagal membuat data baru, silahkan coba kembali!",
+          title: "Gagal",
+          text: "Terjadi kesalahan saat menyimpan data",
         });
       }
     },
@@ -280,8 +281,6 @@ const HistorySiswa = () => {
             </div>
           </div>
           <div className="my-2">
-            <label htmlFor="start_year">
-            Tahun Ajaran</label>
             {/* <select
               id="academic_year"
               name="academic_year"
@@ -295,46 +294,49 @@ const HistorySiswa = () => {
               </option>
               {generateAcademicYears().map((year) => (
                 <option key={year} value={year}>
-                  {year}
+                {year}
                 </option>
-              ))}
-            </select> */}
+                ))}
+                </select> */}
             <div className="flex w-full gap-2 my-2">
               <div className="block w-[50%]">
-              <input
-               id="start_year"
-                name="start_year"
-                  className="input  input-sm input-bordered items-center gap-2 grow mt-1 block w-full border rounded-md shadow-sm sm:text-sm"
-                type="text"
-                value={FormStudent.values.start_year}
-                onChange={FormStudent.handleChange}
-                onBlur={FormStudent.handleBlur}
-                />
-           <div className="text-red-500 text-sm">
-              {FormStudent.touched.start_year && FormStudent.errors.start_year ? (
-                <div>{FormStudent.errors.start_year}</div>
-              ) : null}
-              </div>
-              </div>
-              <div className="block w-[50%]">
-              <label htmlFor="end_year">
-              Tahun Ajaran</label>
+                <label htmlFor="start_year">Awal Tahun Ajaran</label>
                 <input
-               id="end_year"
-                name="end_year"
-                type="text"
-                  className="input input-sm input-bordered items-center gap-2 grow mt-1 block w-full border rounded-md shadow-sm sm:text-sm "
-                value={FormStudent.values.end_year}
-                onChange={FormStudent.handleChange}
-                onBlur={FormStudent.handleBlur}
+                  id="start_year"
+                  name="start_year"
+                  className="input  input-sm input-bordered items-center gap-2 grow mt-1 block w-full border rounded-md shadow-sm sm:text-sm"
+                  type="text"
+                  value={FormStudent.values.start_year}
+                  onChange={FormStudent.handleChange}
+                  onBlur={FormStudent.handleBlur}
                 />
-           <div className="text-red-500 text-sm">
-              {FormStudent.touched.end_year && FormStudent.errors.end_year ? (
-                <div>{FormStudent.errors.end_year}</div>
-              ) : null}
+                <div className="text-red-500 text-sm">
+                  {FormStudent.touched.start_year &&
+                  FormStudent.errors.start_year ? (
+                    <div>{FormStudent.errors.start_year}</div>
+                  ) : null}
+                </div>
+              </div>
+
+              <div className="block w-[50%]">
+                <label htmlFor="start_year">Akhir Tahun Ajaran</label>
+                <input
+                  id="end_year"
+                  name="end_year"
+                  type="text"
+                  className="input input-sm input-bordered items-center gap-2 grow mt-1 block w-full border rounded-md shadow-sm sm:text-sm "
+                  value={FormStudent.values.end_year}
+                  onChange={FormStudent.handleChange}
+                  onBlur={FormStudent.handleBlur}
+                />
+                <div className="text-red-500 text-sm">
+                  {FormStudent.touched.end_year &&
+                  FormStudent.errors.end_year ? (
+                    <div>{FormStudent.errors.end_year}</div>
+                  ) : null}
+                </div>
+              </div>
             </div>
-            </div>
-          </div>
           </div>
           <div className="my-2">
             <label htmlFor="is_active">Status</label>
@@ -345,7 +347,7 @@ const HistorySiswa = () => {
               onChange={FormStudent.handleChange}
               onBlur={FormStudent.handleBlur}
               value={FormStudent.values.is_active}
-              >
+            >
               <option value={"Ya"}>Aktif</option>
               <option value={"Tidak"}>Tidak Aktif</option>
             </select>
