@@ -127,13 +127,13 @@ const MataPelajaranExtra = () => {
     const { id } = value;
     const result = await Swal.fire({
       title: "Apakah kamu yakin?",
-      text: `Do you want to continue deleting ${
+      text: `Ingin menghapus data  ${
         state !== "MapelExtra" ? value.employee.full_name : value.name
       }?`,
       icon: "question",
       showCancelButton: true,
-      confirmButtonText: "Yes, delete",
-      cancelButtonText: "No, cancel",
+      confirmButtonText: "Ya, hapus",
+      cancelButtonText: "Tidak",
     });
     if (result.isConfirmed) {
       DeleteGuruMataExtra(id);

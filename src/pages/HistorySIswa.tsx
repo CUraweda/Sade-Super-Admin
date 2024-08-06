@@ -90,11 +90,11 @@ const HistorySiswa = () => {
     const { id } = value;
     const result = await Swal.fire({
       title: "Apakah kamu yakin?",
-      text: `Do you want to continue deleting ${value.student.full_name}?`,
+      text: `Ingin menghapus data  ${value.student.full_name}?`,
       icon: "question",
       showCancelButton: true,
-      confirmButtonText: "Yes, delete",
-      cancelButtonText: "No, cancel",
+      confirmButtonText: "Ya, hapus",
+      cancelButtonText: "Tidak",
     });
     if (result.isConfirmed) {
       deleteHistoryStudent(id);

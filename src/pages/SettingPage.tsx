@@ -85,11 +85,11 @@ const SettingPage = () => {
     const { id } = value;
     const result = await Swal.fire({
       title: "Apakah kamu yakin?",
-      text: `Do you want to continue deleting ${value.name}?`,
+      text: `Ingin menghapus data  ${value.name}?`,
       icon: "question",
       showCancelButton: true,
-      confirmButtonText: "Yes, delete",
-      cancelButtonText: "No, cancel",
+      confirmButtonText: "Ya, hapus",
+      cancelButtonText: "Tidak",
     });
     if (result.isConfirmed) {
       deleteSettingsData(id);
@@ -202,14 +202,14 @@ const SettingPage = () => {
     closeModal("modal-Settings");
     FormSettings.resetForm();
   };
-  const generateAcademicYears = () => {
-    const currentYear = new Date().getFullYear();
-    const startYear = currentYear - 2;
-    return Array.from(
-      { length: 5 },
-      (_, index) => `${startYear + index}/${startYear + index + 1}`
-    );
-  };
+  // const generateAcademicYears = () => {
+  //   const currentYear = new Date().getFullYear();
+  //   const startYear = currentYear - 2;
+  //   return Array.from(
+  //     { length: 5 },
+  //     (_, index) => `${startYear + index}/${startYear + index + 1}`
+  //   );
+  // };
 
   return (
     <>

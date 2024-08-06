@@ -84,11 +84,11 @@ const KelasPage = () => {
     const { id } = value;
     const result = await Swal.fire({
       title: "Apakah kamu yakin?",
-      text: `Do you want to continue deleting ${value.class_name}?`,
+      text: `Ingin menghapus data  ${value.class_name}?`,
       icon: "question",
       showCancelButton: true,
-      confirmButtonText: "Yes, delete",
-      cancelButtonText: "No, cancel",
+      confirmButtonText: "Ya, hapus",
+      cancelButtonText: "Tidak",
     });
     if (result.isConfirmed) {
       deleteSettingsData(id);
