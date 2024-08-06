@@ -16,7 +16,7 @@ const schema = Yup.object({
 const Login = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState<boolean>(false);
-  const { setToken, setRole } = LoginStore();
+  const { setToken, setRole, setId } = LoginStore();
 
   const formik = useFormik({
     initialValues: {
@@ -44,8 +44,10 @@ const Login = () => {
       const emailLower = email.toLowerCase();
       const response = await Auth.Login(emailLower, password);
       const role = response.data.data.role_id;
+      const id = response.data.data.id;
       setRole(role.toString());
-
+      setId(id?.toString());
+      localStorage.setItem("role", role.toString());
       if (role == 1) {
         setToken(response.data.tokens.access.token);
         navigate("/dashboard");

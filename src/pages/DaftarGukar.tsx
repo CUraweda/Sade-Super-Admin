@@ -1,12 +1,6 @@
 import { useEffect, useState } from "react";
-import {
-  FaDownload,
-  FaPlus,
-  FaRegTrashAlt,
-  FaSync,
-  FaUpload,
-} from "react-icons/fa";
-import { IoAddOutline, IoSearch } from "react-icons/io5";
+import { FaPlus, FaRegTrashAlt } from "react-icons/fa";
+import { IoSearch } from "react-icons/io5";
 import { FaPencil, FaLink, FaLinkSlash } from "react-icons/fa6";
 import { GuruKaryawan } from "../middleware/Api";
 import { LoginStore } from "../store/Store";
@@ -20,7 +14,6 @@ import {
 import * as Yup from "yup";
 import Swal from "sweetalert2";
 import { useFormik } from "formik";
-import { FaRegCircleUser } from "react-icons/fa6";
 const DaftarGukar = () => {
   const { token } = LoginStore();
   const [pageMeta, setPageMeta] = useState<IpageMeta>({ page: 0, limit: 10 });
@@ -64,7 +57,6 @@ const DaftarGukar = () => {
         selectedOption
       );
       const { result, ...meta } = response.data.data;
-      console.log(result);
       setDataGukar(result);
       setPageMeta(meta);
     } catch (error) {
@@ -79,42 +71,40 @@ const DaftarGukar = () => {
   const searchUser = async () => {
     try {
       const response = await GuruKaryawan.SearchUser(token, querysearchuser);
-      const { result, ...meta } = response.data.data;
+      const { result } = response.data.data;
       setDataSearch(result);
     } catch (error) {
       Swal.fire({
         icon: "error",
         title: "Oops...",
-        text: "Gagal Mengambil data Guru & Karyawan, silakan refresh halaman!",
+        text: "Gagal Mengambil data, silakan coba kembali!",
       });
     }
   };
 
   const TautanAkun = async (value: any) => {
     try {
-      const response = await GuruKaryawan.TautanAkun(token, inputValue, value);
-      const { result, ...meta } = response.data.data;
+      await GuruKaryawan.TautanAkun(token, inputValue, value);
       DataGuruKaryawan();
       setShowAlert(false);
     } catch (error) {
       Swal.fire({
         icon: "error",
         title: "Oops...",
-        text: "Gagal Mengambil data Guru & Karyawan, silakan refresh halaman!",
+        text: "Gagal Menautkan akun, silakan coba kembali!",
       });
     }
   };
 
   const DeleteGuruKaryawan = async (id: number) => {
     try {
-      const response = await GuruKaryawan.DeleteGuruKaryawan(token, id);
-      const { result, ...meta } = response.data.data;
+      await GuruKaryawan.DeleteGuruKaryawan(token, id);
       DataGuruKaryawan();
     } catch (error) {
       Swal.fire({
         icon: "error",
         title: "Oops...",
-        text: "Gagal Mengambil data Guru & Karyawan, silakan refresh halaman!",
+        text: "Gagal menghapus data, silakan coba kembali!",
       });
     }
   };
@@ -139,7 +129,6 @@ const DaftarGukar = () => {
     if (result.isConfirmed) {
       DeleteGuruKaryawan(id);
     } else {
-      console.log("Edit canceled");
     }
   };
 
@@ -156,7 +145,6 @@ const DaftarGukar = () => {
   const handleEdit = async (value: any) => {
     const itemToEdit = DataGukar.find((item) => item.id === value?.id);
     setIdGukar(value.id);
-    console.log(value.id);
     if (itemToEdit) {
       setMode("update");
       setEditData({
@@ -187,10 +175,11 @@ const DaftarGukar = () => {
   useEffect(() => {
     DataGuruKaryawan();
     searchUser();
+    setQuerySearchuser("");
   }, [filter, querysearch, selectedOption]);
   useEffect(() => {
     searchUser();
-  }, [querysearchuser]);
+  }, []);
   // const formatDate = (date: string) => {
   //   let Newdate = new Date(date);
   //   let formattedDate = Newdate.toLocaleDateString("id-ID", {
@@ -221,7 +210,7 @@ const DaftarGukar = () => {
           token,
           values.querysearchuser
         );
-        const { result, ...meta } = response.data.data;
+        const { result } = response.data.data;
         setDataSearch(result);
         setShowData(true);
       } catch (error) {
@@ -234,34 +223,37 @@ const DaftarGukar = () => {
     },
   });
   const genderOptions = [
-    { value: "L", label: "Laki-laki" },
-    { value: "P", label: "Perempuan" },
+    { value: "Laki-Laki", label: "Laki-Laki" },
+    { value: "Perempuan", label: "Perempuan" },
   ];
 
   const maritalStatusOptions = [
-    { value: "KAWIN", label: "Nikah" },
-    { value: "BELUM KAWIN", label: "Belum Nikah" },
+    { value: "Sudah Menikah", label: "Sudah Menikah" },
+    { value: "Belum Menikah", label: "Belum Menikah" },
   ];
 
   const isEducationOptions = [
-    { value: "NK", label: "NK" },
-    { value: "K", label: "K" },
+    { value: "Tidak", label: "Tidak" },
+    { value: "Ya", label: "Ya" },
   ];
 
   const employeeStatusOptions = [
-    { value: "TETAP", label: "Tetap" },
-    { value: "KONTRAK", label: "Kontrak" },
+    { value: "Tetap", label: "Tetap" },
+    { value: "Kontrak", label: "Kontrak" },
   ];
 
   const isTeacherOptions = [
-    { value: "G", label: "G" },
-    { value: "NG", label: "NG" },
+    { value: "Guru", label: "Guru" },
+    { value: "Non Guru", label: "Non Guru" },
   ];
   const createFormSchema = Yup.object().shape({
     employee_no: Yup.string().required("Nomor Karyawan/NIK diperlukan"),
     full_name: Yup.string().required("Nama Lengkap diperlukan"),
     gender: Yup.string()
-      .oneOf(["L", "P"], "Gender harus L atau P")
+      .oneOf(
+        ["Laki-Laki", "Perempuan"],
+        "Gender harus Laki-Laki atau Perempuan"
+      )
       .required("Gender diperlukan"),
     pob: Yup.string().required("Tempat Lahir diperlukan"),
     dob: Yup.date()
@@ -271,8 +263,8 @@ const DaftarGukar = () => {
     religion: Yup.string().required("Agama diperlukan"),
     marital_status: Yup.string()
       .oneOf(
-        ["KAWIN", "BELUM KAWIN"],
-        "Status Pernikahan harus KAWIN atau BELUM KAWIN"
+        ["Sudah Menikah", "Belum Menikah"],
+        "Status Pernikahan harus Menikah atau Belum Menikah"
       )
       .required("Status Pernikahan diperlukan"),
     last_education: Yup.string().required("Pendidikan Terakhir diperlukan"),
@@ -281,11 +273,11 @@ const DaftarGukar = () => {
       .positive("Tahun Ijazah harus positif")
       .integer("Tahun Ijazah harus bilangan bulat"),
     is_education: Yup.string()
-      .oneOf(["NK", "K"], "Is Education harus NK atau K")
+      .oneOf(["Tidak", "Ya"], "Is Education harus Tidak atau Ya")
       .required("Status Pendidikan diperlukan"),
     major: Yup.string().required("Jurusan diperlukan"),
     employee_status: Yup.string()
-      .oneOf(["TETAP", "KONTRAK"], "Status Karyawan harus TETAP atau KONTRAK")
+      .oneOf(["Tetap", "Kontrak"], "Status Karyawan harus Tetap atau Kontrak")
       .required("Status Karyawan diperlukan"),
     work_start_date: Yup.date()
       .required("Tanggal Mulai Bekerja diperlukan")
@@ -293,7 +285,7 @@ const DaftarGukar = () => {
       .typeError("Tanggal Mulai Bekerja harus berupa tanggal"),
     occupation: Yup.string().required("Jabatan/Tugas diperlukan"),
     is_teacher: Yup.string()
-      .oneOf(["G", "NG"], "Status Guru harus G atau NG")
+      .oneOf(["Guru", "Non Guru"], "Status Guru harus G atau NG")
       .required("Status Guru diperlukan"),
     duty: Yup.string().required("Tugas diperlukan"),
     job_desc: Yup.string().required("Deskripsi Pekerjaan diperlukan"),
@@ -415,9 +407,15 @@ const DaftarGukar = () => {
           >
             <div className="bg-gray-900 bg-opacity-50 absolute inset-0"></div>
             <div
-              className="bg-white p-6 rounded shadow-lg z-10 lg:min-w-[600px] max-w-screen overflow-y-auto max-h-[90vh]"
+              className="bg-white p-6 rounded shadow-lg z-10 lg:min-w-[600px] max-w-screen overflow-y-auto max-h-[90vh] relative"
               onClick={handleDialogClick}
             >
+              <button
+                className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2"
+                onClick={handleCloseAlert}
+              >
+                ✕
+              </button>
               {alertTodo === "findingdata" ? (
                 <div>
                   <div className="flex justify-between w-full">
@@ -446,6 +444,7 @@ const DaftarGukar = () => {
                       </button>
                     </div>
                   </form>
+
                   <div>
                     {showData && (
                       <table className="table table-zebra table-sm my-5">
@@ -475,7 +474,7 @@ const DaftarGukar = () => {
                                     className="bg-blue-500 text-white px-4 py-2 text-xs btn-sm rounded"
                                     onClick={() => handleTautanAkun(item.id)}
                                   >
-                                    Select
+                                    Pilih
                                   </button>
                                 </td>
                               </tr>
@@ -754,7 +753,8 @@ const DaftarGukar = () => {
             </div>
           </div>
         ) : null}
-        <div className="overflow-x-auto w-full mt-5 bg-white p-4 rounded-md shadow-md ">
+
+        <div className="overflow-hidden w-full mt-5 bg-white p-4 rounded-md shadow-md ">
           <div className="w-full flex justify-end my-4 gap-2 items-center">
             <label className="input input-sm input-bordered flex items-center gap-2">
               <input
@@ -773,7 +773,7 @@ const DaftarGukar = () => {
               onChange={handleStatus}
             >
               <option value="" disabled selected>
-                Pilih Option
+                Pilih Opsi
               </option>
               <option value="Y">Sudah Assign</option>
               <option value="N">Belum Assign</option>
@@ -788,81 +788,93 @@ const DaftarGukar = () => {
               </button>
             </div>
           </div>
-          <table className="table table-zebra table-sm">
-            {/* head */}
-            <thead className="bg-blue-300">
-              <tr className="text-center">
-                <th>NO</th>
-                <th>Nomor Karyawan/ NIK</th>
-                <th>Nama Lengkap</th>
-                <th>L/P</th>
-                <th>Tempat Lahir</th>
-                <th>Agama</th>
-                <th>Kawin/ Belum Kawin</th>
-                <th>Pendidikan Terakhir</th>
-                <th>Waktu Mulai Bekerja</th>
-                <th>Tetap/ Kontrak</th>
-                <th>Jabatan/ Tugas</th>
-                <th>Status Akun</th>
-                <th>Action</th>
-              </tr>
-            </thead>
-            <tbody>
-              {DataGukar?.map((item: Employee, index: number) => (
-                <tr key={item.id}>
-                  <th>{index + 1}</th>
-                  <td>{item?.employee_no}</td>
-                  <td>{item?.full_name}</td>
-                  <td>{item?.gender}</td>
-                  <td>{item?.pob}</td>
-                  <td>{item?.religion}</td>
-                  <td>{item?.marital_status}</td>
-                  <td>{item?.last_education}</td>
-                  <td>{item?.work_start_date}</td>
-                  <td>{item?.employee_status}</td>
-                  <td>{item?.job_desc}</td>
-                  <td className="text-center">
-                    {item?.user_id == null ? (
-                      <button
-                        className="btn btn-ghost btn-sm text-orange-500 text-xl"
-                        onClick={() => handleShowAlert(item?.id, "findingdata")}
-                      >
-                        <FaLinkSlash />
-                      </button>
-                    ) : (
-                      <p>
+          <div className="overflow-x-auto">
+            <table className="table table-zebra table-sm w-[100%] ">
+              {/* head */}
+              <thead className="bg-blue-300">
+                <tr className="text-center">
+                  <th>NO</th>
+                  <th>Nomor Pegawai</th>
+                  <th>Nama Lengkap</th>
+                  <th>Jenis Kelamin</th>
+                  <th>Tempat Lahir</th>
+                  <th>Tanggal Lahir</th>
+                  <th>Agama</th>
+                  <th>Pendidikan Terakhir</th>
+                  <th>Jurusan</th>
+                  <th>Status Pekerjaan</th>
+                  <th>Tanggal Mulai Bekerja</th>
+                  <th>Pekerjaan</th>
+                  <th>Nama Lengkap User</th>
+                  <th>Email User</th>
+                  <th>Akun</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                {DataGukar?.map((item: Employee, index: number) => (
+                  <tr key={item.id}>
+                    <th>{filter.page * filter.limit + index + 1}</th>
+                    <td>{item.employee_no}</td>
+                    <td>{item.full_name}</td>
+                    <td>{item.gender}</td>
+                    <td>{item.pob}</td>
+                    <td>{new Date(item.dob).toLocaleDateString()}</td>
+                    <td>{item.religion}</td>
+                    <td>{item.last_education}</td>
+                    <td>{item.major}</td>
+                    <td>{item.employee_status}</td>
+                    <td>
+                      {new Date(item.work_start_date).toLocaleDateString()}
+                    </td>
+                    <td>{item.occupation}</td>
+                    <td>{item.full_name}</td>
+                    <td>{item.email}</td>
+                    <td className="text-center">
+                      {item?.user_id == null ? (
                         <button
                           className="btn btn-ghost btn-sm text-orange-500 text-xl"
                           onClick={() =>
                             handleShowAlert(item?.id, "findingdata")
                           }
                         >
-                          <FaLink />
-                          {/* {item?.user_id} */}
+                          <FaLinkSlash />
                         </button>
-                      </p>
-                    )}
-                  </td>
-                  <td className="text-center">
-                    <div className="join">
-                      <button
-                        className="btn btn-ghost btn-sm text-orange-500 text-xl"
-                        onClick={() => handleEdit(item)}
-                      >
-                        <FaPencil />
-                      </button>
-                      <button
-                        className="btn btn-ghost btn-sm text-red-500 text-xl"
-                        onClick={() => handleDelete(item)}
-                      >
-                        <FaRegTrashAlt />
-                      </button>
-                    </div>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+                      ) : (
+                        <p>
+                          <button
+                            className="btn btn-ghost btn-sm text-orange-500 text-xl"
+                            onClick={() =>
+                              handleShowAlert(item?.id, "findingdata")
+                            }
+                          >
+                            <FaLink />
+                            {/* {item?.user_id} */}
+                          </button>
+                        </p>
+                      )}
+                    </td>
+                    <td className="text-center">
+                      <div className="join">
+                        <button
+                          className="btn btn-ghost btn-sm text-orange-500 text-xl"
+                          onClick={() => handleEdit(item)}
+                        >
+                          <FaPencil />
+                        </button>
+                        <button
+                          className="btn btn-ghost btn-sm text-red-500 text-xl"
+                          onClick={() => handleDelete(item)}
+                        >
+                          <FaRegTrashAlt />
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
           <PaginationControl
             meta={pageMeta}
             onPrevClick={() => handleFilter("page", pageMeta.page - 1)}

@@ -14,7 +14,7 @@
     "url": "",
     "subtitle": [
       {
-        "name": "Pengaturan",
+        "name": "Tahun Ajaran",
         "url": "/setting"
       },
       {
@@ -37,22 +37,32 @@
         "name": "Data Siswa",
         "url": "/data-siswa"
       },
-
       {
-        "name": "Pindah Kelas",
-        "url": "/guru/adm-siswa"
+        "name": "History Siswa",
+        "url": "/history-siswa"
       },
       {
-        "name": "Naik Kelas",
-        "url": "/guru/adm-siswa"
-      },
-      {
-        "name": "Data Alumni",
-        "url": "/guru/adm-siswa"
+        "name": "Akun Siswa",
+        "url": "/siswa/akun-siswa"
       }
     ]
   },
-
+  {
+    "submenu": true,
+    "title": "Orang Tua",
+    "icon": "<FaUsers />",
+    "url": "",
+    "subtitle": [
+      {
+        "name": "Data Orang Tua",
+        "url": "/data-ortu"
+      },
+      {
+        "name": "Hubungan Orang Tua",
+        "url": "/hub-ortu"
+      }
+    ]
+  },
   {
     "submenu": true,
     "title": "User",
@@ -60,12 +70,8 @@
     "url": "",
     "subtitle": [
       {
-        "name": "Role Akses",
-        "url": "/guru/adm-siswa"
-      },
-      {
         "name": "Daftar User",
-        "url": "/daftar-user"
+        "url": "/guru/daftar-user"
       }
     ]
   },
@@ -80,14 +86,30 @@
         "url": "/guru-karyawan"
       },
       {
-        "name": "Wali Siswa",
-        "url": "/guru-walisiswa"
+        "name": "Daftar Kepala Sekolah",
+        "url": "/kepala-sekolah"
       },
       {
-        "name": "Mata Pelajaran",
-        "url": "/guru-matapelajaran"
+        "name": "Penugasan Wali Kelas",
+        "url": "/guru/wali-kelas"
+      },
+      {
+        "name": "Penugasan Mata Pelajaran",
+        "url": "/guru/mata-pelajaran"
+      },
+      {
+        "name": "Penugasan Mata Pelajaran Extra",
+        "url": "/guru/mata-pelajaran-extra"
       }
     ]
+  },
+
+  {
+    "submenu": false,
+    "title": "Customer Care",
+    "icon": "<IoChatbubbles />",
+    "url": "/cs-admin",
+    "subtitle": []
   },
   {
     "submenu": false,

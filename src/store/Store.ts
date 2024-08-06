@@ -47,6 +47,15 @@ const LoginStore = create<LoginProps>((set: SetState<LoginProps>) => ({
     }
     set({ role });
   },
+  id: GetCookies("id"),
+  setId: (id) => {
+    if (id) {
+      SetCookies("id", id, 2);
+    } else {
+      DeleteCookies("id");
+    }
+    set({ id });
+  },
 }));
 
 export { LoginStore };
