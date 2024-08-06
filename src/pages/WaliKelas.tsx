@@ -104,12 +104,12 @@ const WaliKelas = () => {
       id,
     } = value;
     const result = await Swal.fire({
-      title: "Are you sure?",
-      text: `Do you want to continue deleting ${full_name}?`,
+      title: "Apakah kamu yakin?",
+      text: `Ingin menghapus data  ${full_name}?`,
       icon: "question",
       showCancelButton: true,
-      confirmButtonText: "Yes, delete",
-      cancelButtonText: "No, cancel",
+      confirmButtonText: "Ya, hapus",
+      cancelButtonText: "Tidak",
     });
     if (result.isConfirmed) {
       DeleteWaKel(id);

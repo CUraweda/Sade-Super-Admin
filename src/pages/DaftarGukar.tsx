@@ -119,12 +119,12 @@ const DaftarGukar = () => {
   const handleDelete = async (value: EmployeeDetail) => {
     const { full_name, id } = value;
     const result = await Swal.fire({
-      title: "Are you sure?",
-      text: `Do you want to continue deleting ${full_name}?`,
+      title: "Apakah kamu yakin?",
+      text: `Ingin menghapus data  ${full_name}?`,
       icon: "question",
       showCancelButton: true,
-      confirmButtonText: "Yes, delete",
-      cancelButtonText: "No, cancel",
+      confirmButtonText: "Ya, hapus",
+      cancelButtonText: "Tidak",
     });
     if (result.isConfirmed) {
       DeleteGuruKaryawan(id);
@@ -380,7 +380,7 @@ const DaftarGukar = () => {
   });
   const handleTautanAkun = async (value: any) => {
     const result = await Swal.fire({
-      title: "Are you sure?",
+      title: "Apakah kamu yakin?",
       text: `Apakah ingin menautkan akun ini?`,
       icon: "question",
       showCancelButton: true,
