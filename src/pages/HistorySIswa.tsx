@@ -89,7 +89,7 @@ const HistorySiswa = () => {
   const handleDelete = async (value: any) => {
     const { id } = value;
     const result = await Swal.fire({
-      title: "Are you sure?",
+      title: "Apakah kamu yakin?",
       text: `Do you want to continue deleting ${value.student.full_name}?`,
       icon: "question",
       showCancelButton: true,

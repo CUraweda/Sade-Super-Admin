@@ -104,7 +104,7 @@ const WaliKelas = () => {
       id,
     } = value;
     const result = await Swal.fire({
-      title: "Are you sure?",
+      title: "Apakah kamu yakin?",
       text: `Do you want to continue deleting ${full_name}?`,
       icon: "question",
       showCancelButton: true,
