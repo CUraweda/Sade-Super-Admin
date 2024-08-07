@@ -131,7 +131,7 @@ const SettingPage = () => {
           Swal.fire({
             icon: "success",
             title: "Sukses",
-            text: "Sukses Merubah data Guru Wali Kelas",
+            text: "Sukses Merubah data Tahun Ajaran",
           });
 
           handleCloseModal();
@@ -143,7 +143,7 @@ const SettingPage = () => {
           Swal.fire({
             icon: "success",
             title: "Sukses",
-            text: "Sukses Membuat data Guru Wali Kelas",
+            text: "Sukses Membuat data Tahun Ajaran",
           });
 
           handleCloseModal();

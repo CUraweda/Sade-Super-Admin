@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Auth } from "../middleware/Api";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { LoginStore } from "../store/Store";
@@ -14,10 +15,14 @@ const schema = Yup.object({
 });
 
 const Login = () => {
+  const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
   const [loading, setLoading] = useState<boolean>(false);
   const { setToken, setRole, setId } = LoginStore();
 
+  const toggleShowPassword = () => {
+    setShowPassword(!showPassword);
+  };
   const formik = useFormik({
     initialValues: {
       email: "",
@@ -97,17 +102,25 @@ const Login = () => {
               />
             </div>
             <div className="w-full flex justify-center flex-col items-center">
-              <label htmlFor="" className="w-5/6 font-bold text-black">
+              <label htmlFor="password" className="w-5/6 font-bold text-black">
                 Password
               </label>
-              <input
-                type="password"
-                name="password"
-                placeholder="Type here"
-                onChange={formik.handleChange}
-                value={formik.values.password}
-                className="input input-bordered w-5/6 glass shadow-md text-black"
-              />
+              <div className="relative w-5/6">
+                <input
+                  type={showPassword ? "text" : "password"}
+                  name="password"
+                  placeholder="Type here"
+                  onChange={formik.handleChange}
+                  value={formik.values.password}
+                  className="input input-bordered w-full glass shadow-md text-black"
+                />
+                <div
+                  className="absolute inset-y-0 right-0 flex items-center pr-3 cursor-pointer"
+                  onClick={toggleShowPassword}
+                >
+                  {showPassword ? <FaEyeSlash /> : <FaEye />}
+                </div>
+              </div>
             </div>
             <div className="w-full flex justify-center my-5">
               <button
