@@ -459,7 +459,7 @@ const DataSiswa = () => {
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
               >
-                <option value="Ya">Ya</option>
+                <option value="ya">Ya</option>
                 <option value="Tidak">Tidak</option>
               </select>
               {formik.touched.is_active && formik.errors.is_active && (
