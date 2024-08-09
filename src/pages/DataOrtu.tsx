@@ -96,8 +96,6 @@ const DataOrtu = () => {
       .required("Email wajib diisi"),
     field_of_work: Yup.string().required("Bidang pekerjaan wajib diisi"),
     last_education: Yup.string().required("Pendidikan terakhir wajib diisi"),
-    latitude: Yup.number().required("Latitude wajib diisi").nullable(),
-    longitude: Yup.number().required("Longitude wajib diisi").nullable(),
   });
 
   const formik = useFormik({
@@ -279,13 +277,20 @@ const DataOrtu = () => {
                 <label className="block text-sm font-medium mb-1">
                   Berperan Sebagai
                 </label>
-                <input
-                  type="text"
+                <select
                   name="parent_type"
-                  className="input input-bordered w-full"
-                  onChange={formik.handleChange}
+                  className="select select-bordered w-full"
                   value={formik.values.parent_type}
-                />
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                >
+                  <option value="" disabled>
+                    Pilih salah satu
+                  </option>
+                  <option value="Ayah">Ayah</option>
+                  <option value="Ibu">Ibu</option>
+                  <option value="Wali">Wali</option>
+                </select>
                 {formik.errors.parent_type && (
                   <div className="text-red-500 text-sm">
                     {formik.errors.parent_type}
@@ -296,19 +301,26 @@ const DataOrtu = () => {
                 <label className="block text-sm font-medium mb-1">
                   Kewarnegaraan
                 </label>
-                <input
-                  type="text"
+                <select
                   name="nationality"
-                  className="input input-bordered w-full"
-                  onChange={formik.handleChange}
+                  className="select select-bordered w-full"
                   value={formik.values.nationality}
-                />
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                >
+                  <option value="" disabled>
+                    Pilih salah satu
+                  </option>
+                  <option value="WNI">WNI</option>
+                  <option value="WNA">WNA</option>
+                </select>
                 {formik.errors.nationality && (
                   <div className="text-red-500 text-sm">
                     {formik.errors.nationality}
                   </div>
                 )}
               </div>
+
               <div>
                 <label className="block text-sm font-medium mb-1">Agama</label>
                 <input
@@ -416,11 +428,6 @@ const DataOrtu = () => {
                   onChange={formik.handleChange}
                   value={formik.values.latitude}
                 />
-                {formik.errors.latitude && (
-                  <div className="text-red-500 text-sm">
-                    {formik.errors.latitude}
-                  </div>
-                )}
               </div>
               <div>
                 <label className="block text-sm font-medium mb-1">
@@ -433,11 +440,6 @@ const DataOrtu = () => {
                   onChange={formik.handleChange}
                   value={formik.values.longitude}
                 />
-                {formik.errors.longitude && (
-                  <div className="text-red-500 text-sm">
-                    {formik.errors.longitude}
-                  </div>
-                )}
               </div>
             </div>
             <div className="flex justify-end mt-4">
