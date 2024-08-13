@@ -221,7 +221,7 @@ const DaftarKepsek = () => {
   };
 
   const getCategorys = () => {
-    return ["Cluster Bawah", "Cluster Atas", "Cluster Tinggal"];
+    return ["Cluster Bawah", "Cluster Atas", "Cluster Tinggi"];
   };
 
   const currentYear = new Date().getFullYear();
