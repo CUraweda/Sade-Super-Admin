@@ -91,9 +91,6 @@ const DataOrtu = () => {
     religion: Yup.string().required("Agama wajib diisi"),
     address: Yup.string().required("Alamat wajib diisi"),
     phone: Yup.string().required("Nomor Hp wajib diisi"),
-    email: Yup.string()
-      .email("Email tidak valid")
-      .required("Email wajib diisi"),
     field_of_work: Yup.string().required("Bidang pekerjaan wajib diisi"),
     last_education: Yup.string().required("Pendidikan terakhir wajib diisi"),
   });
@@ -377,11 +374,6 @@ const DataOrtu = () => {
                   onChange={formik.handleChange}
                   value={formik.values.email}
                 />
-                {formik.errors.email && (
-                  <div className="text-red-500 text-sm">
-                    {formik.errors.email}
-                  </div>
-                )}
               </div>
               <div>
                 <label className="block text-sm font-medium mb-1">
