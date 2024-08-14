@@ -119,12 +119,12 @@ const DaftarGukar = () => {
   const handleDelete = async (value: EmployeeDetail) => {
     const { full_name, id } = value;
     const result = await Swal.fire({
-      title: "Are you sure?",
-      text: `Do you want to continue deleting ${full_name}?`,
+      title: "Apakah kamu yakin?",
+      text: `Ingin menghapus data  ${full_name}?`,
       icon: "question",
       showCancelButton: true,
-      confirmButtonText: "Yes, delete",
-      cancelButtonText: "No, cancel",
+      confirmButtonText: "Ya, hapus",
+      cancelButtonText: "Tidak",
     });
     if (result.isConfirmed) {
       DeleteGuruKaryawan(id);
@@ -233,8 +233,8 @@ const DaftarGukar = () => {
   ];
 
   const isEducationOptions = [
-    { value: "Non Karyawan", label: "Non Karyawan" },
-    { value: "Karyawan", label: "Karyawan" },
+    { value: "Non Kuliah", label: "Non Kuliah" },
+    { value: "Kuliah", label: "Kuliah" },
   ];
 
   const employeeStatusOptions = [
@@ -273,7 +273,7 @@ const DaftarGukar = () => {
       .positive("Tahun Ijazah harus positif")
       .integer("Tahun Ijazah harus bilangan bulat"),
     is_education: Yup.string()
-      .oneOf(["Non Karyawan", "Karyawan"], "Is Education harus NK atau K")
+      .oneOf(["Non Kulian", "Kuliah"], "Is Education harus Tidak atau Ya")
       .required("Status Pendidikan diperlukan"),
     major: Yup.string().required("Jurusan diperlukan"),
     employee_status: Yup.string()
@@ -380,7 +380,7 @@ const DaftarGukar = () => {
   });
   const handleTautanAkun = async (value: any) => {
     const result = await Swal.fire({
-      title: "Are you sure?",
+      title: "Apakah kamu yakin?",
       text: `Apakah ingin menautkan akun ini?`,
       icon: "question",
       showCancelButton: true,
@@ -474,7 +474,7 @@ const DaftarGukar = () => {
                                     className="bg-blue-500 text-white px-4 py-2 text-xs btn-sm rounded"
                                     onClick={() => handleTautanAkun(item.id)}
                                   >
-                                    Select
+                                    Pilih
                                   </button>
                                 </td>
                               </tr>

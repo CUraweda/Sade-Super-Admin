@@ -32,7 +32,6 @@ const HistorySiswa = () => {
   const [DataStudent, setDataStudent] = useState<ResultItemStudent[]>([]);
   const [EditData, setEditData] = useState<EditFormValuesStudent | null>(null);
   const [StudentList, setStudentList] = useState<any>([]);
-
   const handleFilter = (key: string, value: any) => {
     const obj = {
       ...filter,
@@ -90,12 +89,12 @@ const HistorySiswa = () => {
   const handleDelete = async (value: any) => {
     const { id } = value;
     const result = await Swal.fire({
-      title: "Are you sure?",
-      text: `Do you want to continue deleting ${value.student.full_name}?`,
+      title: "Apakah kamu yakin?",
+      text: `Ingin menghapus data  ${value.student.full_name}?`,
       icon: "question",
       showCancelButton: true,
-      confirmButtonText: "Yes, delete",
-      cancelButtonText: "No, cancel",
+      confirmButtonText: "Ya, hapus",
+      cancelButtonText: "Tidak",
     });
     if (result.isConfirmed) {
       deleteHistoryStudent(id);
@@ -123,23 +122,27 @@ const HistorySiswa = () => {
   const FormStudentSchema = Yup.object().shape({
     student_id: Yup.number().required("Student ID is required"),
     class_id: Yup.number().required("Class ID is required"),
-    academic_year: Yup.string().required("Academic Year is required"),
+    // academic_year: Yup.string().required("Academic Year is required"),
+    start_year: Yup.string().required("Awal Tahun is required"),
+    end_year: Yup.string().required("Akhir Tahun is required"),
     is_active: Yup.string()
       .oneOf(["Ya", "Tidak"], "Invalid selection")
       .required("Active status is required"),
   });
-
   const FormStudent = useFormik<EditFormValuesStudent>({
     initialValues: {
       student_id: EditData?.student_id || "",
       class_id: EditData?.class_id || "",
-      academic_year: EditData?.academic_year || "",
+      start_year: EditData?.start_year || "",
+      end_year: EditData?.end_year || "",
       is_active: EditData?.is_active || "Ya",
     },
     validationSchema: FormStudentSchema,
     onSubmit: async (values) => {
       const payload = {
         ...values,
+        academic_year:
+          (values.start_year || "") + "/" + (values.end_year || ""),
       };
       try {
         if (alertTodo === "edit") {
@@ -162,10 +165,11 @@ const HistorySiswa = () => {
           handleCloseModal();
         }
       } catch (error) {
+        console.error(error);
         Swal.fire({
           icon: "error",
-          title: "Oops...",
-          text: "Gagal membuat data baru, silahkan coba kembali!",
+          title: "Gagal",
+          text: "Terjadi kesalahan saat menyimpan data",
         });
       }
     },
@@ -180,7 +184,8 @@ const HistorySiswa = () => {
         setEditData({
           student_id: itemToEdit?.student_id.toString(),
           class_id: itemToEdit?.class_id.toString() || "",
-          academic_year: itemToEdit?.academic_year.toString() || "",
+          start_year: itemToEdit?.academic_year.toString().split("/")[0] || "",
+          end_year: itemToEdit?.academic_year.toString().split("/")[1] || "",
           is_active: itemToEdit?.is_active.toString() || "Ya",
         });
       }
@@ -211,14 +216,14 @@ const HistorySiswa = () => {
     closeModal("modal-Settings");
     FormStudent.resetForm();
   };
-  const generateAcademicYears = () => {
-    const currentYear = new Date().getFullYear();
-    const startYear = currentYear - 2;
-    return Array.from(
-      { length: 5 },
-      (_, index) => `${startYear + index}/${startYear + index + 1}`
-    );
-  };
+  // const generateAcademicYears = () => {
+  //   const currentYear = new Date().getFullYear();
+  //   const startYear = currentYear - 2;
+  //   return Array.from(
+  //     { length: 5 },
+  //     (_, index) => `${startYear + index}/${startYear + index + 1}`
+  //   );
+  // };
   // const handleStatus = (event: any) => {
   //   setStatus(event.target.value);
   // };
@@ -276,8 +281,7 @@ const HistorySiswa = () => {
             </div>
           </div>
           <div className="my-2">
-            <label htmlFor="academic_year">Tahun Ajaran</label>
-            <select
+            {/* <select
               id="academic_year"
               name="academic_year"
               className="input input-sm input-bordered items-center gap-2 grow mt-1 block w-full border  rounded-md shadow-sm sm:text-sm"
@@ -290,15 +294,48 @@ const HistorySiswa = () => {
               </option>
               {generateAcademicYears().map((year) => (
                 <option key={year} value={year}>
-                  {year}
+                {year}
                 </option>
-              ))}
-            </select>
-            <div className="text-red-500 text-sm">
-              {FormStudent.touched.academic_year &&
-              FormStudent.errors.academic_year ? (
-                <div>{FormStudent.errors.academic_year}</div>
-              ) : null}
+                ))}
+                </select> */}
+            <div className="flex w-full gap-2 my-2">
+              <div className="block w-[50%]">
+                <label htmlFor="start_year">Awal Tahun Ajaran</label>
+                <input
+                  id="start_year"
+                  name="start_year"
+                  className="input  input-sm input-bordered items-center gap-2 grow mt-1 block w-full border rounded-md shadow-sm sm:text-sm"
+                  type="text"
+                  value={FormStudent.values.start_year}
+                  onChange={FormStudent.handleChange}
+                  onBlur={FormStudent.handleBlur}
+                />
+                <div className="text-red-500 text-sm">
+                  {FormStudent.touched.start_year &&
+                  FormStudent.errors.start_year ? (
+                    <div>{FormStudent.errors.start_year}</div>
+                  ) : null}
+                </div>
+              </div>
+
+              <div className="block w-[50%]">
+                <label htmlFor="start_year">Akhir Tahun Ajaran</label>
+                <input
+                  id="end_year"
+                  name="end_year"
+                  type="text"
+                  className="input input-sm input-bordered items-center gap-2 grow mt-1 block w-full border rounded-md shadow-sm sm:text-sm "
+                  value={FormStudent.values.end_year}
+                  onChange={FormStudent.handleChange}
+                  onBlur={FormStudent.handleBlur}
+                />
+                <div className="text-red-500 text-sm">
+                  {FormStudent.touched.end_year &&
+                  FormStudent.errors.end_year ? (
+                    <div>{FormStudent.errors.end_year}</div>
+                  ) : null}
+                </div>
+              </div>
             </div>
           </div>
           <div className="my-2">
@@ -387,7 +424,7 @@ const HistorySiswa = () => {
                     <td>{item.student.nis}</td>
                     <td>{item.student.nisn}</td>
                     <td>{item.student.full_name}</td>
-                    <td>{item.student.level}</td>
+                    <td>{item.class.level}</td>
                     <td>{item.academic_year}</td>
                     <td>{item.class.class_name}</td>
                     <td>{item.is_active === "Ya" ? "Aktif" : "Tidak Aktif"}</td>

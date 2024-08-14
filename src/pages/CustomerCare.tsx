@@ -6,6 +6,7 @@ import { LoginStore } from "../store/Store";
 import { User, Chat } from "../middleware/utils";
 import { IoSend } from "react-icons/io5";
 import Swal from "sweetalert2";
+import socketService from "../socket";
 
 const CustomerCarePage = () => {
   const { token, id } = LoginStore();
@@ -25,6 +26,7 @@ const CustomerCarePage = () => {
     getUserChatsdata();
     getDataChatAll();
     getMessages;
+    socketConnect
   }, []);
 
   useEffect(() => {
@@ -32,6 +34,15 @@ const CustomerCarePage = () => {
       getMessages();
     }
   }, [currentReceiverId]);
+
+  const socketConnect = async () => {
+    await socketService.connect()
+    socketService.on("cc_refresh", () => {
+      getUserChatsdata()
+      getDataChatAll()
+      getMessages()
+    })
+  }
 
   const getUserChatsdata = async () => {
     try {
@@ -108,6 +119,7 @@ const CustomerCarePage = () => {
       );
       getMessages();
       setInputMessage("");
+      socketService.emit('cc', {})
     } catch (err) {
       console.error(err);
     }

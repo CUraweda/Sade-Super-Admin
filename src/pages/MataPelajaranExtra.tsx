@@ -126,14 +126,14 @@ const MataPelajaranExtra = () => {
   const handleDelete = async (state: string, value: any) => {
     const { id } = value;
     const result = await Swal.fire({
-      title: "Are you sure?",
-      text: `Do you want to continue deleting ${
+      title: "Apakah kamu yakin?",
+      text: `Ingin menghapus data  ${
         state !== "MapelExtra" ? value.employee.full_name : value.name
       }?`,
       icon: "question",
       showCancelButton: true,
-      confirmButtonText: "Yes, delete",
-      cancelButtonText: "No, cancel",
+      confirmButtonText: "Ya, hapus",
+      cancelButtonText: "Tidak",
     });
     if (result.isConfirmed) {
       DeleteGuruMataExtra(id);
@@ -427,7 +427,7 @@ const MataPelajaranExtra = () => {
             </div>
 
             <div className="my-2">
-              <label htmlFor="is_active">Active Status</label>
+              <label htmlFor="is_active">Status</label>
               <select
                 id="is_active"
                 name="is_active"
@@ -435,8 +435,8 @@ const MataPelajaranExtra = () => {
                 value={FormGuruExtra.values.is_active}
                 onChange={FormGuruExtra.handleChange}
               >
-                <option value="true">Active</option>
-                <option value="false">Inactive</option>
+                <option value="true">Aktif</option>
+                <option value="false">Tidak Aktif</option>
               </select>
               <div className="text-red-500 text-sm">
                 {FormGuruExtra.errors.is_active ? (

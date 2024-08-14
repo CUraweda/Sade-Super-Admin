@@ -92,12 +92,12 @@ const PenautanSiswa = () => {
   const handleDelete = async (value: any) => {
     const { id } = value;
     const result = await Swal.fire({
-      title: "Are you sure?",
-      text: `Do you want to continue deleting ${value.user.full_name}?`,
+      title: "Apakah kamu yakin?",
+      text: `Ingin menghapus data  ${value.user.full_name}?`,
       icon: "question",
       showCancelButton: true,
-      confirmButtonText: "Yes, delete",
-      cancelButtonText: "No, cancel",
+      confirmButtonText: "Ya, hapus",
+      cancelButtonText: "Tidak",
     });
     if (result.isConfirmed) {
       DeleteAksesSiswa(id);

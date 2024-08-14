@@ -84,12 +84,12 @@ const SettingPage = () => {
   const handleDelete = async (value: any) => {
     const { id } = value;
     const result = await Swal.fire({
-      title: "Are you sure?",
-      text: `Do you want to continue deleting ${value.name}?`,
+      title: "Apakah kamu yakin?",
+      text: `Ingin menghapus data  ${value.name}?`,
       icon: "question",
       showCancelButton: true,
-      confirmButtonText: "Yes, delete",
-      cancelButtonText: "No, cancel",
+      confirmButtonText: "Ya, hapus",
+      cancelButtonText: "Tidak",
     });
     if (result.isConfirmed) {
       deleteSettingsData(id);
@@ -131,7 +131,7 @@ const SettingPage = () => {
           Swal.fire({
             icon: "success",
             title: "Sukses",
-            text: "Sukses Merubah data Guru Wali Kelas",
+            text: "Sukses Merubah data Tahun Ajaran",
           });
 
           handleCloseModal();
@@ -143,7 +143,7 @@ const SettingPage = () => {
           Swal.fire({
             icon: "success",
             title: "Sukses",
-            text: "Sukses Membuat data Guru Wali Kelas",
+            text: "Sukses Membuat data Tahun Ajaran",
           });
 
           handleCloseModal();
@@ -202,14 +202,14 @@ const SettingPage = () => {
     closeModal("modal-Settings");
     FormSettings.resetForm();
   };
-  const generateAcademicYears = () => {
-    const currentYear = new Date().getFullYear();
-    const startYear = currentYear - 2;
-    return Array.from(
-      { length: 5 },
-      (_, index) => `${startYear + index}/${startYear + index + 1}`
-    );
-  };
+  // const generateAcademicYears = () => {
+  //   const currentYear = new Date().getFullYear();
+  //   const startYear = currentYear - 2;
+  //   return Array.from(
+  //     { length: 5 },
+  //     (_, index) => `${startYear + index}/${startYear + index + 1}`
+  //   );
+  // };
 
   return (
     <>
@@ -217,31 +217,23 @@ const SettingPage = () => {
         <form onSubmit={FormSettings.handleSubmit}>
           <div className="my-2">
             <label htmlFor="name">Tahun Ajaran</label>
-            <select
+            <input
               id="name"
               name="name"
-              className="input input-sm input-bordered items-center gap-2 grow mt-1 block w-full border  rounded-md shadow-sm sm:text-sm"
-              onChange={FormSettings.handleChange}
-              onBlur={FormSettings.handleBlur}
+              type="text"
+              className="input input-sm input-bordered items-center gap-2 grow mt-1 block w-full border rounded-md shadow-sm sm:text-sm"
               value={FormSettings.values.name}
-            >
-              <option disabled value="">
-                Pilih tahun ajaran
-              </option>
-              {generateAcademicYears().map((year) => (
-                <option key={year} value={year}>
-                  {year}
-                </option>
-              ))}
-            </select>
+              onChange={FormSettings.handleChange}
+              placeholder="e.g., 2024/2025"
+            />
             <div className="text-red-500 text-sm">
-              {FormSettings.touched.name && FormSettings.errors.name ? (
+              {FormSettings.errors.name ? (
                 <div>{FormSettings.errors.name}</div>
               ) : null}
             </div>
           </div>
           <div className="my-2">
-            <label htmlFor="status">Active Status</label>
+            <label htmlFor="status">Status</label>
             <select
               id="status"
               name="status"
@@ -249,8 +241,9 @@ const SettingPage = () => {
               value={FormSettings.values.status}
               onChange={FormSettings.handleChange}
             >
-              <option value={"Aktif"}>Active</option>
-              <option value={"Tidak Aktif"}>Inactive</option>
+              <option value={""}>Pilih</option>
+              <option value={"Aktif"}>Aktif</option>
+              <option value={"Tidak Aktif"}>Tidak Aktif</option>
             </select>
             <div className="text-red-500 text-sm">
               {FormSettings.errors.status ? (

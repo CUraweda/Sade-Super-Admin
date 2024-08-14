@@ -172,13 +172,13 @@ const DaftarKepsek = () => {
 
   const trigerDelete = (id: number) => {
     Swal.fire({
-      title: "Are you sure?",
-      text: "You won't be able to revert this!",
+      title: "Apakah kamu yakin?",
+      text: "Kamu tidak dapat mengembalikan ini!",
       icon: "warning",
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
       cancelButtonColor: "#d33",
-      confirmButtonText: "Yes, delete it!",
+      confirmButtonText: "Ya, hapus!",
     }).then((result) => {
       if (result.isConfirmed) {
         HandleDeleteKepsek(id);
@@ -221,7 +221,7 @@ const DaftarKepsek = () => {
   };
 
   const getCategorys = () => {
-    return ["Cluster Bawah", "Cluster Atas", "Cluster Tinggal"];
+    return ["Cluster Bawah", "Cluster Atas", "Cluster Tinggi"];
   };
 
   const currentYear = new Date().getFullYear();
