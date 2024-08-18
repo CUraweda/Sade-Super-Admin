@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { FaPlus, FaRegTrashAlt } from "react-icons/fa";
 import { IoSearch } from "react-icons/io5";
 import { FaPencil } from "react-icons/fa6";
-import { AksesSiswa, Student } from "../middleware/Api";
+import { AksesSiswa, Student, Wali } from "../middleware/Api";
 import { LoginStore } from "../store/Store";
 import { IpageMeta, PaginationControl } from "../component/PaginationControl";
 import {
@@ -18,6 +18,8 @@ const PenautanSiswa = () => {
   const { token } = LoginStore();
   const [pageMeta, setPageMeta] = useState<IpageMeta>({ page: 0, limit: 10 });
   const [querysearch, setQuerySearch] = useState<any>("");
+  const [dataDropdownLevel, setDataDropdownLevel] = useState<any[]>([]);
+  const [level, setLevel] = useState("");
   // const [selectedOption, setStatus] = useState<any>(null);
   const [alertTodo, setAlertTodo] = useState("");
   const [idUser, setidUser] = useState<any>(null);
@@ -50,7 +52,8 @@ const PenautanSiswa = () => {
         token,
         querysearch,
         filter.limit,
-        filter.page
+        filter.page,
+        level
       );
       const { result, ...meta } = response.data.data;
       setDataAksesSiswa(result);
@@ -108,6 +111,14 @@ const PenautanSiswa = () => {
 
   const fetchAllSiswa = async () => {
     const response = await Student.getAllStudent(token, "", 100000, 0);
+    const responseDropdown = await Wali.GetAllKelas(token, 10000);
+
+    const uniqueDropdownLevel = responseDropdown.data.data.result.filter(
+      (item: any, index: any, self: any) =>
+        index === self.findIndex((t: any) => t.level === item.level)
+    );
+
+    setDataDropdownLevel(uniqueDropdownLevel);
     const { result } = response.data.data;
     setAksesSiswaList(result);
   };
@@ -120,7 +131,7 @@ const PenautanSiswa = () => {
     DataAkses();
     fetchAllSiswa();
     fetchAllUser();
-  }, []);
+  }, [level]);
 
   // Schema validasi dengan Yup
   const FormAksesSiswaSchema = Yup.object().shape({
@@ -272,6 +283,19 @@ const PenautanSiswa = () => {
 
         <div className="w-full mt-5 bg-white p-4 rounded-md shadow-md ">
           <div className="w-full flex justify-end my-4 gap-2 items-center">
+            <select
+              className="select select-bordered w-full select-sm max-w-[15rem]"
+              onChange={(e) => setLevel(e.target.value)}
+            >
+              <option disabled selected>
+                Pilih
+              </option>
+              {dataDropdownLevel.map((item, index) => (
+                <option key={index} value={item.level}>
+                  {item.level}
+                </option>
+              ))}
+            </select>
             <label className="input input-sm input-bordered flex items-center gap-2">
               <input
                 type="text"
