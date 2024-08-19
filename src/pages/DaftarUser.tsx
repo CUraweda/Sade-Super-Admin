@@ -1,5 +1,12 @@
 import { useEffect, useState } from "react";
-import { FaPlus, FaRegTrashAlt, FaCheck, FaTimes } from "react-icons/fa";
+import {
+  FaPlus,
+  FaRegTrashAlt,
+  FaCheck,
+  FaTimes,
+  FaEye,
+  FaEyeSlash,
+} from "react-icons/fa";
 import { FaPencil } from "react-icons/fa6";
 import { User } from "../middleware/Api";
 import { UserList } from "../middleware/utils";
@@ -21,6 +28,11 @@ const DaftarUser = () => {
     limit: 10,
   });
   const [editingUser, setEditingUser] = useState<UserList | null>(null);
+  const [showPassword, setShowPassword] = useState(false);
+
+  const toggleShowPassword = () => {
+    setShowPassword(!showPassword);
+  };
 
   const validationSchemaAdd = Yup.object({
     full_name: Yup.string().required("Nama tidak boleh kosong"),
@@ -371,12 +383,12 @@ const DaftarUser = () => {
                   </span>
                 )}
             </div>
-            <div className="form-control">
+            <div className="form-control relative">
               <label htmlFor="password" className="label">
                 <span className="label-text">Password</span>
               </label>
               <input
-                type="password"
+                type={showPassword ? "text" : "password"}
                 id="password"
                 name="password"
                 className="input input-bordered"
@@ -384,6 +396,12 @@ const DaftarUser = () => {
                 onBlur={formikCreateUser.handleBlur}
                 value={formikCreateUser.values.password}
               />
+              <div
+                className="absolute inset-y-0 mt-8 right-0 flex items-center pr-3 cursor-pointer"
+                onClick={toggleShowPassword}
+              >
+                {showPassword ? <FaEyeSlash /> : <FaEye />}
+              </div>
               {formikCreateUser.errors.password &&
                 formikCreateUser.touched.password && (
                   <span className="text-red-500 text-sm">
@@ -391,12 +409,12 @@ const DaftarUser = () => {
                   </span>
                 )}
             </div>
-            <div className="form-control">
+            <div className="form-control relative">
               <label htmlFor="confirm_password" className="label">
                 <span className="label-text">Konfirmasi Password</span>
               </label>
               <input
-                type="password"
+                type={showPassword ? "text" : "password"}
                 id="confirm_password"
                 name="confirm_password"
                 className="input input-bordered"
@@ -404,6 +422,12 @@ const DaftarUser = () => {
                 onBlur={formikCreateUser.handleBlur}
                 value={formikCreateUser.values.confirm_password}
               />
+              <div
+                className="absolute inset-y-0 mt-8 right-0 flex items-center pr-3 cursor-pointer"
+                onClick={toggleShowPassword}
+              >
+                {showPassword ? <FaEyeSlash /> : <FaEye />}
+              </div>
               {formikCreateUser.errors.confirm_password &&
                 formikCreateUser.touched.confirm_password && (
                   <span className="text-red-500 text-sm">
