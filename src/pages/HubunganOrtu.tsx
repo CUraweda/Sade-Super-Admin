@@ -50,7 +50,8 @@ const HubunganOrtu = () => {
         token,
         querysearch,
         filter.limit,
-        filter.page
+        filter.page,
+        ""
       );
       const { result, ...meta } = response.data.data;
       setDataAksesSiswa(result);
