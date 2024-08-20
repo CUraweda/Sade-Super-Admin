@@ -333,7 +333,7 @@ const PenautanSiswa = () => {
               <thead className="bg-blue-300">
                 <tr>
                   <th>No.</th>
-                  <th>Nama User</th>
+                  <th>Nama Orang Tua</th>
                   <th>Email</th>
                   <th>NIS</th>
                   <th>NISN</th>
