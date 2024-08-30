@@ -6,7 +6,11 @@ export default {
     "./src/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
-    extend: {},
+    extend: {
+      screens: {
+        'xl2': {'min': '1400px'}
+      }
+    },
   },
   plugins: [require('daisyui')],
 }

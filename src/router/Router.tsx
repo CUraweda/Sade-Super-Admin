@@ -8,6 +8,7 @@ import HistorySiswa from "../pages/HistorySIswa.tsx";
 import PenautanSiswa from "../pages/PenautanSiswa.tsx";
 
 const Dashboard = lazy(() => import("../pages/Dashboard"));
+const LokasiAbsen = lazy(() => import("../pages/LokasiAbsen.tsx"));
 const Login = lazy(() => import("../pages/Login"));
 const SettingPage = lazy(() => import("../pages/SettingPage"));
 const MapelPage = lazy(() => import("../pages/MapelPage"));
@@ -42,6 +43,20 @@ const Router: React.FC = () => {
                 <Suspense fallback={<Loading />}>
                   <Layout>
                     <Dashboard />
+                  </Layout>
+                </Suspense>
+              }
+            />
+          }
+        />
+        <Route
+          path="/lokasi-absen"
+          element={
+            <ProtectedRoute
+              element={
+                <Suspense fallback={<Loading />}>
+                  <Layout>
+                    <LokasiAbsen />
                   </Layout>
                 </Suspense>
               }

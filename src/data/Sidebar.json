@@ -6,7 +6,6 @@
     "url": "/dashboard",
     "subtitle": []
   },
-
   {
     "submenu": true,
     "title": "Lembaga",
@@ -100,10 +99,13 @@
       {
         "name": "Penugasan Mata Pelajaran Extra",
         "url": "/guru/mata-pelajaran-extra"
+      },
+      {
+        "name": "Lokasi Presensi",
+        "url": "/lokasi-absen"
       }
     ]
   },
-
   {
     "submenu": false,
     "title": "Customer Care",
