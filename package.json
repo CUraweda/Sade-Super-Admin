@@ -11,7 +11,7 @@
   },
   "dependencies": {
     "@react-google-maps/api": "^2.19.3",
-    "axios": "^1.7.2",
+    "axios": "^1.7.5",
     "daisyui": "^4.12.10",
     "formik": "^2.4.6",
     "heroicons-react": "^1.4.1",
@@ -27,6 +27,7 @@
     "zustand": "^4.5.4"
   },
   "devDependencies": {
+    "@types/leaflet": "^1.9.12",
     "@types/react": "^18.3.3",
     "@types/react-dom": "^18.3.0",
     "@typescript-eslint/eslint-plugin": "^7.13.1",

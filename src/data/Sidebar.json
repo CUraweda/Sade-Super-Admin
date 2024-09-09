@@ -6,7 +6,6 @@
     "url": "/dashboard",
     "subtitle": []
   },
-
   {
     "submenu": true,
     "title": "Lembaga",
@@ -100,22 +99,18 @@
       {
         "name": "Penugasan Mata Pelajaran Extra",
         "url": "/guru/mata-pelajaran-extra"
+      },
+      {
+        "name": "Lokasi Presensi",
+        "url": "/lokasi-absen"
       }
     ]
   },
-
   {
     "submenu": false,
     "title": "Customer Care",
     "icon": "<IoChatbubbles />",
     "url": "/cs-admin",
-    "subtitle": []
-  },
-  {
-    "submenu": false,
-    "title": "Backup & Restore",
-    "icon": "<FaDatabase />",
-    "url": "/admin/home",
     "subtitle": []
   }
 ]

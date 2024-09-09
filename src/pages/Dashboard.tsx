@@ -3,8 +3,20 @@ import { useNavigate } from "react-router-dom";
 import { GuruKaryawan, User, Siswa } from "../middleware/Api";
 import { UserList, SiswaList } from "../middleware/utils";
 import { useEffect, useState } from "react";
+import axios from 'axios';
 
 const Dashboard = () => {
+  const [totalLocations, setTotalLocations] = useState(0);
+
+  useEffect(() => {
+    axios.get(`${import.meta.env.VITE_REACT_BASE_API_URL}/api/location/`)
+      .then(response => {
+        setTotalLocations(response.data.length);
+      })
+      .catch(error => {
+        console.error(error);
+      });
+  }, []);
   const { token } = LoginStore();
   const navigate = useNavigate();
   const [listUser, setListUser] = useState<UserList[]>([]);
@@ -51,7 +63,7 @@ const Dashboard = () => {
         </p>
 
         {/* Stats Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl2:grid-cols-4 gap-5 mb-8">
           <div className="bg-blue-600 text-white rounded-lg shadow-lg hover:shadow-2xl transition ease-in-out duration-300 p-6 flex items-center justify-between">
             <div className="flex flex-col">
               <h3 className="text-lg font-semibold mb-1">Total User</h3>
@@ -120,10 +132,32 @@ const Dashboard = () => {
               </svg>
             </div>
           </div>
+          <div className="bg-red-600 text-white rounded-lg shadow-lg hover:shadow-2xl transition ease-in-out duration-300 p-6 flex items-center justify-between">
+            <div className="flex flex-col">
+              <h3 className="text-lg font-semibold mb-1">Total Lokasi Presensi</h3>
+              <p className="text-4xl font-bold">{totalLocations}</p>
+            </div>
+            <div className="p-4 bg-orange-800 rounded-full">
+              <svg
+                className="w-12 h-12 text-orange-200"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d="M5 12h14m-7 7v-7m0-4V7m0 4l-3-3m6 3l3-3"
+                />
+              </svg>
+            </div>
+          </div>
         </div>
 
         {/* Quick Actions */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl2:grid-cols-4 gap-5">
           <div
             className="bg-blue-500 text-white rounded-lg shadow-lg hover:bg-blue-600 transition ease-in-out duration-300 cursor-pointer p-6 flex flex-col items-center text-center"
             onClick={() => navigate("/guru/daftar-user")}
@@ -192,6 +226,29 @@ const Dashboard = () => {
             </svg>
             <h3 className="text-xl font-semibold mb-2">Tambah Siswa</h3>
             <button className="bg-yellow-600 hover:bg-yellow-700 text-white font-bold py-2 px-4 rounded">
+              Tambah
+            </button>
+          </div>
+          <div
+            className="bg-red-500 text-white rounded-lg shadow-lg hover:bg-red-600 transition ease-in-out duration-300 cursor-pointer p-6 flex flex-col items-center text-center"
+            onClick={() => navigate("/lokasi-Absen")}
+          >
+            <svg
+              className="w-16 h-16 mb-4 text-red-200"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                d="M5 12h14m-7 7v-7m0-4V7m0 4l-3-3m6 3l3-3"
+              />
+            </svg>
+            <h3 className="text-xl font-semibold mb-2">Tambah Lokasi</h3>
+            <button className="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
               Tambah
             </button>
           </div>
