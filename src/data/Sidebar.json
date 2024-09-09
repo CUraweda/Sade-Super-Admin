@@ -112,12 +112,5 @@
     "icon": "<IoChatbubbles />",
     "url": "/cs-admin",
     "subtitle": []
-  },
-  {
-    "submenu": false,
-    "title": "Backup & Restore",
-    "icon": "<FaDatabase />",
-    "url": "/admin/home",
-    "subtitle": []
   }
 ]

@@ -29,7 +29,6 @@ interface EditLocation {
   radius: number;
 }
 
-
 const LokasiAbsen = () => {
   const DEFAULT_LAT = -6.406390697597822;
   const DEFAULT_LNG = 106.81663513183595;
@@ -43,10 +42,11 @@ const LokasiAbsen = () => {
   const [locations, setLocations] = useState<Location[]>([]);
   const [showModal, setShowModal] = useState(false);
 
-
   const fetchLocations = async () => {
     try {
-      const response = await axios.get(`${import.meta.env.VITE_REACT_BASE_API_URL}/api/location/`);
+      const response = await axios.get(
+        `${import.meta.env.VITE_REACT_BASE_API_URL}api/location`
+      );
       setLocations(response.data);
     } catch (error) {
       Swal.fire({
@@ -54,33 +54,33 @@ const LokasiAbsen = () => {
         title: "Oops...",
         text: "Gagal Mengambil data Lokasi Absen, silakan refresh halaman!",
       });
-      console.error('Error fetching locations:', error);
+      console.error("Error fetching locations:", error);
     }
   };
   useEffect(() => {
     fetchLocations();
   }, []);
 
-  const [errors, setErrors] = useState({ nama: '', radius: '' });
+  const [errors, setErrors] = useState({ nama: "", radius: "" });
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setEditLocation(prev => ({ ...prev, [name]: value }));
-    setErrors(prev => ({ ...prev, [name]: '' }));
+    setEditLocation((prev) => ({ ...prev, [name]: value }));
+    setErrors((prev) => ({ ...prev, [name]: "" }));
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    let newErrors = { nama: '', radius: '' };
+    let newErrors = { nama: "", radius: "" };
     let isValid = true;
 
     if (!editLocation.nama.trim()) {
-      newErrors.nama = 'Nama Lokasi wajib diisi';
+      newErrors.nama = "Nama Lokasi wajib diisi";
       isValid = false;
     }
 
     if (!editLocation.radius || editLocation.radius <= 0) {
-      newErrors.radius = 'Radius wajib diisi dan harus lebih besar dari 0';
+      newErrors.radius = "Radius wajib diisi dan harus lebih besar dari 0";
       isValid = false;
     }
 
@@ -88,30 +88,35 @@ const LokasiAbsen = () => {
 
     if (!isValid) return;
 
-
     try {
       if (isEditing) {
-        await axios.put(`${import.meta.env.VITE_REACT_BASE_API_URL}/api/location/update`, {
-          id: editLocation.id,
-          nama: editLocation.nama,
-          lat: editLocation.lat,
-          lng: editLocation.lng,
-          radius: editLocation.radius,
-        });
+        await axios.put(
+          `${import.meta.env.VITE_REACT_BASE_API_URL}/api/location/update`,
+          {
+            id: editLocation.id,
+            nama: editLocation.nama,
+            lat: editLocation.lat,
+            lng: editLocation.lng,
+            radius: editLocation.radius,
+          }
+        );
       } else {
-        await axios.post(`${import.meta.env.VITE_REACT_BASE_API_URL}/api/location/create`, {
-          nama: editLocation.nama,
-          lat: editLocation.lat,
-          lng: editLocation.lng,
-          radius: editLocation.radius,
-        });
+        await axios.post(
+          `${import.meta.env.VITE_REACT_BASE_API_URL}/api/location/create`,
+          {
+            nama: editLocation.nama,
+            lat: editLocation.lat,
+            lng: editLocation.lng,
+            radius: editLocation.radius,
+          }
+        );
       }
       setShowModal(false);
       setEditLocation({ nama: "", lat: 0, lng: 0, radius: 0 });
       setIsEditing(false);
       fetchLocations();
     } catch (error) {
-      console.error('Error saving location:', error);
+      console.error("Error saving location:", error);
     }
   };
 
@@ -120,7 +125,7 @@ const LokasiAbsen = () => {
       nama: "",
       lat: DEFAULT_LAT,
       lng: DEFAULT_LNG,
-      radius: 0
+      radius: 0,
     });
     setIsEditing(false);
     setShowModal(true);
@@ -139,17 +144,20 @@ const LokasiAbsen = () => {
   };
 
   const [showDeleteModal, setShowDeleteModal] = useState(false);
-  const [locationToDelete, setLocationToDelete] = useState<number | null>(null)
+  const [locationToDelete, setLocationToDelete] = useState<number | null>(null);
   const handleDeleteClick = async () => {
     if (locationToDelete !== null) {
       try {
-        await axios.delete(`${import.meta.env.VITE_REACT_BASE_API_URL}/api/location/delete`, {
-          data: { id: locationToDelete }
-        });
+        await axios.delete(
+          `${import.meta.env.VITE_REACT_BASE_API_URL}/api/location/delete`,
+          {
+            data: { id: locationToDelete },
+          }
+        );
         fetchLocations();
         setShowDeleteModal(false);
       } catch (error) {
-        console.error('Error deleting location:', error);
+        console.error("Error deleting location:", error);
       }
     }
   };
@@ -173,14 +181,18 @@ const LokasiAbsen = () => {
   // };
   const handleMapClick = (e: L.LeafletMouseEvent) => {
     const { lat, lng } = e.latlng;
-    setEditLocation(prev => ({
+    setEditLocation((prev) => ({
       ...prev,
       lat: lat,
-      lng: lng
+      lng: lng,
     }));
   };
 
-  function MapClickHandler({ onMapClick }: { onMapClick: (e: L.LeafletMouseEvent) => void }) {
+  function MapClickHandler({
+    onMapClick,
+  }: {
+    onMapClick: (e: L.LeafletMouseEvent) => void;
+  }) {
     useMapEvents({
       click: onMapClick,
     });
@@ -260,7 +272,10 @@ const LokasiAbsen = () => {
                           })
                         }
                       />
-                      <Circle center={[location.lat, location.lng]} radius={location.radius} />
+                      <Circle
+                        center={[location.lat, location.lng]}
+                        radius={location.radius}
+                      />
                     </MapContainer>
                   </td>
                   <td className="max-w-20">{location.radius}</td>
@@ -309,12 +324,16 @@ const LokasiAbsen = () => {
                   placeholder="Nama Lokasi"
                   className="input input-bordered w-full mb-2"
                 />
-                {errors.nama && <p className="text-red-500 text-sm mt-1">{errors.nama}</p>}
+                {errors.nama && (
+                  <p className="text-red-500 text-sm mt-1">{errors.nama}</p>
+                )}
               </div>
               <div className="form-control">
                 <label className="flex justify-between px-[4px] py-[8px]  maxw640:flex-col">
                   <span className="label-text">Lokasi</span>
-                  <span className="label-text opacity-80">(Klik peta untuk memilih)</span>
+                  <span className="label-text opacity-80">
+                    (Klik peta untuk memilih)
+                  </span>
                 </label>
                 <div className="mb-1">
                   <MapContainer
@@ -338,10 +357,10 @@ const LokasiAbsen = () => {
                         dragend: (e) => {
                           const marker = e.target;
                           const position = marker.getLatLng();
-                          setEditLocation(prev => ({
+                          setEditLocation((prev) => ({
                             ...prev,
                             lat: position.lat,
-                            lng: position.lng
+                            lng: position.lng,
                           }));
                         },
                       }}
@@ -367,9 +386,7 @@ const LokasiAbsen = () => {
                       readOnly
                     /> */}
                   </div>
-                  <div>
-
-                  </div>
+                  <div></div>
                   <div className="flex items-center w-fit">
                     <span>Lng:</span>
                     <span className="ml-3">{editLocation.lng}</span>
@@ -397,10 +414,16 @@ const LokasiAbsen = () => {
                   placeholder="Radius"
                   className="input input-bordered w-full mb-4"
                 />
-                {errors.radius && <p className="text-red-500 text-sm mt-1">{errors.radius}</p>}
+                {errors.radius && (
+                  <p className="text-red-500 text-sm mt-1">{errors.radius}</p>
+                )}
               </div>
               <div className="flex justify-end gap-2">
-                <button type="button" onClick={() => setShowModal(false)} className="btn btn-ghost">
+                <button
+                  type="button"
+                  onClick={() => setShowModal(false)}
+                  className="btn btn-ghost"
+                >
                   Batal
                 </button>
                 <button type="submit" className="btn btn-primary">
@@ -414,7 +437,9 @@ const LokasiAbsen = () => {
       {showDeleteModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
           <div className="bg-white p-6 rounded shadow-lg">
-            <h2 className="text-xl mb-4">Apakah Anda yakin ingin menghapus lokasi ini?</h2>
+            <h2 className="text-xl mb-4">
+              Apakah Anda yakin ingin menghapus lokasi ini?
+            </h2>
             <div className="flex justify-end">
               <button
                 className="btn btn-ghost mr-2"
@@ -432,8 +457,6 @@ const LokasiAbsen = () => {
           </div>
         </div>
       )}
-
-
     </>
   );
 };
