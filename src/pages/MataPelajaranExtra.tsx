@@ -106,7 +106,7 @@ const MataPelajaranExtra = () => {
       Swal.fire({
         icon: "success",
         title: "Sukses",
-        text: "Sukses Menghapus data Guru Mata Pelajaran Extra",
+        text: "Sukses Menghapus data Mata Pelajaran Extra",
       });
 
       FormExtra.resetForm();
