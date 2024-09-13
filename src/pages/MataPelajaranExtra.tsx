@@ -118,6 +118,25 @@ const MataPelajaranExtra = () => {
       });
     }
   };
+  const DeleteGuruExtra = async (id: number) => {
+    try {
+      await GuruMapelExtra.DeleteGuruExtra(token, id);
+      DataGuruExtra();
+      Swal.fire({
+        icon: "success",
+        title: "Sukses",
+        text: "Sukses Menghapus data Guru Mata Pelajaran Extra",
+      });
+
+      FormExtra.resetForm();
+    } catch (error) {
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: "Gagal menghapus silahkan coba kembali!",
+      });
+    }
+  };
 
   const handleInputChange = (event: any) => {
     setQuerySearch(event.target.value);
@@ -135,8 +154,10 @@ const MataPelajaranExtra = () => {
       confirmButtonText: "Ya, hapus",
       cancelButtonText: "Tidak",
     });
-    if (result.isConfirmed) {
+    if (result.isConfirmed && state === "MapelExtra") {
       DeleteGuruMataExtra(id);
+    } else if (result.isConfirmed && state === "GuruExtra") {
+      DeleteGuruExtra(id);
     } else {
       console.log("Edit canceled");
     }
