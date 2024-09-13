@@ -274,7 +274,7 @@ const DaftarGukar = () => {
       .integer("Tahun Ijazah harus bilangan bulat"),
     is_education: Yup.string()
       .oneOf(
-        ["Non Kulian", "Kuliah"],
+        ["Non Kuliah", "Kuliah"],
         "Is Education harus Non Kuliah atau Kuliah"
       )
       .required("Status Pendidikan diperlukan"),
