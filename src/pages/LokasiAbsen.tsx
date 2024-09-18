@@ -1,6 +1,6 @@
 import { FaPlus, FaPencilAlt, FaTrash } from "react-icons/fa";
 import { useEffect, useState } from "react";
-import axios from "axios";
+import axios, { AxiosPromise } from "axios";
 import {
   MapContainer,
   TileLayer,
@@ -12,6 +12,7 @@ import "leaflet/dist/leaflet.css";
 import marker1 from "../assets/marker1.png";
 import L from "leaflet";
 import Swal from "sweetalert2";
+import { LoginStore } from "../store/Store";
 
 interface Location {
   id: number;
@@ -30,6 +31,48 @@ interface EditLocation {
 }
 
 const LokasiAbsen = () => {
+  const { token } = LoginStore();
+  const instance = axios.create({ baseURL: import.meta.env.VITE_REACT_BASE_API_URL_HRD });
+  const Location = {
+    fetchLocations: (token: string | null): AxiosPromise<any> =>
+      instance({
+        method: "GET",
+        url: "/api/location/",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }),
+
+    createLocation: (token: string | null, data: any): AxiosPromise<any> =>
+      instance({
+        method: "POST",
+        url: "/api/location/create",
+        data,
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }),
+
+    updateLocation: (token: string | null, data: any, id: number): AxiosPromise<any> =>
+      instance({
+        method: "PUT",
+        url: `/api/location/update/${id}`,
+        data,
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }),
+
+    deleteLocation: (token: string | null, id: number): AxiosPromise<any> =>
+      instance({
+        method: "DELETE",
+        url: `/api/location/delete/${id}`,
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }),
+  };
+
   const DEFAULT_LAT = -6.406390697597822;
   const DEFAULT_LNG = 106.81663513183595;
   const [editLocation, setEditLocation] = useState<EditLocation>({
@@ -42,12 +85,30 @@ const LokasiAbsen = () => {
   const [locations, setLocations] = useState<Location[]>([]);
   const [showModal, setShowModal] = useState(false);
 
+  // const fetchLocations = async () => {
+  //   try {
+  //     const response = await axios.get(
+  //       `${import.meta.env.VITE_REACT_BASE_API_URL_HRD}/api/location`
+  //     );
+  //     setLocations(response.data);
+  //   } catch (error) {
+  //     Swal.fire({
+  //       icon: "error",
+  //       title: "Oops...",
+  //       text: "Gagal Mengambil data Lokasi Absen, silakan refresh halaman!",
+  //     });
+  //     console.error("Error fetching locations:", error);
+  //   }
+  // };
+
   const fetchLocations = async () => {
     try {
-      const response = await axios.get(
-        `${import.meta.env.VITE_REACT_BASE_API_URL}api/location`
-      );
-      setLocations(response.data);
+      const response = await Location.fetchLocations(token);
+      if (response.data.status && response.data.code === 200) {
+        setLocations(response.data.data.result);
+      } else {
+        throw new Error(response.data.message || "Failed to fetch locations");
+      }
     } catch (error) {
       Swal.fire({
         icon: "error",
@@ -57,6 +118,7 @@ const LokasiAbsen = () => {
       console.error("Error fetching locations:", error);
     }
   };
+
   useEffect(() => {
     fetchLocations();
   }, []);
@@ -89,27 +151,21 @@ const LokasiAbsen = () => {
     if (!isValid) return;
 
     try {
+  
       if (isEditing) {
-        await axios.put(
-          `${import.meta.env.VITE_REACT_BASE_API_URL}/api/location/update`,
-          {
-            id: editLocation.id,
-            nama: editLocation.nama,
-            lat: editLocation.lat,
-            lng: editLocation.lng,
-            radius: editLocation.radius,
-          }
-        );
+        await Location.updateLocation(token, {
+          nama: editLocation.nama,
+          lat: editLocation.lat,
+          lng: editLocation.lng,
+          radius: editLocation.radius,
+        }, editLocation.id!);
       } else {
-        await axios.post(
-          `${import.meta.env.VITE_REACT_BASE_API_URL}/api/location/create`,
-          {
-            nama: editLocation.nama,
-            lat: editLocation.lat,
-            lng: editLocation.lng,
-            radius: editLocation.radius,
-          }
-        );
+        await Location.createLocation(token, {
+          nama: editLocation.nama,
+          lat: editLocation.lat,
+          lng: editLocation.lng,
+          radius: editLocation.radius,
+        });
       }
       setShowModal(false);
       setEditLocation({ nama: "", lat: 0, lng: 0, radius: 0 });
@@ -117,6 +173,7 @@ const LokasiAbsen = () => {
       fetchLocations();
     } catch (error) {
       console.error("Error saving location:", error);
+      // Tambahkan penanganan error di sini, misalnya menampilkan pesan error ke pengguna
     }
   };
 
@@ -148,16 +205,13 @@ const LokasiAbsen = () => {
   const handleDeleteClick = async () => {
     if (locationToDelete !== null) {
       try {
-        await axios.delete(
-          `${import.meta.env.VITE_REACT_BASE_API_URL}/api/location/delete`,
-          {
-            data: { id: locationToDelete },
-          }
-        );
+    
+        await Location.deleteLocation(token, locationToDelete);
         fetchLocations();
         setShowDeleteModal(false);
       } catch (error) {
         console.error("Error deleting location:", error);
+        // Tambahkan penanganan error di sini, misalnya menampilkan pesan error ke pengguna
       }
     }
   };
@@ -167,18 +221,6 @@ const LokasiAbsen = () => {
     setShowDeleteModal(true);
   };
 
-  // const handleDeleteClick = async (id: number) => {
-  //   if (window.confirm("Apakah Anda yakin ingin menghapus lokasi ini?")) {
-  //     try {
-  //       await axios.delete(`${import.meta.env.VITE_REACT_BASE_API_URL}/api/location/delete`, {
-  //         data: { id }
-  //       });
-  //       fetchLocations();
-  //     } catch (error) {
-  //       console.error('Error deleting location:', error);
-  //     }
-  //   }
-  // };
   const handleMapClick = (e: L.LeafletMouseEvent) => {
     const { lat, lng } = e.latlng;
     setEditLocation((prev) => ({
@@ -251,50 +293,52 @@ const LokasiAbsen = () => {
               </tr>
             </thead>
             <tbody>
-              {locations.map((location, index) => (
-                <tr key={location.id}>
-                  <td className="max-w-1">{index + 1}</td>
-                  <td className="max-w-20">{location.nama}</td>
-                  <td className="w-1/2 z-0 relative">
-                    <MapContainer
-                      center={[location.lat, location.lng]}
-                      zoom={13}
-                      style={{ height: "40vh", width: "100%" }}
-                    >
-                      <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
-                      <Marker
-                        position={[location.lat, location.lng]}
-                        icon={
-                          new L.Icon({
-                            iconUrl: marker1,
-                            iconSize: [50, 50],
-                            iconAnchor: [25, 48],
-                          })
-                        }
-                      />
-                      <Circle
+              {(
+                locations.map((location, index) => (
+                  <tr key={location.id}>
+                    <td className="max-w-1">{index + 1}</td>
+                    <td className="max-w-20">{location.nama}</td>
+                    <td className="w-1/2 z-0 relative">
+                      <MapContainer
                         center={[location.lat, location.lng]}
-                        radius={location.radius}
-                      />
-                    </MapContainer>
-                  </td>
-                  <td className="max-w-20">{location.radius}</td>
-                  <td className="max-w-20">
-                    <button
-                      className="btn btn-ghost btn-sm text-blue-500 text-xl mr-2"
-                      onClick={() => handleEditClick(location)}
-                    >
-                      <FaPencilAlt />
-                    </button>
-                    <button
-                      className="btn btn-ghost btn-sm text-red-500 text-xl"
-                      onClick={() => openDeleteModal(location.id)}
-                    >
-                      <FaTrash />
-                    </button>
-                  </td>
-                </tr>
-              ))}
+                        zoom={13}
+                        style={{ height: "40vh", width: "100%" }}
+                      >
+                        <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
+                        <Marker
+                          position={[location.lat, location.lng]}
+                          icon={
+                            new L.Icon({
+                              iconUrl: marker1,
+                              iconSize: [50, 50],
+                              iconAnchor: [25, 48],
+                            })
+                          }
+                        />
+                        <Circle
+                          center={[location.lat, location.lng]}
+                          radius={location.radius}
+                        />
+                      </MapContainer>
+                    </td>
+                    <td className="max-w-20">{location.radius}</td>
+                    <td className="max-w-20">
+                      <button
+                        className="btn btn-ghost btn-sm text-blue-500 text-xl mr-2"
+                        onClick={() => handleEditClick(location)}
+                      >
+                        <FaPencilAlt />
+                      </button>
+                      <button
+                        className="btn btn-ghost btn-sm text-red-500 text-xl"
+                        onClick={() => openDeleteModal(location.id)}
+                      >
+                        <FaTrash />
+                      </button>
+                    </td>
+                  </tr>
+                ))
+              )}
             </tbody>
           </table>
           {/* <PaginationControl
