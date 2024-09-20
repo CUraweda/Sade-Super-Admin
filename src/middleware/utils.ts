@@ -272,7 +272,7 @@ export interface EditSubjectExtra {
   employee_id: string;
   subject_extra_id: string;
   academic_year: string;
-  is_active: string;
+  is_active: boolean;
 }
 
 export interface UserResponse {
