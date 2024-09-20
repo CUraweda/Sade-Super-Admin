@@ -230,16 +230,16 @@ const MataPelajaranExtra = () => {
     academic_year: Yup.string()
       .required("Academic Year is required")
       .matches(/^\d{4}\/\d{4}$/, "Academic Year must be in format YYYY/YYYY"),
-    is_active: Yup.string()
+    is_active: Yup.boolean()
       .required("Active status is required")
-      .default("false"),
+      .default(true),
   });
   const FormGuruExtra = useFormik<EditSubjectExtra>({
     initialValues: {
       employee_id: EditGuruExtra?.employee_id || "",
       subject_extra_id: EditGuruExtra?.subject_extra_id || "",
       academic_year: EditGuruExtra?.subject_extra_id || "",
-      is_active: EditGuruExtra?.is_active || "",
+      is_active: EditGuruExtra?.is_active || true,
     },
     validationSchema: FormGuruSchema,
     onSubmit: async (values) => {
@@ -301,7 +301,7 @@ const MataPelajaranExtra = () => {
           employee_id: itemToGuru.employee_id.toString(),
           subject_extra_id: itemToGuru.subject_extra_id.toString(),
           academic_year: itemToGuru.academic_year,
-          is_active: itemToGuru.is_active ? "true" : "false",
+          is_active: itemToGuru.is_active ? true : false,
         });
       }
       setAlertTodo("edit");
@@ -449,16 +449,17 @@ const MataPelajaranExtra = () => {
 
             <div className="my-2">
               <label htmlFor="is_active">Status</label>
-              <select
-                id="is_active"
-                name="is_active"
-                className="input input-sm input-bordered items-center gap-2 grow mt-1 block w-full border rounded-md shadow-sm sm:text-sm"
-                value={FormGuruExtra.values.is_active}
-                onChange={FormGuruExtra.handleChange}
-              >
-                <option value="true">Aktif</option>
-                <option value="false">Tidak Aktif</option>
-              </select>
+              <div className="mt-1 flex items-center">
+                <input
+                  id="is_active"
+                  name="is_active"
+                  type="checkbox"
+                  className="gap-2mt-1 block sm:text-sm mt-1"
+                  checked={FormGuruExtra.values.is_active}
+                  onChange={FormGuruExtra.handleChange}
+                />
+                <label className="ml-2">Aktif</label>
+              </div>
               <div className="text-red-500 text-sm">
                 {FormGuruExtra.errors.is_active ? (
                   <div>{FormGuruExtra.errors.is_active}</div>
@@ -611,7 +612,7 @@ const MataPelajaranExtra = () => {
                     <td>{item.employee.full_name}</td>
                     <td>{item.subjectextra.name}</td>
                     <td>{item.academic_year}</td>
-                    <td>{item.is_active ? "Active" : "Inactive"}</td>
+                    <td>{item.is_active ? "Aktif" : "Tidak Aktif"}</td>
                     <td className="text-center">
                       <div className="join ">
                         <button
