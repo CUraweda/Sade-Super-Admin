@@ -82,6 +82,35 @@ const DataSiswa = () => {
     setSelectedSiswa(siswa);
     openModal("siswaModal");
   };
+  const createData = async (values: any) => {
+    try {
+      const res = await Siswa.CreateSiswa(token, values);
+
+      // Cek jika respons bukan error status 400 atau sukses
+      if (res.status === 201) {
+        Swal.fire("Berhasil!", "Siswa berhasil ditambahkan", "success");
+      } else if (res.status === 400) {
+        Swal.fire(
+          "Gagal!",
+          res.data.message || "Terjadi kesalahan saat menambahkan siswa",
+          "error"
+        );
+      }
+    } catch (error: any) {
+      console.error(error);
+
+      // Cek jika ada pesan error dari server
+      if (
+        error.response &&
+        error.response.data &&
+        error.response.data.message
+      ) {
+        Swal.fire("Gagal!", error.response.data.message, "error");
+      } else {
+        Swal.fire("Gagal!", "Terjadi kesalahan tidak terduga", "error");
+      }
+    }
+  };
 
   const validationSchema = Yup.object().shape({
     nis: Yup.string().required("NIS wajib diisi"),
@@ -114,8 +143,7 @@ const DataSiswa = () => {
     onSubmit: async (values) => {
       try {
         if (modalMode === "add") {
-          await Siswa.CreateSiswa(token, values);
-          Swal.fire("Berhasil!", "Siswa berhasil ditambahkan", "success");
+          createData(values);
         } else if (selectedSiswa?.id) {
           const id = parseInt(selectedSiswa.id);
           await Siswa.UpdateSiswa(token, values, id);
