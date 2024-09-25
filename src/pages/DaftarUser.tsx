@@ -29,9 +29,14 @@ const DaftarUser = () => {
   });
   const [editingUser, setEditingUser] = useState<UserList | null>(null);
   const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const toggleShowPassword = () => {
     setShowPassword(!showPassword);
+  };
+
+  const toggleShowConfirmPassword = () => {
+    setShowConfirmPassword(!showConfirmPassword);
   };
 
   const validationSchemaAdd = Yup.object({
@@ -397,7 +402,7 @@ const DaftarUser = () => {
                 value={formikCreateUser.values.password}
               />
               <div
-                className="absolute inset-y-0 mt-8 right-0 flex items-center pr-3 cursor-pointer"
+                className="absolute inset-y-0 mt-9 right-0 flex items-center pr-3 cursor-pointer"
                 onClick={toggleShowPassword}
               >
                 {showPassword ? <FaEyeSlash /> : <FaEye />}
@@ -414,7 +419,7 @@ const DaftarUser = () => {
                 <span className="label-text">Konfirmasi Password</span>
               </label>
               <input
-                type={showPassword ? "text" : "password"}
+                type={showConfirmPassword ? "text" : "password"}
                 id="confirm_password"
                 name="confirm_password"
                 className="input input-bordered"
@@ -423,10 +428,10 @@ const DaftarUser = () => {
                 value={formikCreateUser.values.confirm_password}
               />
               <div
-                className="absolute inset-y-0 mt-8 right-0 flex items-center pr-3 cursor-pointer"
-                onClick={toggleShowPassword}
+                className="absolute inset-y-0 mt-4 right-0 flex items-center pr-3 cursor-pointer"
+                onClick={toggleShowConfirmPassword}
               >
-                {showPassword ? <FaEyeSlash /> : <FaEye />}
+                {showConfirmPassword ? <FaEyeSlash /> : <FaEye />}
               </div>
               {formikCreateUser.errors.confirm_password &&
                 formikCreateUser.touched.confirm_password && (

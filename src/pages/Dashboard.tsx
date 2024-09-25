@@ -7,16 +7,6 @@ import axios from 'axios';
 
 const Dashboard = () => {
   const [totalLocations, setTotalLocations] = useState(0);
-
-  useEffect(() => {
-    axios.get(`${import.meta.env.VITE_REACT_BASE_API_URL}/api/location/`)
-      .then(response => {
-        setTotalLocations(response.data.length);
-      })
-      .catch(error => {
-        console.error(error);
-      });
-  }, []);
   const { token } = LoginStore();
   const navigate = useNavigate();
   const [listUser, setListUser] = useState<UserList[]>([]);
@@ -25,7 +15,35 @@ const Dashboard = () => {
 
   useEffect(() => {
     DataUser();
+    fetchLocations();
   }, []);
+
+  const instance = axios.create({ baseURL: import.meta.env.VITE_REACT_BASE_API_URL_HRD });
+
+  const Location = {
+    fetchLocations: (token: string | null) =>
+      instance({
+        method: "GET",
+        url: "/api/location/",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }),
+  };
+
+  const fetchLocations = async () => {
+    try {
+      const response = await Location.fetchLocations(token);
+      if (response.data.status && response.data.code === 200) {
+        setTotalLocations(response.data.data.result.length);
+      } else {
+        throw new Error(response.data.message || "Failed to fetch locations");
+      }
+    } catch (error) {
+      console.error("Error fetching locations:", error);
+    }
+  };
+
 
   const DataUser = async () => {
     try {
