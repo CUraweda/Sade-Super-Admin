@@ -98,8 +98,6 @@ const DataSiswa = () => {
       }
     } catch (error: any) {
       console.error(error);
-
-      // Cek jika ada pesan error dari server
       if (
         error.response &&
         error.response.data &&
@@ -151,8 +149,17 @@ const DataSiswa = () => {
         }
         closeModal("siswaModal");
         DataSiswa();
-      } catch (error) {
-        Swal.fire("Gagal", "Terjadi kesalahan saat menyimpan data", "error");
+      } catch (error: any) {
+        console.error(error);
+        if (
+          error.response &&
+          error.response.data &&
+          error.response.data.message
+        ) {
+          Swal.fire("Gagal!", error.response.data.message, "error");
+        } else {
+          Swal.fire("Gagal!", "Terjadi kesalahan tidak terduga", "error");
+        }
       }
     },
     enableReinitialize: true,
