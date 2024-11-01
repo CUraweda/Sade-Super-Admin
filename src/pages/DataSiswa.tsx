@@ -387,7 +387,7 @@ const DataSiswa = () => {
                 type="date"
                 className="input input-bordered"
                 name="dob"
-                value={formik.values.dob}
+                value={formik.values.dob.split("T")[0]}
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
               />
