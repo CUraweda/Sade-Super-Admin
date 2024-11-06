@@ -707,11 +707,19 @@ const DaftarGukar = () => {
                                 <input
                                   type="date"
                                   name={key}
-                                  className="input input-sm input-bordered items-center gap-2 grow mt-1 block w-full border  rounded-md shadow-sm sm:text-sm"
+                                  className="input input-sm input-bordered items-center gap-2 grow mt-1 block w-full border rounded-md shadow-sm sm:text-sm"
                                   value={
                                     createFormik.values[
                                       key as keyof CreateFormValues
-                                    ] || ""
+                                    ]
+                                      ? new Date(
+                                          createFormik.values[
+                                            key as keyof CreateFormValues
+                                          ]
+                                        )
+                                          .toISOString()
+                                          .split("T")[0]
+                                      : ""
                                   }
                                   onChange={createFormik.handleChange}
                                 />
