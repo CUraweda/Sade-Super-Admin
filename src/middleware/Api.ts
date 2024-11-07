@@ -17,7 +17,7 @@ const Auth = {
   ): AxiosPromise<LoginResponse> =>
     instance({
       method: "POST",
-      url: "/api/auth/login",
+      url: "/auth/login",
       data: {
         email,
         password,
@@ -34,7 +34,7 @@ const OrangTua = {
   ): AxiosPromise<any> =>
     instance({
       method: "GET",
-      url: `/api/parent?search_query=${search}&page=${page}&limit=${limit}`,
+      url: `/parent?search_query=${search}&page=${page}&limit=${limit}`,
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -43,7 +43,7 @@ const OrangTua = {
   CreateOrtu: (token: string | null, data: any): AxiosPromise<any> =>
     instance({
       method: "POST",
-      url: `/api/parent/create`,
+      url: `/parent/create`,
       data,
       headers: {
         Authorization: `Bearer ${token}`,
@@ -57,7 +57,7 @@ const OrangTua = {
   ): AxiosPromise<any> =>
     instance({
       method: "PUT",
-      url: `/api/parent/update/${id}`,
+      url: `/parent/update/${id}`,
       data,
       headers: {
         Authorization: `Bearer ${token}`,
@@ -67,7 +67,7 @@ const OrangTua = {
   DeleteOrtu: (token: string | null, id: number): AxiosPromise<any> =>
     instance({
       method: "DELETE",
-      url: `/api/parent/delete/${id}`,
+      url: `/parent/delete/${id}`,
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -83,7 +83,7 @@ const Siswa = {
   ): AxiosPromise<SiswaResponse> =>
     instance({
       method: "GET",
-      url: `/api/student?search_query=${search}&page=${page}&limit=${limit}`,
+      url: `/student?search_query=${search}&page=${page}&limit=${limit}`,
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -92,7 +92,7 @@ const Siswa = {
   CreateSiswa: (token: string | null, data: any): AxiosPromise<any> =>
     instance({
       method: "POST",
-      url: `/api/student/create`,
+      url: `/student/create`,
       data,
       headers: {
         Authorization: `Bearer ${token}`,
@@ -106,7 +106,7 @@ const Siswa = {
   ): AxiosPromise<any> =>
     instance({
       method: "PUT",
-      url: `/api/student/update/${id}`,
+      url: `/student/update/${id}`,
       data,
       headers: {
         Authorization: `Bearer ${token}`,
@@ -116,7 +116,7 @@ const Siswa = {
   DeleteSiswa: (token: string | null, id: number): AxiosPromise<any> =>
     instance({
       method: "DELETE",
-      url: `/api/student/delete/${id}`,
+      url: `/student/delete/${id}`,
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -131,7 +131,7 @@ const Mapel = {
   ): AxiosPromise<MapelResponse> =>
     instance({
       method: "GET",
-      url: `/api/subject?search_query=&page=${page}&limit=${limit}`,
+      url: `/subject?search_query=&page=${page}&limit=${limit}`,
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -139,7 +139,7 @@ const Mapel = {
   CreateMapel: (token: string | null, data: MapelList): AxiosPromise<any> =>
     instance({
       method: "POST",
-      url: `/api/subject/create`,
+      url: `/subject/create`,
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -149,7 +149,7 @@ const Mapel = {
     instance({
       method: "PUT",
       data,
-      url: `/api/subject/update/${id}`,
+      url: `/subject/update/${id}`,
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -161,7 +161,7 @@ const Mapel = {
   ): AxiosPromise<any> =>
     instance({
       method: "DELETE",
-      url: `/api/subject/delete/${id}`,
+      url: `/subject/delete/${id}`,
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -178,7 +178,7 @@ const GuruKaryawan = {
   ): AxiosPromise<any> =>
     instance({
       method: "GET",
-      url: `/api/employee?isAssign=${status}&search_query=${searchquery}`,
+      url: `/employee?isAssign=${status}&search_query=${searchquery}`,
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -191,7 +191,7 @@ const GuruKaryawan = {
   CreateGuruKaryawan: (token: string | null, data: any): AxiosPromise<any> =>
     instance({
       method: "POST",
-      url: `/api/employee/create`,
+      url: `/employee/create`,
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -204,7 +204,7 @@ const GuruKaryawan = {
   ): AxiosPromise<any> =>
     instance({
       method: "PUT",
-      url: `/api/employee/update/${id}`,
+      url: `/employee/update/${id}`,
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -216,7 +216,7 @@ const GuruKaryawan = {
   ): AxiosPromise<any> =>
     instance({
       method: "DELETE",
-      url: `/api/employee/delete/${id}`,
+      url: `/employee/delete/${id}`,
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -225,7 +225,7 @@ const GuruKaryawan = {
   SearchUser: (token: string | null, name: string): AxiosPromise<any> =>
     instance({
       method: "GET",
-      url: `/api/user?search_query=${name}`,
+      url: `/user?search_query=${name}`,
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -238,7 +238,7 @@ const GuruKaryawan = {
   ): AxiosPromise<any> =>
     instance({
       method: "PUT",
-      url: `/api/employee/attach/${id}`,
+      url: `/employee/attach/${id}`,
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -255,7 +255,7 @@ const User = {
   ): AxiosPromise<UserResponse> =>
     instance({
       method: "GET",
-      url: `/api/user?search_query=${search}&page=${page}&limit=${limit}`,
+      url: `/user?search_query=${search}&page=${page}&limit=${limit}`,
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -264,7 +264,7 @@ const User = {
   CreateUser: (token: string | null, data: any): AxiosPromise<any> =>
     instance({
       method: "POST",
-      url: `/api/auth/register`,
+      url: `/auth/register`,
       data,
       headers: {
         Authorization: `Bearer ${token}`,
@@ -274,7 +274,7 @@ const User = {
   EditUser: (token: string | null, data: any, id: number): AxiosPromise<any> =>
     instance({
       method: "PUT",
-      url: `/api/user/update/${id}`,
+      url: `/user/update/${id}`,
       data,
       headers: {
         Authorization: `Bearer ${token}`,
@@ -288,7 +288,7 @@ const User = {
   ): AxiosPromise<any> =>
     instance({
       method: "DELETE",
-      url: `/api/user/delete/${id}`,
+      url: `/user/delete/${id}`,
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -297,7 +297,7 @@ const User = {
   GetDataRole: (token: string | null): AxiosPromise<any> =>
     instance({
       method: "GET",
-      url: `/api/role`,
+      url: `/role`,
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -312,7 +312,7 @@ const KepalaSekolah = {
   ): AxiosPromise<KepsekResponse> =>
     instance({
       method: "GET",
-      url: `/api/headmaster?page=${page}&limit=${limit}`,
+      url: `/headmaster?page=${page}&limit=${limit}`,
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -321,7 +321,7 @@ const KepalaSekolah = {
   CreateKepsek: (token: string | null, data: any): AxiosPromise<any> =>
     instance({
       method: "POST",
-      url: `/api/headmaster/create`,
+      url: `/headmaster/create`,
       data,
       headers: {
         Authorization: `Bearer ${token}`,
@@ -335,7 +335,7 @@ const KepalaSekolah = {
   ): AxiosPromise<any> =>
     instance({
       method: "PUT",
-      url: `/api/headmaster/update/${id}`,
+      url: `/headmaster/update/${id}`,
       data,
       headers: {
         Authorization: `Bearer ${token}`,
@@ -348,7 +348,7 @@ const KepalaSekolah = {
   ): AxiosPromise<any> =>
     instance({
       method: "DELETE",
-      url: `/api/headmaster/delete/${id}`,
+      url: `/headmaster/delete/${id}`,
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -359,7 +359,7 @@ const KepalaSekolah = {
   ): AxiosPromise<DropdownEmployeeResponse> =>
     instance({
       method: "GET",
-      url: `/api/employee?limit=100000`,
+      url: `/employee?limit=100000`,
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -377,7 +377,7 @@ const Wali = {
   ): AxiosPromise<any> =>
     instance({
       method: "GET",
-      url: `/api/form-teacher`,
+      url: `/form-teacher`,
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -392,7 +392,7 @@ const Wali = {
   CreateWaliKelas: (token: string | null, data: any): AxiosPromise<any> =>
     instance({
       method: "POST",
-      url: `/api/form-teacher/create`,
+      url: `/form-teacher/create`,
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -404,7 +404,7 @@ const Wali = {
   ): AxiosPromise<any> =>
     instance({
       method: "DELETE",
-      url: `/api/form-teacher/delete/${id}`,
+      url: `/form-teacher/delete/${id}`,
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -416,7 +416,7 @@ const Wali = {
   ): AxiosPromise<any> =>
     instance({
       method: "PUT",
-      url: `/api/form-teacher/update/${id}`,
+      url: `/form-teacher/update/${id}`,
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -426,7 +426,7 @@ const Wali = {
   GetAllKelas: (token: string | null, limit: any): AxiosPromise<any> =>
     instance({
       method: "GET",
-      url: `/api/classes?is_active=Y`,
+      url: `/classes?is_active=Y`,
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -446,7 +446,7 @@ const Pelajaran = {
   ): AxiosPromise<any> =>
     instance({
       method: "GET",
-      url: `/api/form-subject`,
+      url: `/form-subject`,
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -464,7 +464,7 @@ const Pelajaran = {
   ): AxiosPromise<any> =>
     instance({
       method: "POST",
-      url: `/api/form-subject/create`,
+      url: `/form-subject/create`,
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -477,7 +477,7 @@ const Pelajaran = {
   ): AxiosPromise<any> =>
     instance({
       method: "PUT",
-      url: `/api/form-subject/update/${id}`,
+      url: `/form-subject/update/${id}`,
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -489,7 +489,7 @@ const Pelajaran = {
   ): AxiosPromise<any> =>
     instance({
       method: "DELETE",
-      url: `/api/form-subject/delete/${id}`,
+      url: `/form-subject/delete/${id}`,
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -497,7 +497,7 @@ const Pelajaran = {
   GetAllSubject: (token: string | null): AxiosPromise<any> =>
     instance({
       method: "GET",
-      url: `/api/subject?with_assign=Y`,
+      url: `/subject?with_assign=Y`,
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -515,7 +515,7 @@ const Extra = {
   ): AxiosPromise<any> =>
     instance({
       method: "GET",
-      url: `/api/subject-extra`,
+      url: `/subject-extra`,
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -528,7 +528,7 @@ const Extra = {
   CreateMapelExtra: (token: string | null, data: any): AxiosPromise<any> =>
     instance({
       method: "POST",
-      url: `/api/subject-extra/create`,
+      url: `/subject-extra/create`,
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -541,7 +541,7 @@ const Extra = {
   ): AxiosPromise<any> =>
     instance({
       method: "PUT",
-      url: `/api/subject-extra/update/${id}`,
+      url: `/subject-extra/update/${id}`,
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -553,7 +553,7 @@ const Extra = {
   ): AxiosPromise<any> =>
     instance({
       method: "DELETE",
-      url: `/api/subject-extra/delete/${id}`,
+      url: `/subject-extra/delete/${id}`,
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -569,7 +569,7 @@ const GuruMapelExtra = {
   ): AxiosPromise<any> =>
     instance({
       method: "GET",
-      url: `/api/form-extra`,
+      url: `/form-extra`,
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -582,7 +582,7 @@ const GuruMapelExtra = {
   CreateGuruExtra: (token: string | null, data: any): AxiosPromise<any> =>
     instance({
       method: "POST",
-      url: `/api/form-extra/create`,
+      url: `/form-extra/create`,
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -595,7 +595,7 @@ const GuruMapelExtra = {
   ): AxiosPromise<any> =>
     instance({
       method: "PUT",
-      url: `/api/form-extra/update/${id}`,
+      url: `/form-extra/update/${id}`,
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -607,7 +607,7 @@ const GuruMapelExtra = {
   ): AxiosPromise<any> =>
     instance({
       method: "DELETE",
-      url: `/api/form-extra/delete/${id}`,
+      url: `/form-extra/delete/${id}`,
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -618,7 +618,7 @@ const CustomerCare = {
   getUserChats: (token: string | null, id: string | null): AxiosPromise<any> =>
     instance({
       method: "GET",
-      url: `/api/user-chat/show-by-user/${id}`,
+      url: `/user-chat/show-by-user/${id}`,
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -626,7 +626,7 @@ const CustomerCare = {
   createUserChats: (token: string | null, data: any): AxiosPromise<any> =>
     instance({
       method: "POST",
-      url: `/api/customer-care/create`,
+      url: `/customer-care/create`,
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -635,7 +635,7 @@ const CustomerCare = {
   getDataChat: (token: string | null, limit: number): AxiosPromise<any> =>
     instance({
       method: "GET",
-      url: `/api/user/`,
+      url: `/user/`,
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -650,7 +650,7 @@ const CustomerCare = {
   ): AxiosPromise<any> =>
     instance({
       method: "GET",
-      url: `/api/user-chat/show-conversation?userid=${id}&withid=${idUser}`,
+      url: `/user-chat/show-conversation?userid=${id}&withid=${idUser}`,
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -663,7 +663,7 @@ const CustomerCare = {
   ): AxiosPromise<any> =>
     instance({
       method: "POST",
-      url: `/api/message/create`,
+      url: `/message/create`,
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -684,7 +684,7 @@ const Settings = {
   ): AxiosPromise<any> =>
     instance({
       method: "GET",
-      url: `/api/academic-year`,
+      url: `/academic-year`,
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -701,7 +701,7 @@ const Settings = {
   ): AxiosPromise<any> =>
     instance({
       method: "PUT",
-      url: `/api/academic-year/update/${id}`,
+      url: `/academic-year/update/${id}`,
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -710,7 +710,7 @@ const Settings = {
   createSettings: (token: string | null, data: any): AxiosPromise<any> =>
     instance({
       method: "POST",
-      url: `/api/academic-year/create`,
+      url: `/academic-year/create`,
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -722,7 +722,7 @@ const Settings = {
   ): AxiosPromise<any> =>
     instance({
       method: "DELETE",
-      url: `/api/academic-year/delete/${id}`,
+      url: `/academic-year/delete/${id}`,
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -738,7 +738,7 @@ const Kelas = {
   ): AxiosPromise<any> =>
     instance({
       method: "GET",
-      url: `/api/classes`,
+      url: `/classes`,
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -752,7 +752,7 @@ const Kelas = {
   createClasses: (token: string | null, data: any): AxiosPromise<any> =>
     instance({
       method: "POST",
-      url: `/api/classes/create`,
+      url: `/classes/create`,
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -765,7 +765,7 @@ const Kelas = {
   ): AxiosPromise<any> =>
     instance({
       method: "PUT",
-      url: `/api/classes/update/${id}`,
+      url: `/classes/update/${id}`,
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -777,7 +777,7 @@ const Kelas = {
   ): AxiosPromise<any> =>
     instance({
       method: "DELETE",
-      url: `/api/classes/delete/${id}`,
+      url: `/classes/delete/${id}`,
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -792,7 +792,7 @@ const HistoryStudent = {
   ): AxiosPromise<any> =>
     instance({
       method: "GET",
-      url: `/api/student-class`,
+      url: `/student-class`,
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -805,7 +805,7 @@ const HistoryStudent = {
   createHistory: (token: string | null, data: any): AxiosPromise<any> =>
     instance({
       method: "POST",
-      url: `/api/student-class/create`,
+      url: `/student-class/create`,
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -818,7 +818,7 @@ const HistoryStudent = {
   ): AxiosPromise<any> =>
     instance({
       method: "PUT",
-      url: `/api/student-class/update/${id}`,
+      url: `/student-class/update/${id}`,
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -830,7 +830,7 @@ const HistoryStudent = {
   ): AxiosPromise<any> =>
     instance({
       method: "DELETE",
-      url: `/api/student-class/delete/${id}`,
+      url: `/student-class/delete/${id}`,
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -845,7 +845,7 @@ const Student = {
   ): AxiosPromise<any> =>
     instance({
       method: "GET",
-      url: `/api/student`,
+      url: `/student`,
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -858,7 +858,7 @@ const Student = {
   createStudent: (token: string | null, data: any): AxiosPromise<any> =>
     instance({
       method: "POST",
-      url: `/api/student/create`,
+      url: `/student/create`,
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -871,7 +871,7 @@ const Student = {
   ): AxiosPromise<any> =>
     instance({
       method: "PUT",
-      url: `/api/student/update/${id}`,
+      url: `/student/update/${id}`,
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -883,7 +883,7 @@ const Student = {
   ): AxiosPromise<any> =>
     instance({
       method: "DELETE",
-      url: `/api/student/delete/${id}`,
+      url: `/student/delete/${id}`,
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -899,7 +899,7 @@ const AksesSiswa = {
   ): AxiosPromise<any> =>
     instance({
       method: "GET",
-      url: `/api/user-access?level=${level}`,
+      url: `/user-access?level=${level}`,
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -912,7 +912,7 @@ const AksesSiswa = {
   createAksesSiswa: (token: string | null, data: any): AxiosPromise<any> =>
     instance({
       method: "POST",
-      url: `/api/user-access/create`,
+      url: `/user-access/create`,
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -925,7 +925,7 @@ const AksesSiswa = {
   ): AxiosPromise<any> =>
     instance({
       method: "PUT",
-      url: `/api/user-access/update/${id}`,
+      url: `/user-access/update/${id}`,
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -937,7 +937,7 @@ const AksesSiswa = {
   ): AxiosPromise<any> =>
     instance({
       method: "DELETE",
-      url: `/api/user-access/delete/${id}`,
+      url: `/user-access/delete/${id}`,
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -950,7 +950,7 @@ const AksesSiswa = {
   ): AxiosPromise<any> =>
     instance({
       method: "GET",
-      url: `/api/user`,
+      url: `/user`,
       headers: {
         Authorization: `Bearer ${token}`,
       },
