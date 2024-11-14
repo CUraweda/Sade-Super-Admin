@@ -37,7 +37,7 @@ const LokasiAbsen = () => {
     fetchLocations: (token: string | null): AxiosPromise<any> =>
       instance({
         method: "GET",
-        url: "/api/location/",
+        url: "location/",
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -46,7 +46,7 @@ const LokasiAbsen = () => {
     createLocation: (token: string | null, data: any): AxiosPromise<any> =>
       instance({
         method: "POST",
-        url: "/api/location/create",
+        url: "location/create",
         data,
         headers: {
           Authorization: `Bearer ${token}`,
@@ -56,7 +56,7 @@ const LokasiAbsen = () => {
     updateLocation: (token: string | null, data: any, id: number): AxiosPromise<any> =>
       instance({
         method: "PUT",
-        url: `/api/location/update/${id}`,
+        url: `location/update/${id}`,
         data,
         headers: {
           Authorization: `Bearer ${token}`,
@@ -66,7 +66,7 @@ const LokasiAbsen = () => {
     deleteLocation: (token: string | null, id: number): AxiosPromise<any> =>
       instance({
         method: "DELETE",
-        url: `/api/location/delete/${id}`,
+        url: `location/delete/${id}`,
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -247,25 +247,7 @@ const LokasiAbsen = () => {
         <span className="text-xl font-bold">Daftar Lokasi Presensi</span>
         <div className="overflow-x-auto w-full mt-5 bg-white p-4 rounded-md shadow-md ">
           <div className="w-full flex justify-end my-4 gap-2 items-center">
-            {/* <label className="input input-sm input-bordered flex items-center gap-2">
-              <input
-                type="text"
-                className="grow"
-                placeholder="Search"
-              />
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 16 16"
-                fill="currentColor"
-                className="h-4 w-4 opacity-70"
-              >
-                <path
-                  fillRule="evenodd"
-                  d="M9.965 11.026a5 5 0 1 1 1.06-1.06l2.755 2.754a.75.75 0 1 1-1.06 1.06l-2.755-2.754ZM10.5 7a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0Z"
-                  clipRule="evenodd"
-                />
-              </svg>
-            </label> */}
+           
 
             <div className="join">
               <button
@@ -341,12 +323,7 @@ const LokasiAbsen = () => {
               )}
             </tbody>
           </table>
-          {/* <PaginationControl
-            meta={pageMeta}
-            onPrevClick={() => handleFilter("page", pageMeta.page - 1)}
-            onNextClick={() => handleFilter("page", pageMeta.page + 1)}
-            onLimitChange={(value) => handleFilter("limit", value)}
-            /> */}
+         
         </div>
       </div>
       {showModal && (
