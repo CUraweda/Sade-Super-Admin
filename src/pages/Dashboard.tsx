@@ -24,7 +24,7 @@ const Dashboard = () => {
     fetchLocations: (token: string | null) =>
       instance({
         method: "GET",
-        url: "/api/location/",
+        url: "location/",
         headers: {
           Authorization: `Bearer ${token}`,
         },
