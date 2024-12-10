@@ -1,9 +1,8 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   FaDownload,
   FaPlus,
   FaRegTrashAlt,
-  FaSync,
   FaUpload,
 } from "react-icons/fa";
 import { FaPencil } from "react-icons/fa6";
@@ -190,8 +189,40 @@ const DataSiswa = () => {
     }
   };
 
+  const inputImportRef = useRef<HTMLInputElement>(null)
+  const importSiswa = async () => {
+    if (!inputImportRef.current?.files?.length) return
+    try {
+      const payload = new FormData()
+      payload.append("files", inputImportRef.current.files[0])
+      await Siswa.import(token, payload);
+
+      Swal.fire({
+        icon: 'success',
+        title: "Sukses"
+        ,text: "Berhasil upload data siswa"
+      })
+      DataSiswa();
+      inputImportRef.current.value = ''
+    } catch (error) {
+      Swal.fire({
+        icon: 'success',
+        title: "Gagal"
+        ,text: "Terjadi kesalahan saat upload data siswa"
+      })
+    }
+  }
+
   return (
     <>
+      <input 
+        type="file" 
+        className="hidden" 
+        ref={inputImportRef} 
+        onChange={importSiswa}
+        accept=".xls,.xlsx,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+      />
+
       <div className="w-full flex flex-col items-center p-5">
         <span className="text-xl font-bold">Daftar Siswa</span>
         <div className="overflow-x-auto w-full mt-5 bg-white p-4 rounded-md shadow-md ">
@@ -226,12 +257,12 @@ const DataSiswa = () => {
               ))}
             </select> */}
             <div className="join">
-              <button
+              {/* <button
                 className="btn btn-ghost bg-green-500 btn-sm text-white join-item tooltip"
                 data-tip={"tarik data PMB"}
               >
                 <FaSync />
-              </button>
+              </button> */}
               <button
                 className="btn btn-ghost bg-blue-500 btn-sm text-white join-item tooltip"
                 data-tip={"tambah siswa"}
@@ -242,6 +273,7 @@ const DataSiswa = () => {
               <button
                 className="btn btn-ghost bg-cyan-500 btn-sm text-white join-item tooltip"
                 data-tip={"upload siswa"}
+                onClick={() => inputImportRef.current?.click()}
               >
                 <FaUpload />
               </button>

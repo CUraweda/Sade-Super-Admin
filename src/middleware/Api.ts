@@ -121,6 +121,16 @@ const Siswa = {
         Authorization: `Bearer ${token}`,
       },
     }),
+
+  import: (token: string | null, data: any) => 
+    instance({
+      method: "POST",
+      data,
+      url: `/student/import`,
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
 };
 
 const Mapel = {
