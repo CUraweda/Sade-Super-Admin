@@ -207,8 +207,28 @@ const DataSiswa = () => {
     } catch (error) {
       Swal.fire({
         icon: 'success',
-        title: "Gagal"
-        ,text: "Terjadi kesalahan saat upload data siswa"
+        title: "Gagal",
+        text: "Terjadi kesalahan saat upload data siswa"
+      })
+    }
+  }
+
+  const exportSiswa = async () => {
+    try {
+      const response = await Siswa.export(token, search)
+
+      const url = window.URL.createObjectURL(new Blob([response.data]));
+      const link = document.createElement('a');
+      link.href = url;
+      link.setAttribute('download', 'Ekspor Data Siswa.xlsx');
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    } catch (error) {
+      Swal.fire({
+        icon: 'success',
+        title: "Gagal",
+        text: "Terjadi kesalahan saat ekspor data"
       })
     }
   }
@@ -279,6 +299,7 @@ const DataSiswa = () => {
               </button>
               <button
                 className="btn btn-ghost bg-orange-500 btn-sm text-white join-item tooltip tooltip-left"
+                onClick={exportSiswa}
                 data-tip={"download data"}
               >
                 <FaDownload />

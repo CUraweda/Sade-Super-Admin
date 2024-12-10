@@ -130,6 +130,16 @@ const Siswa = {
       headers: {
         Authorization: `Bearer ${token}`,
       },
+    }),
+  export: (token: string | null, search: string) => 
+    instance({
+      method: "GET",
+      url: `/student/export`,
+      params: { search_query: search },
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      responseType: "blob"
     })
 };
 
