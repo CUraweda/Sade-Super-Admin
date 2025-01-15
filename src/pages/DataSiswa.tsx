@@ -1,10 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import {
-  FaDownload,
-  FaPlus,
-  FaRegTrashAlt,
-  FaUpload,
-} from "react-icons/fa";
+import { FaDownload, FaPlus, FaRegTrashAlt, FaUpload } from "react-icons/fa";
 import { FaPencil } from "react-icons/fa6";
 import { Siswa } from "../middleware/Api";
 import { LoginStore } from "../store/Store";
@@ -26,6 +21,7 @@ const DataSiswa = () => {
   const [siswa, setSiswa] = useState<SiswaList[]>([]);
   const [selectedSiswa, setSelectedSiswa] = useState<SiswaList | null>(null);
   const [modalMode, setModalMode] = useState<"add" | "edit">("add");
+  const [showNISN, setShowNISN] = useState(false);
 
   const handleFilter = (key: string, value: any) => {
     const obj = {
@@ -111,7 +107,6 @@ const DataSiswa = () => {
 
   const validationSchema = Yup.object().shape({
     nis: Yup.string().required("NIS wajib diisi"),
-    nisn: Yup.string().required("NISN wajib diisi"),
     full_name: Yup.string().required("Nama lengkap wajib diisi"),
     nickname: Yup.string().required("Nama panggilan wajib diisi"),
     gender: Yup.string().required("Jenis kelamin wajib dipilih"),
@@ -124,6 +119,7 @@ const DataSiswa = () => {
 
   const formik = useFormik({
     initialValues: {
+      hasNISN: "",
       nis: selectedSiswa?.nis || "",
       nisn: selectedSiswa?.nisn || "",
       full_name: selectedSiswa?.full_name || "",
@@ -189,56 +185,65 @@ const DataSiswa = () => {
     }
   };
 
-  const inputImportRef = useRef<HTMLInputElement>(null)
+  const inputImportRef = useRef<HTMLInputElement>(null);
   const importSiswa = async () => {
-    if (!inputImportRef.current?.files?.length) return
+    if (!inputImportRef.current?.files?.length) return;
     try {
-      const payload = new FormData()
-      payload.append("files", inputImportRef.current.files[0])
+      const payload = new FormData();
+      payload.append("files", inputImportRef.current.files[0]);
       await Siswa.import(token, payload);
 
       Swal.fire({
-        icon: 'success',
-        title: "Sukses"
-        ,text: "Berhasil upload data siswa"
-      })
+        icon: "success",
+        title: "Sukses",
+        text: "Berhasil upload data siswa",
+      });
       DataSiswa();
-      inputImportRef.current.value = ''
+      inputImportRef.current.value = "";
     } catch (error) {
       Swal.fire({
-        icon: 'success',
+        icon: "success",
         title: "Gagal",
-        text: "Terjadi kesalahan saat upload data siswa"
-      })
+        text: "Terjadi kesalahan saat upload data siswa",
+      });
     }
-  }
+  };
 
   const exportSiswa = async () => {
     try {
-      const response = await Siswa.export(token, search)
+      const response = await Siswa.export(token, search);
 
       const url = window.URL.createObjectURL(new Blob([response.data]));
-      const link = document.createElement('a');
+      const link = document.createElement("a");
       link.href = url;
-      link.setAttribute('download', 'Ekspor Data Siswa.xlsx');
+      link.setAttribute("download", "Ekspor Data Siswa.xlsx");
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
     } catch (error) {
       Swal.fire({
-        icon: 'success',
+        icon: "success",
         title: "Gagal",
-        text: "Terjadi kesalahan saat ekspor data"
-      })
+        text: "Terjadi kesalahan saat ekspor data",
+      });
     }
-  }
+  };
+
+  const handleSelectChange = (e: any) => {
+    const value = e.target.value;
+    setShowNISN(value === "yes");
+    if (value === "no") {
+      formik.setFieldValue("nisn", null, false);
+    }
+    formik.handleChange(e);
+  };
 
   return (
     <>
-      <input 
-        type="file" 
-        className="hidden" 
-        ref={inputImportRef} 
+      <input
+        type="file"
+        className="hidden"
+        ref={inputImportRef}
         onChange={importSiswa}
         accept=".xls,.xlsx,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
       />
@@ -416,20 +421,39 @@ const DataSiswa = () => {
             </div>
             <div className="form-control">
               <label className="label">
-                <span className="label-text">NISN</span>
+                <span className="label-text">Apakah siswa memiliki NISN?</span>
               </label>
-              <input
-                type="text"
+              <select
+                name="hasNISN"
                 className="input input-bordered"
-                name="nisn"
-                value={formik.values.nisn}
-                onChange={formik.handleChange}
+                onChange={handleSelectChange}
                 onBlur={formik.handleBlur}
-              />
-              {formik.touched.nisn && formik.errors.nisn ? (
-                <div className="text-red-500 text-sm">{formik.errors.nisn}</div>
-              ) : null}
+              >
+                <option value="" label="Pilih" />
+                <option value="yes" label="Ya" />
+                <option value="no" label="Tidak" />
+              </select>
             </div>
+            {showNISN && (
+              <div className="form-control">
+                <label className="label">
+                  <span className="label-text">NISN</span>
+                </label>
+                <input
+                  type="text"
+                  className="input input-bordered"
+                  name="nisn"
+                  value={formik.values.nisn}
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                />
+                {/* {formik.touched.nisn && formik.errors.nisn ? (
+                  <div className="text-red-500 text-sm">
+                    {formik.errors.nisn}
+                  </div>
+                ) : null} */}
+              </div>
+            )}
             <div className="form-control">
               <label className="label">
                 <span className="label-text">Jenis Kelamin</span>
