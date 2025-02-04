@@ -122,7 +122,7 @@ const Siswa = {
       },
     }),
 
-  import: (token: string | null, data: any) => 
+  import: (token: string | null, data: any) =>
     instance({
       method: "POST",
       data,
@@ -131,7 +131,7 @@ const Siswa = {
         Authorization: `Bearer ${token}`,
       },
     }),
-  export: (token: string | null, search: string) => 
+  export: (token: string | null, search: string) =>
     instance({
       method: "GET",
       url: `/student/export`,
@@ -139,8 +139,8 @@ const Siswa = {
       headers: {
         Authorization: `Bearer ${token}`,
       },
-      responseType: "blob"
-    })
+      responseType: "blob",
+    }),
 };
 
 const Mapel = {
@@ -317,7 +317,7 @@ const User = {
   GetDataRole: (token: string | null): AxiosPromise<any> =>
     instance({
       method: "GET",
-      url: `/role`,
+      url: `/role?page=0&limit=100000`,
       headers: {
         Authorization: `Bearer ${token}`,
       },
