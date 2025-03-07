@@ -290,6 +290,20 @@ const User = {
         Authorization: `Bearer ${token}`,
       },
     }),
+  ForgotPassword: (email : string): AxiosPromise<any> =>
+    instance({
+      method: "POST",
+      data: {
+        email
+      },
+      url: `/auth/forgot-password`,
+    }),
+  ResetPassword: (data: any): AxiosPromise<any> =>
+    instance({
+      method: "POST",
+      data,
+      url: `/auth/reset-password`,
+    }),
 
   EditUser: (token: string | null, data: any, id: number): AxiosPromise<any> =>
     instance({

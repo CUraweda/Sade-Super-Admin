@@ -6,6 +6,7 @@ import {
   FaTimes,
   FaEye,
   FaEyeSlash,
+  FaKey,
 } from "react-icons/fa";
 import { FaPencil } from "react-icons/fa6";
 import { User } from "../middleware/Api";
@@ -30,6 +31,8 @@ const DaftarUser = () => {
   const [editingUser, setEditingUser] = useState<UserList | null>(null);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [tokenReset, setTokenReset] = useState<string>('')
+  const [password, setPassword] = useState<string>('')
 
   const toggleShowPassword = () => {
     setShowPassword(!showPassword);
@@ -116,6 +119,67 @@ const DaftarUser = () => {
       setRole(response.data.data.result);
     } catch (error) {
       console.error(error);
+    }
+  };
+
+  const ForgotPassword = async (email: string) => {
+    try {
+      const {data} = await User.ForgotPassword(email);
+      const url = data.data.url
+      const extractToken = url.match(/\/reset-password\/([a-f0-9]+)/);
+      setTokenReset(extractToken[1])
+      trigetResetpassword(data.data.email)
+
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const trigetResetpassword = async (email: string) => {
+    Swal.fire({
+      title: `Reset Password akun ${email} ?`,
+      input: "text",
+      inputAttributes: {
+        autocapitalize: "off"
+      },
+      showCancelButton: true,
+      confirmButtonText: "Reset",
+      showLoaderOnConfirm: true,
+      preConfirm: async (login) => {
+        try {
+          setPassword(login)
+          ResetPassword()
+        } catch (error) {
+          Swal.showValidationMessage(`
+            Request failed: ${error}
+          `);
+        }
+      },
+      allowOutsideClick: () => !Swal.isLoading()
+    })
+  };
+  const ResetPassword = async () => {
+    try {
+      const rest = {
+        token : tokenReset,
+        password: password,
+        confirm_password: password,
+      }
+    await User.ResetPassword(rest);
+     Swal.fire({
+      position: "center",
+      icon: "success",
+      title: "Your work has been saved",
+      showConfirmButton: false,
+      timer: 1500
+    });
+
+    } catch (error) {
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: "Something went wrong!",
+      });
     }
   };
 
@@ -317,6 +381,12 @@ const DaftarUser = () => {
                 </td>
                 <td>
                   <div className="flex items-center justify-center gap-2">
+                    <button
+                      className="btn btn-ghost btn-sm text-yellow-500 text-xl"
+                      onClick={() => ForgotPassword(item.email)}
+                    >
+                      <FaKey />
+                    </button>
                     <button
                       className="btn btn-ghost btn-sm text-blue-500 text-xl"
                       onClick={() => handleEditUserModal(item)}
