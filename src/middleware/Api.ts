@@ -298,11 +298,14 @@ const User = {
       },
       url: `/auth/forgot-password`,
     }),
-  ResetPassword: (data: any): AxiosPromise<any> =>
+  ResetPassword: (data: any, token: string | null): AxiosPromise<any> =>
     instance({
       method: "POST",
       data,
-      url: `/auth/reset-password`,
+      url: `/auth/admin-reset-pass`,
+       headers: {
+        Authorization: `Bearer ${token}`,
+      },
     }),
 
   EditUser: (token: string | null, data: any, id: number): AxiosPromise<any> =>

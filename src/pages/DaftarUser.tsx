@@ -31,8 +31,6 @@ const DaftarUser = () => {
   const [editingUser, setEditingUser] = useState<UserList | null>(null);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-  const [tokenReset, setTokenReset] = useState<string>('')
-  const [password, setPassword] = useState<string>('')
 
   const toggleShowPassword = () => {
     setShowPassword(!showPassword);
@@ -122,20 +120,8 @@ const DaftarUser = () => {
     }
   };
 
-  const ForgotPassword = async (email: string) => {
-    try {
-      const {data} = await User.ForgotPassword(email);
-      const url = data.data.url
-      const extractToken = url.match(/\/reset-password\/([a-f0-9]+)/);
-      setTokenReset(extractToken[1])
-      trigetResetpassword(data.data.email)
 
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  const trigetResetpassword = async (email: string) => {
+  const trigetResetpassword = async (email: string, id: number) => {
     Swal.fire({
       title: `Reset Password akun ${email} ?`,
       input: "text",
@@ -145,10 +131,10 @@ const DaftarUser = () => {
       showCancelButton: true,
       confirmButtonText: "Reset",
       showLoaderOnConfirm: true,
-      preConfirm: async (login) => {
+      preConfirm: async (password) => {
         try {
-          setPassword(login)
-          ResetPassword()
+        
+          ResetPassword(password, id)
         } catch (error) {
           Swal.showValidationMessage(`
             Request failed: ${error}
@@ -158,14 +144,14 @@ const DaftarUser = () => {
       allowOutsideClick: () => !Swal.isLoading()
     })
   };
-  const ResetPassword = async () => {
+  const ResetPassword = async (password: string, id: number) => {
     try {
       const rest = {
-        token : tokenReset,
+        user_id : id,
         password: password,
         confirm_password: password,
       }
-    await User.ResetPassword(rest);
+    await User.ResetPassword(rest, token);
      Swal.fire({
       position: "center",
       icon: "success",
@@ -383,7 +369,7 @@ const DaftarUser = () => {
                   <div className="flex items-center justify-center gap-2">
                     <button
                       className="btn btn-ghost btn-sm text-yellow-500 text-xl"
-                      onClick={() => ForgotPassword(item.email)}
+                      onClick={() => trigetResetpassword(item.email, item.id)}
                     >
                       <FaKey />
                     </button>
