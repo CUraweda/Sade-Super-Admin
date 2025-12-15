@@ -43,6 +43,10 @@
       {
         "name": "Akun Siswa",
         "url": "/siswa/akun-siswa"
+      },
+      {
+        "name": "Rapor Siswa",
+        "url": "/siswa/rapor-siswa"
       }
     ]
   },

@@ -998,6 +998,56 @@ const AksesSiswa = {
       },
     }),
 };
+
+const RaporSiswaApi = {
+  showAll: (
+    token: string | null,
+    search: string = '',
+    page: number = 1,
+    limit: number = 20,
+    classId: string = '',
+    semester: string = '',
+    academic: string = '',
+    withAssign: string = 'N'
+  ) =>
+    instance({
+      method: 'GET',
+      url: `/student-report`,
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      params: {
+        search_query: search,
+        page,
+        limit,
+        class_id: classId,
+        semester,
+        academic,
+        with_assign: withAssign,
+      },
+    }),
+  download: (token: string | null, path: string = '') =>
+    instance({
+      method: 'GET',
+      url: `/student-task/download`,
+      responseType: 'blob',
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      params: {
+        filepath: path,
+      },
+    }),
+  merge: (token: string | null, id: string) =>
+    instance({
+      method: 'PUT',
+      url: `/student-report/merge/${id}`,
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }),
+};
+
 export {
   HistoryStudent,
   CustomerCare,
@@ -1016,4 +1066,6 @@ export {
   Settings,
   Student,
   AksesSiswa,
+  RaporSiswaApi
 };
+

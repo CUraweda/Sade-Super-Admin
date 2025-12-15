@@ -6,6 +6,7 @@ import ProtectedRoute from "../middleware/ProtectedRoute";
 import RoleAkses from "../pages/RoleAkses.tsx";
 import HistorySiswa from "../pages/HistorySIswa.tsx";
 import PenautanSiswa from "../pages/PenautanSiswa.tsx";
+import RaporSiswa from "../pages/RaporSiswa.tsx";
 
 const Dashboard = lazy(() => import("../pages/Dashboard"));
 const LokasiAbsen = lazy(() => import("../pages/LokasiAbsen.tsx"));
@@ -282,6 +283,20 @@ const Router: React.FC = () => {
                 <Suspense fallback={<Loading />}>
                   <Layout>
                     <PenautanSiswa />
+                  </Layout>
+                </Suspense>
+              }
+            />
+          }
+        />
+        <Route
+          path="/siswa/rapor-siswa"
+          element={
+            <ProtectedRoute
+              element={
+                <Suspense fallback={<Loading />}>
+                  <Layout>
+                    <RaporSiswa />
                   </Layout>
                 </Suspense>
               }
