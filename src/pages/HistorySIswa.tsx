@@ -424,9 +424,9 @@ const HistorySiswa = () => {
                     <td>{item.student.nis}</td>
                     <td>{item.student.nisn}</td>
                     <td>{item.student.full_name}</td>
-                    <td>{item.class.level}</td>
+                    <td>{item.class?.level}</td>
                     <td>{item.academic_year}</td>
-                    <td>{item.class.class_name}</td>
+                    <td>{item.class?.class_name}</td>
                     <td>{item.is_active === "Ya" ? "Aktif" : "Tidak Aktif"}</td>
                     <td className="text-center">
                       <div className="join ">
