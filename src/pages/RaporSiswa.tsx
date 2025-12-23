@@ -3,10 +3,11 @@ import { RaporSiswaApi } from '../middleware/Api';
 import { LoginStore } from '../store/Store';
 import { IpageMeta, PaginationControl } from '../component/PaginationControl';
 import Swal from 'sweetalert2';
-import { FaCodeMerge, FaFilePdf } from 'react-icons/fa6';
+import { FaCodeMerge, FaFilePdf, FaGear } from 'react-icons/fa6';
 import ClassPicker from '../component/pickers/ClassPicker';
 import AcademicYearPicker from '../component/pickers/AcademicYearPicker';
 import SearchBar from '../component/SearchBar';
+import Modal, { openModal } from '../component/ModalProps';
 
 const RaporSiswa = () => {
   const { token } = LoginStore();
@@ -103,8 +104,100 @@ const RaporSiswa = () => {
     getReports();
   }, [filter]);
 
+  // detail report
+  const [data, setData] = useState<any>(null),
+    [numberReports, setNumberReports] = useState<any[]>([]);
+
+  const getNumberReports = async (dat: any) => {
+    if (!dat) return;
+    console.log('hello');
+    try {
+      const res = await RaporSiswaApi.showAllNumberReports(
+        token,
+        '',
+        0,
+        1000,
+        '',
+        dat.semester,
+        dat.studentclass.academic_year,
+        dat.id
+      );
+      setNumberReports(res.data?.data?.result ?? []);
+    } catch {
+      // silent
+    }
+  };
+
+  useEffect(() => {
+    getNumberReports(data);
+  }, [data]);
+
   return (
     <>
+      <Modal
+        id="modal-studentreport-detail"
+        width="w-11/12 max-w-2xl"
+        onClose={() => setData(null)}
+      >
+        <p className="text-xl font-bold">Detail Rapor</p>
+
+        <table className="mt-4">
+          <tbody>
+            <tr>
+              <td>Tahun ajaran</td>
+              <td>:</td>
+              <td>{data?.studentclass?.academic_year ?? '-'}</td>
+            </tr>
+            <tr>
+              <td>Semester</td>
+              <td>:</td>
+              <td>{data?.semester ?? '-'}</td>
+            </tr>
+            <tr>
+              <td>Nama siswa</td>
+              <td>:</td>
+              <td>{data?.studentclass?.student?.full_name ?? '-'}</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div className="flex mt-8 justify-between items-center flex-wrap gap-4 mb-2">
+          <p className="text-xl">Rapor Angka</p>
+          <div className="grow h-1 bg-base-200"></div>
+          <button className="btn bg-red-700 text-white btn-sm">
+            <FaFilePdf /> Generate PDF
+          </button>
+        </div>
+
+        <table className="table">
+          <tbody>
+            {numberReports?.map((nr, i) => (
+              <tr key={i}>
+                <td>{nr.subject?.name ?? '-'}</td>
+                <td>{nr.grade ?? '-'}</td>
+                <td>{nr.grade_text ?? '-'}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+
+        <div className="flex mt-8 justify-between items-center flex-wrap gap-4 mb-2">
+          <p className="text-xl">Rapor Narasi</p>
+          <div className="grow h-1 bg-base-200"></div>
+          <button className="btn bg-red-700 text-white btn-sm">
+            <FaFilePdf /> Generate PDF
+          </button>
+        </div>
+
+        <div className="flex mt-8 justify-between items-center flex-wrap gap-4 mb-2">
+          <p className="text-xl">Rapor Portofolio</p>
+          <div className="grow h-1 bg-base-200"></div>
+          <button className="btn bg-red-700 text-white btn-sm">
+            <FaFilePdf /> Generate PDF
+          </button>
+        </div>
+      </Modal>
+
       <div className="w-full flex flex-col items-center p-5">
         <span className="text-xl font-bold">Rapor Siswa</span>
 
@@ -197,7 +290,7 @@ const RaporSiswa = () => {
                         <FaFilePdf size={18} />
                       </button>
                     </td>
-                    <td className="flex items-center justify-between">
+                    <td className="flex items-center gap-2">
                       <button
                         className={`btn btn-sm btn-square bg-orange-500 text-white ${
                           !item?.number_path ||
@@ -209,6 +302,15 @@ const RaporSiswa = () => {
                         onClick={() => mergeReport(item?.id)}
                       >
                         <FaCodeMerge size={18} />
+                      </button>
+                      <button
+                        className={`btn btn-sm btn-square btn-primary`}
+                        onClick={() => {
+                          setData(item);
+                          openModal('modal-studentreport-detail');
+                        }}
+                      >
+                        <FaGear size={18} />
                       </button>
                     </td>
                   </tr>
