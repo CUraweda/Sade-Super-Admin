@@ -6,6 +6,7 @@ import Swal from 'sweetalert2';
 import { FaCodeMerge, FaFilePdf } from 'react-icons/fa6';
 import ClassPicker from '../component/pickers/ClassPicker';
 import AcademicYearPicker from '../component/pickers/AcademicYearPicker';
+import SearchBar from '../component/SearchBar';
 
 const RaporSiswa = () => {
   const { token } = LoginStore();
@@ -110,7 +111,7 @@ const RaporSiswa = () => {
         <div className="w-full mt-5 bg-white p-4 rounded-xl">
           <div className="w-full flex my-4 gap-2 items-center">
             <AcademicYearPicker
-              value={filter.classId}
+              value={filter.academic}
               onChange={(v) => handleFilter('academic', v)}
             />
             <select
@@ -128,6 +129,7 @@ const RaporSiswa = () => {
               value={filter.classId}
               onChange={(v) => handleFilter('classId', v)}
             />
+            <SearchBar onEnter={(v) => handleFilter('search', v)} />
           </div>
           <div className="overflow-x-auto">
             <table className="table table-zebra table-sm w-[100%] ">
