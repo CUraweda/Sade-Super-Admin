@@ -161,40 +161,60 @@ const RaporSiswa = () => {
           </tbody>
         </table>
 
-        <div className="flex mt-8 justify-between items-center flex-wrap gap-4 mb-2">
-          <p className="text-xl">Rapor Angka</p>
-          <div className="grow h-1 bg-base-200"></div>
-          <button className="btn bg-red-700 text-white btn-sm">
-            <FaFilePdf /> Generate PDF
-          </button>
-        </div>
+        <div className="tabs tabs-bordered mt-8">
+          <input
+            type="radio"
+            name="tabs-studentreport-detail"
+            className="tab whitespace-nowrap"
+            aria-label="Rapor Angka"
+            defaultChecked
+          />
+          <div className="tab-content bg-base-100 border-base-300 p-6">
+            <button className="btn btn-sm bg-red-700 text-white mb-4">
+              <FaFilePdf />
+              Generate PDF
+            </button>
+            <div className="overflow-x-auto">
+              <table className="table">
+                <thead>
+                  <tr>
+                    <th>Mata pelajaran</th>
+                    <th>Nilai angka</th>
+                    <th>Nilai huruf</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {numberReports?.map((nr, i) => (
+                    <tr key={i}>
+                      <td>{nr.subject?.name ?? '-'}</td>
+                      <td>{nr.grade ?? '-'}</td>
+                      <td>{nr.grade_text ?? '-'}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
 
-        <table className="table">
-          <tbody>
-            {numberReports?.map((nr, i) => (
-              <tr key={i}>
-                <td>{nr.subject?.name ?? '-'}</td>
-                <td>{nr.grade ?? '-'}</td>
-                <td>{nr.grade_text ?? '-'}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+          <input
+            type="radio"
+            name="tabs-studentreport-detail"
+            className="tab whitespace-nowrap"
+            aria-label="Rapor Narasi"
+          />
+          <div className="tab-content bg-base-100 border-base-300 p-6">
+            Tab content 2
+          </div>
 
-        <div className="flex mt-8 justify-between items-center flex-wrap gap-4 mb-2">
-          <p className="text-xl">Rapor Narasi</p>
-          <div className="grow h-1 bg-base-200"></div>
-          <button className="btn bg-red-700 text-white btn-sm">
-            <FaFilePdf /> Generate PDF
-          </button>
-        </div>
-
-        <div className="flex mt-8 justify-between items-center flex-wrap gap-4 mb-2">
-          <p className="text-xl">Rapor Portofolio</p>
-          <div className="grow h-1 bg-base-200"></div>
-          <button className="btn bg-red-700 text-white btn-sm">
-            <FaFilePdf /> Generate PDF
-          </button>
+          <input
+            type="radio"
+            name="tabs-studentreport-detail"
+            className="tab whitespace-nowrap"
+            aria-label="Rapor Portofolio"
+          />
+          <div className="tab-content bg-base-100 border-base-300 p-6">
+            Tab content 3
+          </div>
         </div>
       </Modal>
 
