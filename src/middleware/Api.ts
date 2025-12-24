@@ -1103,6 +1103,36 @@ const RaporSiswaApi = {
         Authorization: `Bearer ${token}`,
       },
     }),
+  generateNumberReport: (
+    token: string | null,
+    id: string,
+    academic: string = '',
+    semester: string = '',
+    date: string = ''
+  ) =>
+    instance({
+      method: 'GET',
+      url: `/number-report/generate/${id}`,
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      params: { semester, academic, date },
+    }),
+  generateNarrativeReport: (
+    token: string | null,
+    id: string,
+    academic: string = '',
+    semester: string = '',
+    reportId: string = ''
+  ) =>
+    instance({
+      method: 'GET',
+      url: `/narrative-report/generate/${id}`,
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      params: { semester, academic, report_id: reportId },
+    }),
 };
 
 export {

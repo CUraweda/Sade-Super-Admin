@@ -7,7 +7,7 @@ import { FaCodeMerge, FaFilePdf, FaGear } from 'react-icons/fa6';
 import ClassPicker from '../component/pickers/ClassPicker';
 import AcademicYearPicker from '../component/pickers/AcademicYearPicker';
 import SearchBar from '../component/SearchBar';
-import Modal, { openModal } from '../component/ModalProps';
+import Modal, { closeModal, openModal } from '../component/ModalProps';
 import { FaCheck } from 'react-icons/fa';
 import TruncateText from '../component/TruncateText';
 
@@ -187,6 +187,31 @@ const RaporSiswa = () => {
     getPortofolioReports(data);
   }, [data]);
 
+  const generateNumberReport = async (
+    studentId: string,
+    academic: string,
+    semester: string
+  ) => {
+    try {
+      await RaporSiswaApi.generateNumberReport(
+        token,
+        studentId,
+        academic,
+        semester
+      );
+
+      getReports();
+      closeModal('modal-studentreport-detail');
+    } catch {
+      Swal.fire({
+        target: document.getElementById('modal-studentreport-detail'),
+        icon: 'error',
+        title: 'Oops...',
+        text: 'Gagal generate PDF rapor angka',
+      });
+    }
+  };
+
   return (
     <>
       <Modal
@@ -225,7 +250,16 @@ const RaporSiswa = () => {
             defaultChecked
           />
           <div className="tab-content bg-base-100 border-base-300 p-4">
-            <button className="btn btn-sm bg-red-700 text-white mb-4">
+            <button
+              onClick={() =>
+                generateNumberReport(
+                  data?.studentclass?.student_id ?? '',
+                  data?.studentclass?.academic_year ?? '',
+                  data?.semester ?? ''
+                )
+              }
+              className="btn btn-sm bg-red-700 text-white mb-4"
+            >
               <FaFilePdf />
               Generate PDF
             </button>
