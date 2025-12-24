@@ -8,6 +8,8 @@ import ClassPicker from '../component/pickers/ClassPicker';
 import AcademicYearPicker from '../component/pickers/AcademicYearPicker';
 import SearchBar from '../component/SearchBar';
 import Modal, { openModal } from '../component/ModalProps';
+import { FaCheck } from 'react-icons/fa';
+import TruncateText from '../component/TruncateText';
 
 const RaporSiswa = () => {
   const { token } = LoginStore();
@@ -106,11 +108,14 @@ const RaporSiswa = () => {
 
   // detail report
   const [data, setData] = useState<any>(null),
-    [numberReports, setNumberReports] = useState<any[]>([]);
+    [numberReports, setNumberReports] = useState<any[]>([]),
+    [narrativeReports, setNarrativeReports] = useState<any>(null),
+    [narrativeComments, setNarrativeComments] = useState<any[]>([]);
+
+  const [narrativeCatId, setNarrativeCatId] = useState('');
 
   const getNumberReports = async (dat: any) => {
     if (!dat) return;
-    console.log('hello');
     try {
       const res = await RaporSiswaApi.showAllNumberReports(
         token,
@@ -128,8 +133,41 @@ const RaporSiswa = () => {
     }
   };
 
+  const getNarrativeReports = async (dat: any) => {
+    if (!dat) return;
+    try {
+      const res = await RaporSiswaApi.showNarrativeReportsByStudentClass(
+        token,
+        dat.student_class_id,
+        dat.semester
+      );
+      setNarrativeReports(res.data?.data);
+    } catch {
+      // silent
+    }
+  };
+
+  const getNarrativeComments = async (dat: any) => {
+    if (!dat) return;
+    try {
+      const res = await RaporSiswaApi.showNarrativeCommentsByReport(
+        token,
+        dat.id
+      );
+      setNarrativeComments(res.data?.data ?? []);
+    } catch {
+      // silent
+    }
+  };
+
   useEffect(() => {
+    setNumberReports([]);
+    setNarrativeReports(null);
+    setNarrativeComments([]);
+
     getNumberReports(data);
+    getNarrativeReports(data);
+    getNarrativeComments(data);
   }, [data]);
 
   return (
@@ -169,7 +207,7 @@ const RaporSiswa = () => {
             aria-label="Rapor Angka"
             defaultChecked
           />
-          <div className="tab-content bg-base-100 border-base-300 p-6">
+          <div className="tab-content bg-base-100 border-base-300 p-4">
             <button className="btn btn-sm bg-red-700 text-white mb-4">
               <FaFilePdf />
               Generate PDF
@@ -202,8 +240,111 @@ const RaporSiswa = () => {
             className="tab whitespace-nowrap"
             aria-label="Rapor Narasi"
           />
-          <div className="tab-content bg-base-100 border-base-300 p-6">
-            Tab content 2
+          <div className="tab-content bg-base-100 border-base-300 p-4">
+            <div className="flex flex-wrap gap-2 items-center mb-8">
+              <button className="btn btn-sm bg-red-700 text-white">
+                <FaFilePdf />
+                Generate PDF
+              </button>
+              <select
+                className="select select-bordered select-sm"
+                value={narrativeCatId}
+                onChange={(e) => setNarrativeCatId(e.target.value)}
+              >
+                <option value={''} selected>
+                  Kategori
+                </option>
+                {narrativeReports?.narrative_categories
+                  ?.map(({ id, category }: any) => ({ id, category }))
+                  .map((nr: any, i: number) => (
+                    <option key={i} value={nr.id}>
+                      {nr.category ?? '-'}
+                    </option>
+                  ))}
+              </select>
+            </div>
+
+            {narrativeComments
+              .filter((nc) => nc.narrative_cat_id == narrativeCatId)
+              .map((nc, i) => (
+                <div className="mb-8" key={i}>
+                  <div className="flex gap-4 mb-2 items-center">
+                    <h6 className="font-bold">KOMENTAR</h6>
+                    <div className="grow h-px bg-base-300"></div>
+                  </div>
+                  <TruncateText text={nc?.comments ?? ''} />
+                </div>
+              ))}
+
+            {narrativeReports?.narrative_categories
+              ?.find((nc: any) => nc.id.toString() == narrativeCatId)
+              ?.narrative_sub_categories.map((nsc: any, i: number) => (
+                <div key={i} className="mb-8">
+                  <div className="flex gap-4 mb-2 items-center">
+                    <h6 className="font-bold">{nsc.sub_category ?? '-'}</h6>
+                    <div className="grow h-px bg-base-300"></div>
+                  </div>
+                  <div className="overflow-x-auto max-w-xl">
+                    <table className="table">
+                      <thead className="bg-blue-50">
+                        <tr>
+                          <th>No</th>
+                          <th>Keterangan</th>
+                          <th className="text-center">
+                            Membutuhkan
+                            <br /> banyak latihan
+                          </th>
+                          <th className="text-center">Berkembang</th>
+                          <th className="text-center">Mandiri</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {nsc?.narrative_reports?.map((nr: any, j: number) => (
+                          <tr key={i}>
+                            <td>{j + 1}</td>
+                            <td className="min-w-80 ">{nr?.desc ?? ''}</td>
+                            <td>
+                              {nr.grade == 1 && (
+                                <FaCheck className="text-green-400 m-auto" />
+                              )}
+                            </td>
+                            <td>
+                              {nr.grade == 2 && (
+                                <FaCheck className="text-green-400 m-auto" />
+                              )}
+                            </td>
+                            <td>
+                              {nr.grade == 3 && (
+                                <FaCheck className="text-green-400 m-auto" />
+                              )}
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              ))}
+
+            <div className="mb-8">
+              <div className="flex gap-4 mb-2 items-center">
+                <h6 className="font-bold">Komentar Guru</h6>
+                <div className="grow h-px bg-base-300"></div>
+              </div>
+              <TruncateText
+                text={narrativeReports?.nar_teacher_comments ?? ''}
+              />
+            </div>
+
+            <div className="mb-8">
+              <div className="flex gap-4 mb-2 items-center">
+                <h6 className="font-bold">Komentar Orang Tua</h6>
+                <div className="grow h-px bg-base-300"></div>
+              </div>
+              <TruncateText
+                text={narrativeReports?.nar_parent_comments ?? ''}
+              />
+            </div>
           </div>
 
           <input
@@ -212,7 +353,7 @@ const RaporSiswa = () => {
             className="tab whitespace-nowrap"
             aria-label="Rapor Portofolio"
           />
-          <div className="tab-content bg-base-100 border-base-300 p-6">
+          <div className="tab-content bg-base-100 border-base-300 p-4">
             Tab content 3
           </div>
         </div>

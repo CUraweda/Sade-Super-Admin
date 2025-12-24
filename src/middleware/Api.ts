@@ -1074,6 +1074,27 @@ const RaporSiswaApi = {
         subject_id: subjectId,
       },
     }),
+  showNarrativeReportsByStudentClass: (
+    token: string | null,
+    id: string,
+    semester: string = ''
+  ) =>
+    instance({
+      method: 'GET',
+      url: `/narrative-report/show-by-student/${id}`,
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      params: { semester },
+    }),
+  showNarrativeCommentsByReport: (token: string | null, id: string) =>
+    instance({
+      method: 'GET',
+      url: `/narrative-comment/show-by-student-report/${id}`,
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }),
 };
 
 export {
