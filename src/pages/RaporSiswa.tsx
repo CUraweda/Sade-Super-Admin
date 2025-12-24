@@ -141,6 +141,7 @@ const RaporSiswa = () => {
       const res = await RaporSiswaApi.showNarrativeReportsByStudentClass(
         token,
         dat.student_class_id,
+        dat.studentclass.academic_year,
         dat.semester
       );
       setNarrativeReports(res.data?.data);
@@ -208,6 +209,33 @@ const RaporSiswa = () => {
         icon: 'error',
         title: 'Oops...',
         text: 'Gagal generate PDF rapor angka',
+      });
+    }
+  };
+
+  const generateNarrativeReport = async (
+    reportId: string,
+    studentClassId: string,
+    academic: string,
+    semester: string
+  ) => {
+    try {
+      await RaporSiswaApi.generateNarrativeReport(
+        token,
+        studentClassId,
+        academic,
+        semester,
+        reportId
+      );
+
+      getReports();
+      closeModal('modal-studentreport-detail');
+    } catch {
+      Swal.fire({
+        target: document.getElementById('modal-studentreport-detail'),
+        icon: 'error',
+        title: 'Oops...',
+        text: 'Gagal generate PDF rapor narasi',
       });
     }
   };
@@ -293,7 +321,17 @@ const RaporSiswa = () => {
           />
           <div className="tab-content bg-base-100 border-base-300 p-4">
             <div className="flex flex-wrap gap-2 items-center mb-8">
-              <button className="btn btn-sm bg-red-700 text-white">
+              <button
+                className="btn btn-sm bg-red-700 text-white"
+                onClick={() => {
+                  generateNarrativeReport(
+                    data?.id,
+                    data?.studentclass?.id ?? '',
+                    data?.studentclass?.academic_year ?? '',
+                    data?.semester ?? ''
+                  );
+                }}
+              >
                 <FaFilePdf />
                 Generate PDF
               </button>

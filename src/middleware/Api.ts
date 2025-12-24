@@ -1077,6 +1077,7 @@ const RaporSiswaApi = {
   showNarrativeReportsByStudentClass: (
     token: string | null,
     id: string,
+    academic: string = '',
     semester: string = ''
   ) =>
     instance({
@@ -1085,7 +1086,7 @@ const RaporSiswaApi = {
       headers: {
         Authorization: `Bearer ${token}`,
       },
-      params: { semester },
+      params: { academic, semester },
     }),
   showNarrativeCommentsByReport: (token: string | null, id: string) =>
     instance({
