@@ -1095,6 +1095,14 @@ const RaporSiswaApi = {
         Authorization: `Bearer ${token}`,
       },
     }),
+  showPortofolioReportsByReport: (token: string | null, id: string) =>
+    instance({
+      method: 'GET',
+      url: `/portofolio-report/show-all-by-student-report/${id}`,
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }),
 };
 
 export {

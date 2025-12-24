@@ -60,7 +60,7 @@ const RaporSiswa = () => {
     }
   };
 
-  const downloadReport = async (path: string) => {
+  const downloadReport = async (path: string, htmlId?: string) => {
     try {
       const response = await RaporSiswaApi.download(token, path);
       const urlParts = path.split('/');
@@ -77,6 +77,7 @@ const RaporSiswa = () => {
       window.URL.revokeObjectURL(blobUrl);
     } catch (error) {
       Swal.fire({
+        target: htmlId ? document.getElementById(htmlId) : undefined,
         icon: 'error',
         title: 'Oops...',
         text: 'Gagal mengunduh rapor',
@@ -110,7 +111,8 @@ const RaporSiswa = () => {
   const [data, setData] = useState<any>(null),
     [numberReports, setNumberReports] = useState<any[]>([]),
     [narrativeReports, setNarrativeReports] = useState<any>(null),
-    [narrativeComments, setNarrativeComments] = useState<any[]>([]);
+    [narrativeComments, setNarrativeComments] = useState<any[]>([]),
+    [portofolioReports, setPortofolioReports] = useState<any[]>([]);
 
   const [narrativeCatId, setNarrativeCatId] = useState('');
 
@@ -160,14 +162,29 @@ const RaporSiswa = () => {
     }
   };
 
+  const getPortofolioReports = async (dat: any) => {
+    if (!dat) return;
+    try {
+      const res = await RaporSiswaApi.showPortofolioReportsByReport(
+        token,
+        dat.id
+      );
+      setPortofolioReports(res.data?.data ?? []);
+    } catch {
+      // silent
+    }
+  };
+
   useEffect(() => {
     setNumberReports([]);
     setNarrativeReports(null);
     setNarrativeComments([]);
+    setPortofolioReports([]);
 
     getNumberReports(data);
     getNarrativeReports(data);
     getNarrativeComments(data);
+    getPortofolioReports(data);
   }, [data]);
 
   return (
@@ -354,7 +371,64 @@ const RaporSiswa = () => {
             aria-label="Rapor Portofolio"
           />
           <div className="tab-content bg-base-100 border-base-300 p-4">
-            Tab content 3
+            <div className="flex flex-wrap gap-2 items-center mb-8">
+              <button className="btn btn-sm bg-red-700 text-white">
+                <FaFilePdf />
+                Generate PDF
+              </button>
+            </div>
+
+            <div className="overflow-x-auto max-w-xl mb-8">
+              <table className="table">
+                <thead>
+                  <tr>
+                    <th>No</th>
+                    <th>Keterangan</th>
+                    <th>File</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {portofolioReports.map((pr, i) => (
+                    <tr key={i}>
+                      <td>{i + 1}</td>
+                      <td>{pr.type ?? '-'}</td>
+                      <td>
+                        <button
+                          className={`btn btn-sm btn-square bg-green-500 text-white ${
+                            !pr?.file_path ? 'btn-disabled' : ''
+                          }`}
+                          onClick={() =>
+                            downloadReport(
+                              pr.file_path,
+                              'modal-studentreport-detail'
+                            )
+                          }
+                          data-tip="Download portofolio"
+                        >
+                          <FaFilePdf size={18} />
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+
+            <div className="mb-8">
+              <div className="flex gap-4 mb-2 items-center">
+                <h6 className="font-bold">Komentar Guru</h6>
+                <div className="grow h-px bg-base-300"></div>
+              </div>
+              <TruncateText text={data?.por_teacher_comments ?? ''} />
+            </div>
+
+            <div className="mb-8">
+              <div className="flex gap-4 mb-2 items-center">
+                <h6 className="font-bold">Komentar Orang Tua</h6>
+                <div className="grow h-px bg-base-300"></div>
+              </div>
+              <TruncateText text={data?.por_parent_comments ?? ''} />
+            </div>
           </div>
         </div>
       </Modal>
